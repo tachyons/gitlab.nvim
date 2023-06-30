@@ -14,7 +14,6 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
 
     ```sh
     git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
-    git -C ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim checkout develop
     ```
 
 ### Code Suggestions
