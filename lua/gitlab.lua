@@ -1,6 +1,7 @@
 local gitlab = {
   initialized = false,
   defaults = {
+    logging = {},
     statusline = {},
     authentication = {},
     code_suggestions = {
@@ -20,6 +21,14 @@ function gitlab.init(options)
   end
   gitlab.initialized = true
 
+  if not gitlab.version then
+    gitlab.version = require 'gitlab.version'
+  end
+
+  if not gitlab.logging then
+    gitlab.logging = require 'gitlab.logging'
+  end
+
   if not gitlab.statusline then
     gitlab.statusline = require 'gitlab.statusline'
   end
@@ -37,6 +46,16 @@ end
 
 function gitlab.setup(options)
   gitlab.init(options)
+
+  if gitlab.version then
+    gitlab.version.setup()
+  end
+
+  if gitlab.logging then
+    gitlab.logging.setup(gitlab.options.logging)
+  end
+
+  gitlab.logging.info("Starting up..")
 
   if gitlab.statusline then
     gitlab.statusline.setup(gitlab.options.statusline)
