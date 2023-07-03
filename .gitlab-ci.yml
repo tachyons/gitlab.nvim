@@ -2,8 +2,7 @@ stages:
 - package
 - test
 
-# Invoke
-unit test:
+test:
   image: alpine:3.18
   script:
   - apk add git neovim
