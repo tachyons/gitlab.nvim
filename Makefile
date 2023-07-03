@@ -1,6 +1,7 @@
 LUACHECK := $(shell command -v luacheck 2> /dev/null)
 
 default:
+	@echo "The folllowing are the available make targets that can be run:\n"
 	@grep '^[^#[:space:]].*:' Makefile
 
 test_all: test lint
