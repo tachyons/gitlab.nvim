@@ -1,4 +1,6 @@
-local logging = {}
+local logging = {
+  enabled = true
+}
 
 function logging.info(msg)
   logging._log(msg, "INFO")
@@ -21,7 +23,7 @@ function logging.debug(msg, f)
 end
 
 function logging.format_line(msg, level, t)
-  local timestamp = t or "%Y-%m-%d %H:%M:%S"
+  local timestamp = t or "!%Y-%m-%d %H:%M:%S"
 
   local line = string.format("%s: %s (%s): %s", os.date(timestamp), level, GITLAB_VIM.version, msg)
 
@@ -29,15 +31,19 @@ function logging.format_line(msg, level, t)
 end
 
 function logging._log(msg, level)
-  local log_file_path = '/tmp/gitlab.vim.log'
-  local log_file = io.open(log_file_path, "a")
+  if logging.enabled == true then
+    local log_file_path = '/tmp/gitlab.vim.log'
+    local log_file = io.open(log_file_path, "a")
 
-  io.output(log_file)
-  io.write(logging.format_line(msg, level) .. "\n")
-  io.close(log_file)
+    io.output(log_file)
+    io.write(logging.format_line(msg, level) .. "\n")
+    io.close(log_file)
+  end
 end
 
-function logging.setup()
+-- FIXME: Remove
+function logging.setup(options)
+  logging.enabled = options.enabled
 end
 
 return logging

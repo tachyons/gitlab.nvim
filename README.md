@@ -64,9 +64,10 @@ The following global [options](https://neovim.io/doc/user/options.html) are avai
 
 #### Environment variables
 
-| Name               | Value                    | Purpose |
-|--------------------|--------------------------|---------|
-| `GITLAB_VIM_DEBUG` | `0` or `1` (default `0`) | Enable debugging output into `/tmp/gitlab.vim.log` |
+| Name                 | Value                    | Purpose |
+|----------------------|--------------------------|---------|
+| `GITLAB_VIM_DEBUG`   | `0` or `1` (default `0`) | Enable debugging output into `/tmp/gitlab.vim.log` |
+| `GITLAB_VIM_LOGGING` | `0` or `1` (default `1`) | Enable logging output into `/tmp/gitlab.vim.log` |
 
 ## Development
 
