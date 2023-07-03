@@ -8,7 +8,9 @@ GITLAB_VIM = {
 local gitlab = {
   initialized = false,
   defaults = {
-    logging = {},
+    logging = {
+      enabled = os.getenv("GITLAB_VIM_LOGGING") ~= "0",
+    },
     statusline = {},
     authentication = {},
     code_suggestions = {
@@ -61,7 +63,7 @@ function gitlab.setup(options)
   gitlab.logging.info("Starting up..")
 
   if gitlab.statusline then
-    gitlab.statusline.setup(gitlab.options.statusline)
+    gitlab.statusline.setup()
   end
 
   if gitlab.authentication then
