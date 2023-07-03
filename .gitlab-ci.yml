@@ -1,12 +1,16 @@
 stages:
-- package
-- test
+  - test
+
+default:
+  image: alpine:3.18
 
 test:
-  image: alpine:3.18
-  stage: test
   script:
   - apk add make git neovim
   - git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
   - make test
-  stage: test
+
+lint:
+  script:
+  - apk add make luacheck
+  - make lint
