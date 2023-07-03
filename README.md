@@ -62,6 +62,12 @@ The following global [options](https://neovim.io/doc/user/options.html) are avai
 |------------------------|-------------------------|---------|--------------------------------------------------------------------------------------|
 | `code_suggestions`     | `personal_access_token` | `nil`   | A GitLab [Personal Access Token][] to authenicate with the Code Suggestions API.     |
 
+#### Environment variables
+
+| Name               | Value                    | Purpose |
+|--------------------|--------------------------|---------|
+| `GITLAB_VIM_DEBUG` | `0` or `1` (default `0`) | Enable debugging output into `/tmp/gitlab.vim.log` |
+
 ## Development
 
 1. Install `git` to clone plenary and this project.
@@ -104,6 +110,7 @@ Everyone can contribute. Consider linting and testing your code locally to save 
 ## Authors and acknowledgment
 
 - @erran
+- @ashmckenzie
 
 ## License
 

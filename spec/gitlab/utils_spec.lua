@@ -1,6 +1,6 @@
 describe('gitlab.utils', function()
   describe('merge', function()
-    local merge = require'gitlab.utils'.merge
+    local merge = require('gitlab.utils').merge
 
     it('returns a new table', function()
       -- given
