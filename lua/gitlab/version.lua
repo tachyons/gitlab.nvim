@@ -5,10 +5,7 @@ function version.version()
   return version_string
 end
 
-function version.register(command)
-end
-
-function version.setup(options)
+function version.setup()
 end
 
 return version

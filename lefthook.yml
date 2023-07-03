@@ -2,3 +2,5 @@ pre-push:
   commands:
     test:
       run: make test
+    lint:
+      run: make lint

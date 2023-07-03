@@ -1,27 +1,24 @@
 local logging = {}
 local version = require("gitlab.version")
 
-function logging.register(command)
-end
-
-function logging.info(msg, level)
+function logging.info(msg)
   logging._log(msg, "INFO")
 end
 
-function logging.warn(msg, level)
+function logging.warn(msg)
   logging._log(msg, "WARN")
 end
 
-function logging.error(msg, level)
+function logging.error(msg)
   logging._log(msg, "ERROR")
 end
 
-function logging.debug(msg, level)
+function logging.debug(msg)
   logging._log(msg, "DEBUG")
 end
 
-function logging.format_line(msg, level, timestamp)
-  local timestamp = timestamp or "%Y-%m-%d %H:%M:%S"
+function logging.format_line(msg, level, t)
+  local timestamp = t or "%Y-%m-%d %H:%M:%S"
 
   local line = string.format("%s: %s (%s): %s", os.date(timestamp), level, version.version(), msg)
 
@@ -37,7 +34,7 @@ function logging._log(msg, level)
   io.close(log_file)
 end
 
-function logging.setup(options)
+function logging.setup()
 end
 
 return logging
