@@ -1,8 +1,5 @@
 local statusline = {}
 
-function statusline.register(command)
-end
-
 local function status_line()
   local mode = "%-5{%v:lua.string.upper(v:lua.vim.fn.mode())%}"
   local file_name = "%-.16t"
@@ -29,7 +26,7 @@ local function status_line()
   )
 end
 
-function statusline.setup(options)
+function statusline.setup()
   vim.opt.statusline = status_line()
 end
 
