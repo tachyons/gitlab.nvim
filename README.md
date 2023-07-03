@@ -110,6 +110,7 @@ Everyone can contribute. Consider linting and testing your code locally to save 
 ## Authors and acknowledgment
 
 - @erran
+- @ashmckenzie
 
 ## License
 
