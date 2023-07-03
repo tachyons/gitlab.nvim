@@ -1,6 +1,6 @@
 describe('gitlab.code_suggestions', function()
   local code_suggestions = require'gitlab.code_suggestions'
-  local match = require'luassert.match'
+  local match = require('luassert.match')
   local stub = require('luassert.stub')
 
   describe('setup', function()
