@@ -1,5 +1,4 @@
 local logging = {}
-local version = require("gitlab.version")
 
 function logging.info(msg)
   logging._log(msg, "INFO")
@@ -13,14 +12,18 @@ function logging.error(msg)
   logging._log(msg, "ERROR")
 end
 
-function logging.debug(msg)
-  logging._log(msg, "DEBUG")
+function logging.debug(msg, f)
+  local force = f or false
+
+  if force or GITLAB_VIM.debug then
+    logging._log(msg, "DEBUG")
+  end
 end
 
 function logging.format_line(msg, level, t)
   local timestamp = t or "%Y-%m-%d %H:%M:%S"
 
-  local line = string.format("%s: %s (%s): %s", os.date(timestamp), level, version.version(), msg)
+  local line = string.format("%s: %s (%s): %s", os.date(timestamp), level, GITLAB_VIM.version, msg)
 
   return line
 end

@@ -1,3 +1,10 @@
+local version = "0.1.1"
+
+GITLAB_VIM = {
+  version = version,
+  debug = false,
+}
+
 local gitlab = {
   initialized = false,
   defaults = {
@@ -21,8 +28,8 @@ function gitlab.init(options)
   end
   gitlab.initialized = true
 
-  if not gitlab.version then
-    gitlab.version = require 'gitlab.version'
+  if os.getenv("GITLAB_VIM_DEBUG") == "1" then
+    GITLAB_VIM.debug = true
   end
 
   if not gitlab.logging then
@@ -46,10 +53,6 @@ end
 
 function gitlab.setup(options)
   gitlab.init(options)
-
-  if gitlab.version then
-    gitlab.version.setup()
-  end
 
   if gitlab.logging then
     gitlab.logging.setup(gitlab.options.logging)

@@ -1,1 +1,4 @@
-globals = {"vim"}
+globals = {
+  "vim",
+  "GITLAB_VIM"
+}
