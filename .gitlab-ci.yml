@@ -4,9 +4,9 @@ stages:
 
 test:
   image: alpine:3.18
+  stage: test
   script:
-  - apk add git neovim
+  - apk add make git neovim
   - git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
-  - ln -s $(pwd) ~/.local/share/nvim/site/pack/vendor/start
-  - nvim --headless -c "PlenaryBustedDirectory spec/" -c cquit
+  - make test
   stage: test
