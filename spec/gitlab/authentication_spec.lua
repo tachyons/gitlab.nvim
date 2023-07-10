@@ -1,52 +1,76 @@
+local mock = require('luassert.mock')
+local stub = require('luassert.stub')
+
 describe('gitlab.authentication', function()
-  local authentication = require('gitlab.authentication')
-  local match = require('luassert.match')
-  local stub = require('luassert.stub')
+  local authentication = require('lua.gitlab.authentication')
+
+  local logging = require('lua.gitlab.logging')
+  local utils_stub = mock(require('lua.gitlab.utils'), true)
+
+  local stubbed_utils_print_output = ""
+  local captured_utils_print_output = ""
+
+  before_each(function()
+    logging.setup({ enabled = false })
+
+    utils_stub.user_data_path = function() return "/fake" end
+    utils_stub.current_os = function() return "fakeOS" end
+    utils_stub.current_arch = function() return "fakeArch" end
+    utils_stub.print = function(str) captured_utils_print_output = str ; return nil end
+    utils_stub.path_exists = function(_path) return true end
+    utils_stub.exec_cmd = function(_cmd, fn)
+      local result = { exit_code = 0, stdout = stubbed_utils_print_output, stderr = "", msg = "" }
+      fn(result)
+    end
+  end)
+
+  after_each(function()
+    mock.revert(utils_stub)
+  end)
 
   describe('setup', function()
-    before_each(function()
-      stub(vim.api, 'nvim_create_user_command')
-    end)
+    it('configures logging', function()
+      authentication.setup(logging)
 
-    after_each(function()
-      vim.api.nvim_create_user_command:revert()
-    end)
-
-    it('registers GitLabRegisterToken user command', function()
-      -- when
-      authentication.setup{}
-
-      -- then
-      assert.stub(vim.api.nvim_create_user_command).was.called_with('GitLabRegisterToken', match._, match._)
+      assert.same(authentication.logging, logging)
     end)
   end)
 
-  describe('Vim user commands', function()
-    describe('GitLabRegisterToken', function()
-      before_each(function()
-        stub(vim, 'notify')
-        stub(vim.api, 'nvim_parse_cmd')
-        stub(vim.fn, 'system')
-        stub(vim.ui, 'input')
-        authentication.setup{}
-      end)
+  describe('register', function()
+    it('calls check_token()', function()
+      stub(authentication, "check_token")
 
-      after_each(function()
-        vim.api.nvim_parse_cmd:revert()
-        vim.fn.system:revert()
-        vim.ui.input:revert()
-        vim.notify:revert()
-      end)
+      authentication.register()
 
-      it('has no arguments', function()
-          -- when
-          local status, err = pcall(function() vim.cmd.GitLabRegisterToken('glpat-deadb33f') end)
+      assert.stub(authentication.check_token).was.called()
 
+      authentication.check_token:revert()
+    end)
+  end)
 
-          -- then
-          assert.False(string.find(err, 'Wrong number of arguments$') == nil)
-          assert.same(false, status)
-      end)
+  describe('lsp_binary_path', function()
+    it('returns full path to the LSP binary', function()
+      assert.equal("/fake/gitlab-code-suggestions-language-server-experiment-fakeOS-fakeArch",
+        authentication.lsp_binary_path())
+    end)
+  end)
+
+  describe('token_check_cmd', function()
+    it('returns the token check command', function()
+      assert.same({ "/fake/gitlab-code-suggestions-language-server-experiment-fakeOS-fakeArch",
+        "token", "check" }, authentication.token_check_cmd())
+    end)
+  end)
+
+  describe('check_token', function()
+    it('calls the LSP binary and checks if the token is enabled and has correct scopes', function()
+      authentication.logging = logging
+
+      stubbed_utils_print_output = "fake output"
+
+      authentication.check_token()
+
+      assert.equal(stubbed_utils_print_output, captured_utils_print_output)
     end)
   end)
 end)

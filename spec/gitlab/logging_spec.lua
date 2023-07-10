@@ -1,8 +1,8 @@
 describe('gitlab.logging', function()
-  local logging = require('gitlab.logging')
+  local logging = require('lua.gitlab.logging')
 
   before_each(function()
-    GITLAB_VIM = { version = "0.0.0" }
+    logging.setup({ version = "0.0.0" })
   end)
 
   describe('format_line', function()
