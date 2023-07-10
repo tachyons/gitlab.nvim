@@ -20,7 +20,7 @@ local gitlab = {
   }
 }
 
-local merge = require'gitlab.utils'.merge
+local merge = require('gitlab.utils').merge
 
 function gitlab.init(options)
   if not gitlab.initialized then
@@ -43,11 +43,11 @@ function gitlab.init(options)
   end
 
   if not gitlab.authentication then
-    gitlab.authentication = require'gitlab.authentication'
+    gitlab.authentication = require('gitlab.authentication')
   end
 
   if not gitlab.code_suggestions then
-    gitlab.code_suggestions = require'gitlab.code_suggestions'
+    gitlab.code_suggestions = require('gitlab.code_suggestions')
   end
 
   return gitlab

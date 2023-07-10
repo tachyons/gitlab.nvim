@@ -25,7 +25,7 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
 You can configure the plugin through options documented below:
 
 ```lua
-require'gitlab'.setup{
+require('gitlab').setup{
   code_suggestions = {
     -- Disable Code Suggestions functionality.
     enabled = false
@@ -44,7 +44,7 @@ Now you can load and setup only specific functions as desired:
 
 ```lua
 -- Require the code_suggestions namespace explicitly.
-require'gitlab.code_suggestions'.setup{}
+require('gitlab.code_suggestions').setup{}
 ```
 
 #### Global Options
