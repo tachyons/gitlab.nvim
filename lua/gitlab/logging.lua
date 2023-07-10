@@ -1,6 +1,12 @@
 local logging = {
-  enabled = true
+  options = {
+    debug = false,
+    enabled = true,
+    version = "unknown",
+  }
 }
+
+local merge = require('lua.gitlab.utils').merge
 
 function logging.info(msg)
   logging._log(msg, "INFO")
@@ -17,33 +23,35 @@ end
 function logging.debug(msg, f)
   local force = f or false
 
-  if force or GITLAB_VIM.debug then
+  if force or logging.debug_enabled() then
     logging._log(msg, "DEBUG")
   end
 end
 
+function logging.debug_enabled()
+  return logging.options.debug
+end
+
 function logging.format_line(msg, level, t)
   local timestamp = t or "!%Y-%m-%d %H:%M:%S"
-
-  local line = string.format("%s: %s (%s): %s", os.date(timestamp), level, GITLAB_VIM.version, msg)
+  local line = string.format("%s: %s (%s): %s", os.date(timestamp), level, logging.options.version, msg)
 
   return line
 end
 
 function logging._log(msg, level)
-  if logging.enabled == true then
+  if logging.options.enabled == true then
     local log_file_path = '/tmp/gitlab.vim.log'
     local log_file = io.open(log_file_path, "a")
 
-    io.output(log_file)
-    io.write(logging.format_line(msg, level) .. "\n")
-    io.close(log_file)
+    local fh = io.output(log_file)
+    fh:write(logging.format_line(msg, level) .. "\n")
+    fh:close(log_file)
   end
 end
 
--- FIXME: Remove
 function logging.setup(options)
-  logging.enabled = options.enabled
+  logging.options = merge(logging.options, options)
 end
 
 return logging
