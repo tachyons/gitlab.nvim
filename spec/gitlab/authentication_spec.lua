@@ -1,6 +1,6 @@
 describe('gitlab.authentication', function()
-  local authentication = require'gitlab.authentication'
-  local match = require'luassert.match'
+  local authentication = require('gitlab.authentication')
+  local match = require('luassert.match')
   local stub = require('luassert.stub')
 
   describe('setup', function()

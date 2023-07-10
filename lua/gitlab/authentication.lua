@@ -8,7 +8,7 @@ end
 
 function authentication.setup(_options)
   -- TODO: Support typescript language server.
-  authentication.language_server = require'gitlab.language_server.go'
+  authentication.language_server = require('gitlab.language_server.go')
 
   vim.api.nvim_create_user_command("GitLabRegisterToken", authentication.register, { nargs = 0 })
 end

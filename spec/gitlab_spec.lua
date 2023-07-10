@@ -1,6 +1,6 @@
 describe('gitlab', function()
-  local gitlab = require'gitlab'
-  local match = require'luassert.match'
+  local gitlab = require('gitlab')
+  local match = require('luassert.match')
   local stub = require('luassert.stub')
 
   before_each(function()
