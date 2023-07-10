@@ -1,4 +1,4 @@
-local version = "0.1.1"
+local version = "0.1.2"
 
 local gitlab = {
   initialized = false,
