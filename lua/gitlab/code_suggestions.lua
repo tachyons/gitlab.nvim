@@ -4,19 +4,20 @@ local code_suggestions = {}
 function code_suggestions.start()
   -- TODO: Check authenticated status before proceeding
   if not code_suggestions.authenticated then
-    vim.notify('GitLab Code Suggestions unavailable.', vim.log.levels.ERROR)
+    -- vim.notify('GitLab Code Suggestions unavailable.', vim.log.levels.ERROR)
     return
   end
 
-  vim.notify('GitLab Code Suggestions started.')
+  -- vim.notify('GitLab Code Suggestions started.')
 
   -- TODO: Start lsp with user configuration.
 end
 
 function code_suggestions.setup(options)
   code_suggestions.options = options or {}
+
   if not code_suggestions.options.enabled then
-    vim.notify('GitLab Code Suggestions is not enabled skipping setup.', vim.log.levels.ERROR)
+    -- vim.notify('GitLab Code Suggestions is not enabled skipping setup.', vim.log.levels.ERROR)
     return
   end
 
