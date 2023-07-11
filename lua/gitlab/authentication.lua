@@ -1,5 +1,6 @@
 local authentication = {}
 
+local globals = require('lua.gitlab.globals')
 local utils = require('lua.gitlab.utils')
 
 function authentication.setup(logging)
@@ -9,8 +10,8 @@ function authentication.setup(logging)
   authentication.logging = logging
 end
 
-function authentication.register()
-  authentication.check_token()
+function authentication.register(gitlab_statusline)
+  authentication.check_token(gitlab_statusline)
 end
 
 function authentication.lsp_binary_path()
@@ -41,12 +42,14 @@ function authentication.token_check_cmd()
   return { lsp_binary_path, "token", "check" }
 end
 
-function authentication.check_token()
+function authentication.check_token(gitlab_statusline)
   utils.print("Checking GitLab PAT..")
 
   local token_check_cmd = authentication.token_check_cmd()
 
   if token_check_cmd == nil then
+    gitlab_statusline.update_status_line(globals.GCS_UNAVAILABLE)
+
     return false
   end
 
@@ -54,11 +57,14 @@ function authentication.check_token()
 
   local fn = function(result)
     if result.exit_code == 0 then
+      gitlab_statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
       utils.print(result.stdout)
       authentication.logging.info(result.stdout)
 
       return true
     else
+      gitlab_statusline.update_status_line(globals.GCS_UNAVAILABLE)
+
       local msg = string.format("Error detected, stdout=[%s], stderr=[%s], code=[%s]",
         result.stdout, result.stderr, result.exit_code)
 

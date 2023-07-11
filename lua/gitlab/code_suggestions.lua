@@ -1,6 +1,6 @@
-local code_suggestions = {}
+local code_suggestions = {
+}
 
--- TODO: Add specs for different code branches.
 function code_suggestions.start()
   -- TODO: Check authenticated status before proceeding
   if not code_suggestions.authenticated then
@@ -20,6 +20,11 @@ function code_suggestions.setup(options)
     -- vim.notify('GitLab Code Suggestions is not enabled skipping setup.', vim.log.levels.ERROR)
     return
   end
+
+  -- if not code_suggestions.options.enabled then
+  --   vim.notify('GitLab Code Suggestions is not enabled skipping setup.', vim.log.levels.ERROR)
+  --   return
+  -- end
 
   vim.api.nvim_create_user_command("GitLabCodeSuggestionsStart", code_suggestions.start, {})
 end
