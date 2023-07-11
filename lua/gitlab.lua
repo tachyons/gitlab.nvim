@@ -1,7 +1,8 @@
-local version = "0.1.2"
+local version = "0.1.3"
 
 local gitlab = {
   initialized = false,
+  globals = require('lua.gitlab.globals'),
   defaults = {
     logging = {
       version = version,
@@ -38,23 +39,20 @@ end
 function gitlab.setup(options)
   gitlab.init(options)
 
-  if gitlab.logging then
-    gitlab.logging.setup(merge(gitlab.options.logging, {version = version}))
-  end
-
+  gitlab.logging.setup(merge(gitlab.options.logging, {version = version}))
   gitlab.logging.info("Starting up..")
 
-  if gitlab.statusline then
-    gitlab.statusline.setup()
-  end
-
-  if gitlab.authentication then
-    gitlab.authentication.setup(gitlab.logging)
-    gitlab.authentication.register()
-  end
-
   if gitlab.options.code_suggestions.enabled then
+    gitlab.statusline.setup(gitlab.globals.GCS_CHECKING)
+
     gitlab.code_suggestions.setup(gitlab.options.code_suggestions)
+
+    if gitlab.authentication then
+      gitlab.authentication.setup(gitlab.logging)
+      gitlab.authentication.register(gitlab.statusline)
+    end
+  else
+    gitlab.statusline.setup(gitlab.globals.GCS_UNAVAILABLE)
   end
 end
 

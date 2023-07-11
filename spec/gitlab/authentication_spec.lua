@@ -5,6 +5,7 @@ describe('gitlab.authentication', function()
   local authentication = require('lua.gitlab.authentication')
 
   local logging = require('lua.gitlab.logging')
+  local statusline = require('lua.gitlab.statusline')
   local utils_stub = mock(require('lua.gitlab.utils'), true)
 
   local stubbed_utils_print_output = ""
@@ -68,7 +69,7 @@ describe('gitlab.authentication', function()
 
       stubbed_utils_print_output = "fake output"
 
-      authentication.check_token()
+      authentication.check_token(statusline)
 
       assert.equal(stubbed_utils_print_output, captured_utils_print_output)
     end)

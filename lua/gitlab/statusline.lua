@@ -1,13 +1,16 @@
 local statusline = {}
 
-local function status_line()
+local globals = require('lua.gitlab.globals')
+
+function statusline.status_line_for(state)
+  local state_text = state or globals.GCS_UNKNOWN_TEXT
+
   local mode = "%-5{%v:lua.string.upper(v:lua.vim.fn.mode())%}"
   local file_name = "%-.16t"
   local buf_nr = "[%n]"
   local modified = " %-m"
   local file_type = " %y"
-  -- TODO: Remove hardcoded 'on'
-  local gitlab_code_suggestions_status = " [🔮:on] "
+  local code_suggestions_state = " [GCS:" .. state_text .. "] "
   local right_align = "%="
   local line_no = "%10([%l/%L%)]"
   local pct_thru_file = "%5p%%"
@@ -19,15 +22,33 @@ local function status_line()
     buf_nr,
     modified,
     file_type,
-    gitlab_code_suggestions_status,
+    code_suggestions_state,
     right_align,
     line_no,
     pct_thru_file
   )
 end
 
-function statusline.setup()
-  vim.opt.statusline = status_line()
+function statusline.state_label_for(state)
+  if state == globals.GCS_AVAILABLE_AND_ENABLED then
+    return globals.GCS_AVAILABLE_AND_ENABLED_TEXT
+  elseif state == globals.GCS_AVAILABLE_BUT_DISABLED then
+    return globals.GCS_AVAILABLE_BUT_DISABLED_TEXT
+  elseif state == globals.GCS_CHECKING then
+    return globals.GCS_CHECKING_TEXT
+  elseif state == globals.GCS_UNAVAILABLE then
+    return globals.GCS_UNAVAILABLE_TEXT
+  else
+    return globals.GCS_UNKNOWN_TEXT
+  end
+end
+
+function statusline.update_status_line(state)
+  vim.opt.statusline = statusline.status_line_for(statusline.state_label_for(state))
+end
+
+function statusline.setup(state)
+  statusline.update_status_line(state)
 end
 
 return statusline
