@@ -30,15 +30,11 @@ end
 function authentication.token_check_cmd()
   local lsp_binary_path = authentication.lsp_binary_path()
 
-  if lsp_binary_path == "" then
+  if lsp_binary_path == "" or not utils.path_exists(lsp_binary_path) then
     local msg = string.format("'%s' does not exist?", lsp_binary_path)
     utils.print("ERROR: " .. msg)
     authentication.logging.error(msg)
 
-    return nil
-  end
-
-  if not utils.path_exists(lsp_binary_path) then
     return nil
   end
 
@@ -49,6 +45,10 @@ function authentication.check_token()
   utils.print("Checking GitLab PAT..")
 
   local token_check_cmd = authentication.token_check_cmd()
+
+  if token_check_cmd == nil then
+    return false
+  end
 
   authentication.logging.debug(string.format("Using '%s'", token_check_cmd[1]))
 
