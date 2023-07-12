@@ -1,5 +1,5 @@
 describe('gitlab.logging', function()
-  local logging = require('lua.gitlab.logging')
+  local logging = require('gitlab/logging')
 
   before_each(function()
     logging.setup({ version = "0.0.0" })

@@ -2,11 +2,11 @@ local mock = require('luassert.mock')
 local stub = require('luassert.stub')
 
 describe('gitlab.authentication', function()
-  local authentication = require('lua.gitlab.authentication')
+  local authentication = require('gitlab/authentication')
 
-  local logging = require('lua.gitlab.logging')
-  local statusline = require('lua.gitlab.statusline')
-  local utils_stub = mock(require('lua.gitlab.utils'), true)
+  local logging = require('gitlab/logging')
+  local statusline = require('gitlab/statusline')
+  local utils_stub = mock(require('gitlab/utils'), true)
 
   local stubbed_utils_print_output = ""
   local captured_utils_print_output = ""

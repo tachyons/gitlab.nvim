@@ -2,7 +2,7 @@ local match = require('luassert.match')
 local stub = require('luassert.stub')
 
 describe('gitlab.code_suggestions', function()
-  local code_suggestions = require('lua.gitlab.code_suggestions')
+  local code_suggestions = require('gitlab/code_suggestions')
 
   describe('setup', function()
     before_each(function()

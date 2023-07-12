@@ -1,6 +1,6 @@
 local statusline = {}
 
-local globals = require('lua.gitlab.globals')
+local globals = require('gitlab/globals')
 
 function statusline.status_line_for(state)
   local state_text = state or globals.GCS_UNKNOWN_TEXT

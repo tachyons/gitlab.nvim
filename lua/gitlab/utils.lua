@@ -1,6 +1,6 @@
 local utils = {}
 
-local utils_vim = require('lua.gitlab.utils_vim')
+local utils_vim = require('gitlab/utils_vim')
 
 function utils.merge(orig, overrides)
   local merged = {}

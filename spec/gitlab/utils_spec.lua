@@ -1,9 +1,9 @@
 local mock = require('luassert.mock')
 
 describe('gitlab.utils', function()
-  local utils = require('lua.gitlab.utils')
+  local utils = require('gitlab/utils')
 
-  local utils_vim_stub = mock(require('lua.gitlab.utils_vim'), true)
+  local utils_vim_stub = mock(require('gitlab/utils_vim'), true)
 
   local stubbed_current_os = ""
   local stubbed_current_arch = ""

@@ -1,11 +1,11 @@
 local authentication = {}
 
-local globals = require('lua.gitlab.globals')
-local utils = require('lua.gitlab.utils')
+local globals = require('gitlab/globals')
+local utils = require('gitlab/utils')
 
 function authentication.setup(logging)
   -- TODO: Support typescript language server.
-  -- authentication.language_server = require('gitlab.language_server.go')
+  -- authentication.language_server = require('gitlab/language_server.go')
 
   authentication.logging = logging
 end

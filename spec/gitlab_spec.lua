@@ -2,10 +2,10 @@ local match = require('luassert.match')
 local stub = require('luassert.stub')
 
 describe('gitlab', function()
-  local gitlab = require('lua.gitlab')
+  local gitlab = require('gitlab')
 
-  local utils = require('lua.gitlab.utils')
-  local authentication = require('lua.gitlab.authentication')
+  local utils = require('gitlab/utils')
+  local authentication = require('gitlab/authentication')
 
   before_each(function()
     gitlab.initialized = false
