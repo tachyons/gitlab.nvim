@@ -1,8 +1,10 @@
 local version = "0.1.3"
 
 local gitlab = {
-  initialized = false,
-  globals = require('lua.gitlab.globals'),
+  state = {
+    initialized = false,
+  },
+  globals = require('gitlab/globals'),
   defaults = {
     logging = {
       version = version,
@@ -18,26 +20,22 @@ local gitlab = {
   }
 }
 
-local merge = require('lua.gitlab.utils').merge
+local merge = require('gitlab/utils').merge
 
-function gitlab.init(options)
-  if not gitlab.initialized then
+function gitlab.setup(options)
+  if gitlab.state.initialized then
+    return gitlab
+  else
     gitlab.options = merge(gitlab.defaults, options)
     -- TODO: Implement deep merge for table values.
     gitlab.options.code_suggestions = merge(gitlab.defaults.code_suggestions, gitlab.options.code_suggestions)
   end
-  gitlab.initialized = true
+  gitlab.state.initialized = true
 
-  if not gitlab.logging then gitlab.logging = require('lua.gitlab.logging') end
-  if not gitlab.statusline then gitlab.statusline = require('lua.gitlab.statusline') end
-  if not gitlab.authentication then gitlab.authentication = require('lua.gitlab.authentication') end
-  if not gitlab.code_suggestions then gitlab.code_suggestions = require('lua.gitlab.code_suggestions') end
-
-  return gitlab
-end
-
-function gitlab.setup(options)
-  gitlab.init(options)
+  if not gitlab.logging then gitlab.logging = require('gitlab/logging') end
+  if not gitlab.statusline then gitlab.statusline = require('gitlab/statusline') end
+  if not gitlab.authentication then gitlab.authentication = require('gitlab/authentication') end
+  if not gitlab.code_suggestions then gitlab.code_suggestions = require('gitlab/code_suggestions') end
 
   gitlab.logging.setup(merge(gitlab.options.logging, {version = version}))
   gitlab.logging.info("Starting up..")

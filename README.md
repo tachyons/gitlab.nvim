@@ -44,7 +44,7 @@ Now you can load and setup only specific functions as desired:
 
 ```lua
 -- Require the code_suggestions namespace explicitly.
-require('gitlab/code_suggestions').setup{}
+require('gitlab/code_suggestions').setup()
 ```
 
 #### Global Options
