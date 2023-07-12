@@ -4,21 +4,19 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
 
 ## Usage
 
-### Installation
+### Getting started
 
-1. Install the [latest Neovim release](https://github.com/neovim/neovim/releases/latest).
+1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed)
+
+1. Install the [latest Neovim release](https://github.com/neovim/neovim/releases/latest)
 
     - For macOS, this can be achieved by running `brew install neovim`
 
-2. Clone this repository into `~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim`.
+1. Clone this repository into `~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim`
 
     ```sh
     git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
     ```
-
-### Code Suggestions
-
-[Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html)
 
 ### Configuration
 
