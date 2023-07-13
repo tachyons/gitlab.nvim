@@ -6,7 +6,7 @@ local logging = {
   },
 }
 
-local merge = require('lua.gitlab.utils').merge
+local merge = require('gitlab.utils').merge
 
 function logging.info(msg)
   logging._log(msg, 'INFO')
