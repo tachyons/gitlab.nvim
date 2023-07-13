@@ -1,5 +1,5 @@
 describe('gitlab.statusline', function()
-  local statusline = require('lua.gitlab.statusline')
+  local statusline = require('gitlab.statusline')
 
   before_each(function() end)
 

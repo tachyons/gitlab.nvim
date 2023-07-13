@@ -1,5 +1,10 @@
+.PHONY: default test_all test format lint luacheck stylua
+
 LUACHECK := $(shell command -v luacheck 2> /dev/null)
+LUACHECK_MISSING_ERROR := ERROR: luacheck is not installed, run `asdf plugin add lua ; asdf install && asdf reshim lua && luarocks install luacheck`
+
 STYLUA := $(shell command -v stylua 2> /dev/null)
+STYLUA_ERROR := ERROR: stylua is not installed, run `asdf plugin add stylua ; asdf install && asdf reshim stylua`
 
 default:
 	@echo "The folllowing are the available make targets that can be run:\n"
@@ -15,17 +20,21 @@ format:
 ifdef STYLUA
 	@${STYLUA} lua/ plugin/ spec/
 else
-	$(error "ERROR: stylua is not installed, run `asdf install && asdf reshim stylua`.")
+	$(error "${STYLUA_MISSING_ERROR}"}
 endif
 
-lint:
+lint: luacheck stylua
+
+luacheck:
 ifdef LUACHECK
 	${LUACHECK} lua/ plugin/ spec/
 else
-	$(error "ERROR: luacheck is not installed, run `asdf install && asdf reshim lua && luarocks install luacheck`.")
+	$(error "${LUACHECK_MISSING_ERROR}")
 endif
+
+stylua:
 ifdef STYLUA
 	${STYLUA} --check lua/ plugin/ spec/
 else
-	$(error "ERROR: stylua is not installed, run `asdf install && asdf reshim stylua`.")
+	$(error "${STYLUA_ERROR}")
 endif
