@@ -5,18 +5,18 @@ local globals = require('lua.gitlab.globals')
 function statusline.status_line_for(state)
   local state_text = state or globals.GCS_UNKNOWN_TEXT
 
-  local mode = "%-5{%v:lua.string.upper(v:lua.vim.fn.mode())%}"
-  local file_name = "%-.16t"
-  local buf_nr = "[%n]"
-  local modified = " %-m"
-  local file_type = " %y"
-  local code_suggestions_state = " [GCS:" .. state_text .. "] "
-  local right_align = "%="
-  local line_no = "%10([%l/%L%)]"
-  local pct_thru_file = "%5p%%"
+  local mode = '%-5{%v:lua.string.upper(v:lua.vim.fn.mode())%}'
+  local file_name = '%-.16t'
+  local buf_nr = '[%n]'
+  local modified = ' %-m'
+  local file_type = ' %y'
+  local code_suggestions_state = ' [GCS:' .. state_text .. '] '
+  local right_align = '%='
+  local line_no = '%10([%l/%L%)]'
+  local pct_thru_file = '%5p%%'
 
   return string.format(
-    "%s%s%s%s%s%s%s%s",
+    '%s%s%s%s%s%s%s%s',
     mode,
     file_name,
     buf_nr,

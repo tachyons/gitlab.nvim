@@ -12,5 +12,5 @@ test:
 
 lint:
   script:
-  - apk add make luacheck
+  - apk add make luacheck stylua
   - make lint

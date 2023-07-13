@@ -35,9 +35,9 @@ describe('gitlab', function()
 
   describe('setup', function()
     before_each(function()
-      stub(utils, "print")
-      stub(authentication, "check_token")
-      stub(vim.api, "nvim_create_user_command")
+      stub(utils, 'print')
+      stub(authentication, 'check_token')
+      stub(vim.api, 'nvim_create_user_command')
     end)
 
     after_each(function()
@@ -49,7 +49,9 @@ describe('gitlab', function()
     it('registers default vim commands', function()
       gitlab.setup({})
 
-      assert.stub(vim.api.nvim_create_user_command).was.called_with("GitLabCodeSuggestionsStart", match._, match._)
+      assert
+        .stub(vim.api.nvim_create_user_command).was
+        .called_with('GitLabCodeSuggestionsStart', match._, match._)
       -- assert.stub(vim.api.nvim_create_user_command).was.called_with("GitLabRegisterToken", match._, match._)
     end)
   end)

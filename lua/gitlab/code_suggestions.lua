@@ -1,5 +1,4 @@
-local code_suggestions = {
-}
+local code_suggestions = {}
 
 function code_suggestions.start()
   -- TODO: Check authenticated status before proceeding
@@ -26,7 +25,7 @@ function code_suggestions.setup(options)
   --   return
   -- end
 
-  vim.api.nvim_create_user_command("GitLabCodeSuggestionsStart", code_suggestions.start, {})
+  vim.api.nvim_create_user_command('GitLabCodeSuggestionsStart', code_suggestions.start, {})
 end
 
 return code_suggestions
