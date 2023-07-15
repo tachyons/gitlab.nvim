@@ -18,14 +18,14 @@ local gitlab = {
   },
 }
 
-local merge = require('gitlab.utils').merge
-
 function gitlab.init(options)
   if not gitlab.initialized then
-    gitlab.options = merge(gitlab.defaults, options)
-    -- TODO: Implement deep merge for table values.
-    gitlab.options.code_suggestions =
-      merge(gitlab.defaults.code_suggestions, gitlab.options.code_suggestions)
+    gitlab.options = vim.tbl_deep_extend('force', gitlab.defaults, options)
+    gitlab.options.code_suggestions = vim.tbl_deep_extend(
+      'force',
+      gitlab.defaults.code_suggestions,
+      gitlab.options.code_suggestions
+    )
   end
 
   gitlab.initialized = true
@@ -52,7 +52,7 @@ end
 function gitlab.setup(options)
   gitlab.init(options)
 
-  gitlab.logging.setup(merge(gitlab.options.logging, { version = version }))
+  gitlab.logging.setup(vim.tbl_deep_extend('force', gitlab.options.logging, { version = version }))
   gitlab.logging.info('Starting up..')
 
   if gitlab.options.code_suggestions.enabled then

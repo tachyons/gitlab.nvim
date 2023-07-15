@@ -53,19 +53,6 @@ describe('gitlab.utils', function()
     mock.revert(utils_vim_stub)
   end)
 
-  describe('merge', function()
-    it('returns a new table', function()
-      local original = { option = 'original value' }
-      local expected = { option = 'expected value' }
-
-      local merged = utils.merge(original, expected)
-
-      assert.are.same(expected.option, merged.option)
-      assert.are.Not.same(original.option, expected.option)
-      assert.are.Not.same(original.option, merged.option)
-    end)
-  end)
-
   describe('user_data_path', function()
     it("returns the user's data path", function()
       assert.equal('/fake/data/path', utils.user_data_path())
