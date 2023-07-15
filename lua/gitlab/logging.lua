@@ -6,8 +6,6 @@ local logging = {
   },
 }
 
-local merge = require('gitlab.utils').merge
-
 function logging.info(msg)
   logging._log(msg, 'INFO')
 end
@@ -52,7 +50,7 @@ function logging._log(msg, level)
 end
 
 function logging.setup(options)
-  logging.options = merge(logging.options, options)
+  logging.options = vim.tbl_deep_extend('force', logging.options, options)
 end
 
 return logging
