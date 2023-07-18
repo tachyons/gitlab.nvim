@@ -1,4 +1,4 @@
-.PHONY: default test_all test format lint luacheck stylua
+.PHONY: default test_all test test_file format lint luacheck stylua
 
 LUACHECK := $(shell command -v luacheck 2> /dev/null)
 LUACHECK_MISSING_ERROR := ERROR: luacheck is not installed, run `asdf plugin add lua ; asdf install && asdf reshim lua && luarocks install luacheck`
@@ -13,8 +13,16 @@ default:
 test_all: test lint
 
 test:
-	@ln -nfs $(shell pwd) ~/.local/share/nvim/site/pack/vendor/start
-	@nvim --headless -c "PlenaryBustedDirectory spec" -c cquit
+	@nvim --headless \
+		-c "source spec/init.lua" \
+		-c "PlenaryBustedDirectory spec" \
+		-c cquit
+
+test_file:
+	@nvim --headless \
+		-c "source spec/init.lua" \
+		-c "PlenaryBustedFile $(FILE)" \
+		-c cquit
 
 format:
 ifdef STYLUA
