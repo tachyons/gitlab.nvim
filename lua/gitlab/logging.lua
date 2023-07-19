@@ -1,10 +1,6 @@
-local logging = {
-  options = {
-    debug = false,
-    enabled = true,
-    version = 'unknown',
-  },
-}
+local globals = require('gitlab.globals')
+
+local logging = {}
 
 function logging.info(msg)
   logging._log(msg, 'INFO')
@@ -33,7 +29,7 @@ end
 function logging.format_line(msg, level, t)
   local timestamp = t or '!%Y-%m-%d %H:%M:%S'
   local line =
-    string.format('%s: %s (%s): %s', os.date(timestamp), level, logging.options.version, msg)
+    string.format('%s: %s (%s): %s', os.date(timestamp), level, globals.PLUGIN_VERSION, msg)
 
   return line
 end
@@ -50,7 +46,7 @@ function logging._log(msg, level)
 end
 
 function logging.setup(options)
-  logging.options = vim.tbl_deep_extend('force', logging.options, options)
+  logging.options = options
 end
 
 return logging

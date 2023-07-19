@@ -1,4 +1,7 @@
 local globals = {
+  PLUGIN_VERSION = '0.1.0',
+
+  -- Code Suggestions
   GCS_UNKNOWN = -1,
   GCS_UNKNOWN_TEXT = 'unknown',
   GCS_AVAILABLE_AND_ENABLED = 0,

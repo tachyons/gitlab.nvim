@@ -18,6 +18,14 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
     git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
     ```
 
+### Commands
+
+| Name | Description |
+|------|-------------|
+| GitLabBootstrapCodeSuggestions | <ol>Installs the LSP server for GitLab Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the Code Suggestions API.</li></ol> |
+| GitLabCodeSuggestionsStart | Starts the Code Suggestions LSP client. |
+| GitLabCodeSuggestionsStop | Stops the Code Suggestions LSP client. |
+
 ### Configuration
 
 You can configure the plugin through options documented below:
@@ -58,7 +66,7 @@ The following global [options](https://neovim.io/doc/user/options.html) are avai
 
 | Namespace              | Option                  | Default | Description                                                                          |
 |------------------------|-------------------------|---------|--------------------------------------------------------------------------------------|
-| `code_suggestions`     | `personal_access_token` | `nil`   | A GitLab [Personal Access Token][] to authenicate with the Code Suggestions API.     |
+| `code_suggestions`     | `enabled` | `nil`   |      |
 
 #### Environment variables
 

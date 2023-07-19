@@ -5,7 +5,7 @@ describe('gitlab', function()
   local gitlab = require('gitlab')
 
   local utils = require('gitlab.utils')
-  local authentication = require('gitlab.authentication')
+  local code_suggestions = require('gitlab.code_suggestions')
 
   before_each(function()
     gitlab.initialized = false
@@ -36,13 +36,13 @@ describe('gitlab', function()
   describe('setup', function()
     before_each(function()
       stub(utils, 'print')
-      stub(authentication, 'check_token')
+      stub(code_suggestions, 'check_personal_access_token')
       stub(vim.api, 'nvim_create_user_command')
     end)
 
     after_each(function()
       utils.print:revert()
-      authentication.check_token:revert()
+      code_suggestions.check_personal_access_token:revert()
       vim.api.nvim_create_user_command:revert()
     end)
 
@@ -51,8 +51,13 @@ describe('gitlab', function()
 
       assert
         .stub(vim.api.nvim_create_user_command).was
+        .called_with('GitLabBootstrapCodeSuggestions', match._, match._)
+      assert
+        .stub(vim.api.nvim_create_user_command).was
         .called_with('GitLabCodeSuggestionsStart', match._, match._)
-      -- assert.stub(vim.api.nvim_create_user_command).was.called_with("GitLabRegisterToken", match._, match._)
+      assert
+        .stub(vim.api.nvim_create_user_command).was
+        .called_with('GitLabCodeSuggestionsStop', match._, match._)
     end)
   end)
 end)

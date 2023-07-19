@@ -1,8 +1,16 @@
 describe('gitlab.logging', function()
+  local globals = require('gitlab.globals')
   local logging = require('gitlab.logging')
+  local original_plugin_version
 
   before_each(function()
-    logging.setup({ version = '0.0.0' })
+    logging.setup()
+    original_plugin_version = globals.PLUGIN_VERSION
+    globals.PLUGIN_VERSION = '0.0.0'
+  end)
+
+  after_each(function()
+    globals.PLUGIN_VERSION = original_plugin_version
   end)
 
   describe('format_line', function()
