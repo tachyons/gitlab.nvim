@@ -57,6 +57,19 @@ To disable eager loading/setup of the plugin add the following to your `init.lua
 vim.g.gitlab_autoload = false
 ```
 
+To enable [Omni completion](https://neovim.io/doc/user/insert.html#omni) which can be triggered in insert mode using `ctrl-x ctrl-o`:
+
+```lua
+-- Enable Omni completion
+vim.o.completeopt = 'menu,menuone'
+
+require'gitlab'.setup{
+  code_suggestions = {
+    auto_filetypes = {'ruby'},
+  }
+}
+```
+
 #### Global Options
 
 The following global [options](https://neovim.io/doc/user/options.html) are available:
