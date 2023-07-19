@@ -39,18 +39,11 @@ require('gitlab').setup{
 }
 ```
 
-To disable eager loading of plugin files add the following to init.lua:
+To disable eager loading/setup of the plugin add the following to init.lua:
 
 ```lua
 -- Disable eager loading of all GitLab plugin files.
 vim.g.gitlab_autoload = false
-```
-
-Now you can load and setup only specific functions as desired:
-
-```lua
--- Require the code_suggestions namespace explicitly.
-require('gitlab.code_suggestions').setup{}
 ```
 
 #### Global Options
@@ -64,9 +57,14 @@ The following global [options](https://neovim.io/doc/user/options.html) are avai
 
 #### Init options
 
-| Namespace              | Option                  | Default | Description                                                                          |
-|------------------------|-------------------------|---------|--------------------------------------------------------------------------------------|
-| `code_suggestions`     | `enabled` | `nil`   |      |
+Init options can be passed to the `gitlab.setup` function under the appropriate namespace.
+
+| Namespace              | Option                | Default | Description                                                                          |
+|------------------------|-----------------------|---------|--------------------------------------------------------------------------------------|
+| `code_suggestions` | `auto_filetypes`          | `{ 'python', 'ruby', ..., }`         | A list of different file types to automatically enable code suggestions for. |
+| `code_suggestions` | `enabled`                 | `true`                               | Whether to enable Code Suggestions via the LSP binary. |
+| `code_suggestions` | `language_server_version` | `nil`                                | The release tag of the language server for use in `GitLabBootstrapCodeSuggestions`. |
+| `code_suggestions` | `lsp_binary_path`         | `vim.env.GITLAB_VIM_LSP_BINARY_PATH` | The path where the language server binary is available or should be installed to. |
 
 #### Environment variables
 
