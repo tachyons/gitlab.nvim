@@ -16,13 +16,13 @@ ifndef SPEC
 override SPEC = spec
 endif
 test:
-	@nvim --headless \
+	@nvim --clean --headless \
 		-c "source spec/init.lua" \
 		-c "PlenaryBustedDirectory ${SPEC}" \
 		-c cquit
 
 test_file:
-	@nvim --headless \
+	@nvim --clean --headless \
 		-c "source spec/init.lua" \
 		-c "PlenaryBustedFile $(FILE)" \
 		-c cquit
