@@ -12,10 +12,13 @@ default:
 
 test_all: test lint
 
+ifndef SPEC
+override SPEC = spec
+endif
 test:
 	@nvim --headless \
 		-c "source spec/init.lua" \
-		-c "PlenaryBustedDirectory spec" \
+		-c "PlenaryBustedDirectory ${SPEC}" \
 		-c cquit
 
 test_file:
