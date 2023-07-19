@@ -1,19 +1,20 @@
-local version = '0.1.3'
-
 local gitlab = {
   initialized = false,
   globals = require('gitlab.globals'),
   defaults = {
     logging = {
-      version = version,
-      debug = os.getenv('GITLAB_VIM_DEBUG') == '1',
-      enabled = os.getenv('GITLAB_VIM_LOGGING') ~= '0',
+      debug = vim.env.GITLAB_VIM_DEBUG == '1',
+      enabled = vim.env.GITLAB_VIM_LOGGING ~= '0',
     },
     statusline = {},
-    authentication = {},
     code_suggestions = {
+      auto_filetypes = {
+        'python',
+        'ruby',
+      },
       enabled = true,
-      personal_access_token = nil,
+      langauge_server_version = nil,
+      lsp_binary_path = vim.env.GITLAB_VIM_LSP_BINARY_PATH,
     },
   },
 }
@@ -38,10 +39,6 @@ function gitlab.init(options)
     gitlab.statusline = require('gitlab.statusline')
   end
 
-  if not gitlab.authentication then
-    gitlab.authentication = require('gitlab.authentication')
-  end
-
   if not gitlab.code_suggestions then
     gitlab.code_suggestions = require('gitlab.code_suggestions')
   end
@@ -52,20 +49,19 @@ end
 function gitlab.setup(options)
   gitlab.init(options)
 
-  gitlab.logging.setup(vim.tbl_deep_extend('force', gitlab.options.logging, { version = version }))
-  gitlab.logging.info('Starting up..')
+  gitlab.logging.setup(gitlab.options.logging)
+  gitlab.logging.info('Starting up...')
 
   if gitlab.options.code_suggestions.enabled then
-    gitlab.statusline.setup(gitlab.globals.GCS_CHECKING)
+    gitlab.code_suggestions.setup(
+      gitlab.logging,
+      gitlab.statusline,
+      gitlab.options.code_suggestions
+    )
 
-    gitlab.code_suggestions.setup(gitlab.options.code_suggestions)
-
-    if gitlab.authentication then
-      gitlab.authentication.setup(gitlab.logging)
-      gitlab.authentication.register(gitlab.statusline)
-    end
+    gitlab.code_suggestions.check_personal_access_token()
   else
-    gitlab.statusline.setup(gitlab.globals.GCS_UNAVAILABLE)
+    gitlab.statusline.update_status_line(gitlab.globals.GCS_UNAVAILABLE)
   end
 end
 

@@ -47,8 +47,4 @@ function statusline.update_status_line(state)
   vim.opt.statusline = statusline.status_line_for(statusline.state_label_for(state))
 end
 
-function statusline.setup(state)
-  statusline.update_status_line(state)
-end
-
 return statusline

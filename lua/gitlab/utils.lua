@@ -50,11 +50,11 @@ function utils.exec_cmd(cmd, fn)
 
   return utils_vim.fn.jobstart(cmd, {
     on_stdout = function(_job_id, data, _event)
-      stdout = stdout .. vim.fn.join(data)
+      stdout = stdout .. '\n' .. vim.fn.join(data)
     end,
 
     on_stderr = function(_job_id, data, _event)
-      stderr = stderr .. vim.fn.join(data)
+      stderr = stderr .. '\n' .. vim.fn.join(data)
     end,
 
     on_exit = function(_job_id, exit_code, _event)
