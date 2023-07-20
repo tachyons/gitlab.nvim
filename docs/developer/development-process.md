@@ -10,7 +10,6 @@
      git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
      ```
 
-4. Depending on your `~/.config/nvim/init.lua`, you may need to run `nvim --clean -c` comment out some config as it can cause issues.
 5. Use [`plenary.test_harness`](https://github.com/nvim-lua/plenary.nvim#plenarytest_harness) to run tests:
 
    - On the command line:
@@ -26,3 +25,5 @@
      :PlenaryBustedDirectory spec/
      :PlenaryBustedFile spec/gitlab/code_suggestions_spec.lua
      ```
+
+If you encounter issues running inside of your Neovim install you can use the make test targets which start a clean session with minimal plugins on the runtimepath.
