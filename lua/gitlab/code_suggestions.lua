@@ -16,6 +16,10 @@ function code_suggestions.bootstrap()
 end
 
 function code_suggestions.check_personal_access_token()
+  if code_suggestions._checked_pat ~= nil then
+    return code_suggestions._checked_pat
+  end
+
   code_suggestions.statusline.update_status_line(globals.GCS_CHECKING)
 
   local token_check_cmd = code_suggestions.token_check_cmd()
@@ -30,9 +34,9 @@ function code_suggestions.check_personal_access_token()
   local out = vim.fn.system(token_check_cmd)
   if vim.v.shell_error == 0 then
     code_suggestions.statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
-    utils.print(out)
-    code_suggestions.logging.info(out)
+    vim.notify(out)
 
+    code_suggestions._checked_pat = true
     return true
   end
 
