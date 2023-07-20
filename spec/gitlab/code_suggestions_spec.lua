@@ -46,10 +46,12 @@ describe('gitlab.code_suggestions', function()
       code_suggestions.authenticated = true
 
       stub(vim.api, 'nvim_create_user_command')
+      stub(vim.fn, 'system')
     end)
 
     after_each(function()
       vim.api.nvim_create_user_command:revert()
+      vim.fn.system:revert()
     end)
 
     it('configures logging', function()
