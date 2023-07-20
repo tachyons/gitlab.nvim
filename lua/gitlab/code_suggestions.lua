@@ -146,9 +146,12 @@ function code_suggestions.lsp_cmd(subcommand)
   local lsp_binary_path = code_suggestions.lsp_binary_path()
 
   if lsp_binary_path == '' or not utils.path_exists(lsp_binary_path) then
-    local msg = string.format("'%s' does not exist?", lsp_binary_path)
-    utils.print('ERROR: ' .. msg)
-    utils.print('Run :GitLabBootstrapCodeSuggestions to install the required binary.')
+    local msg = string.format("[gitlab.code_suggestions] '%s' does not exist?", lsp_binary_path)
+    vim.notify(msg, vim.log.levels.WARN)
+    vim.notify(
+      '[gitlab.code_suggestions] Run :GitLabBootstrapCodeSuggestions to install the required binary.',
+      vim.log.levels.WARN
+    )
     code_suggestions.logging.error(msg)
 
     return nil
@@ -194,7 +197,13 @@ function code_suggestions.setup(logging, statusline, options)
     vim.api.nvim_create_user_command('GitLabCodeSuggestionsStop', code_suggestions.stop, {})
     vim.api.nvim_create_autocmd({ 'FileType' }, {
       pattern = code_suggestions.options.auto_filetypes,
-      callback = code_suggestions.start,
+      callback = function()
+        if not code_suggestions.check_personal_access_token() then
+          return
+        end
+
+        code_suggestions.start()
+      end,
     })
     vim.api.nvim_create_autocmd({ 'CompleteDonePre' }, {
       callback = function()
