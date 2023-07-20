@@ -6,8 +6,6 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
 
 ### Getting started
 
-1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed)
-
 1. Install the [latest Neovim release](https://github.com/neovim/neovim/releases/latest)
 
     - For macOS, this can be achieved by running `brew install neovim`
@@ -18,11 +16,24 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
     git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
     ```
 
+#### Completion
+
+To enable completion using Code Suggestions:
+
+1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
+
+1. Run [`:GitLabBootstrapCodeSuggestions`](#cmd-GitLabBootstrapCodeSuggestions) to:
+   1. Install the latest [language server](http://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment) release.
+   1. Register your personal access token with the language server.
+   1. Enable Omni completion via Neovim's builtin LSP support.
+
+1. Override `gitlab.options.code_suggestions.auto_filetypes` to configure automatic startup of the Code Suggestions LSP client.
+
 ### Commands
 
 | Name | Description |
 |------|-------------|
-| GitLabBootstrapCodeSuggestions | <ol>Installs the LSP server for GitLab Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the Code Suggestions API.</li></ol> |
+| GitLabBootstrapCodeSuggestions <a id="cmd-GitLabBootstrapCodeSuggestions">🔗</a>| <ol>Installs the LSP server for GitLab Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the Code Suggestions API.</li></ol> |
 | GitLabCodeSuggestionsStart | Starts the Code Suggestions LSP client. |
 | GitLabCodeSuggestionsStop | Stops the Code Suggestions LSP client. |
 
