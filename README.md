@@ -39,18 +39,24 @@ require('gitlab').setup{
 }
 ```
 
-To disable eager loading of plugin files add the following to init.lua:
+To disable eager loading/setup of the plugin add the following to your `init.lua`:
 
 ```lua
 -- Disable eager loading of all GitLab plugin files.
 vim.g.gitlab_autoload = false
 ```
 
-Now you can load and setup only specific functions as desired:
+To enable [Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) which can be triggered in insert mode using `ctrl-x ctrl-o`:
 
 ```lua
--- Require the code_suggestions namespace explicitly.
-require('gitlab.code_suggestions').setup{}
+-- Enable Omni completion
+vim.o.completeopt = 'menu,menuone'
+
+require'gitlab'.setup{
+  code_suggestions = {
+    auto_filetypes = {'ruby'},
+  }
+}
 ```
 
 #### Global Options
@@ -64,9 +70,14 @@ The following global [options](https://neovim.io/doc/user/options.html) are avai
 
 #### Init options
 
-| Namespace              | Option                  | Default | Description                                                                          |
-|------------------------|-------------------------|---------|--------------------------------------------------------------------------------------|
-| `code_suggestions`     | `enabled` | `nil`   |      |
+Init options can be passed to the `gitlab.setup` function under the appropriate namespace.
+
+| Namespace              | Option                | Default | Description                                                                          |
+|------------------------|-----------------------|---------|--------------------------------------------------------------------------------------|
+| `code_suggestions` | `auto_filetypes`          | `{ 'python', 'ruby', ..., }`         | A list of different filetypes to enable the builtin Neovim omnifunc completion for. |
+| `code_suggestions` | `enabled`                 | `true`                               | Whether to enable Code Suggestions via the LSP binary. |
+| `code_suggestions` | `language_server_version` | `nil`                                | The release tag of the language server for use in `GitLabBootstrapCodeSuggestions`. |
+| `code_suggestions` | `lsp_binary_path`         | `vim.env.GITLAB_VIM_LSP_BINARY_PATH` | The path where the language server binary is available or should be installed to. |
 
 #### Environment variables
 
