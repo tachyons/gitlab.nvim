@@ -16,15 +16,31 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
     git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
     ```
 
-#### Completion
+#### Completion<a name="module-code_suggestions"></a>
+
+The `gitlab.code_suggestions` module supports:
+
+1. Installation of the GitLab Code Suggestions [language server][] LSP implementation.
+1. Configuration of `autocmd` LSP implementation.
+
+Set [`code_suggestions.enabled`](#opt-code_suggestions_enabled)
+
+> I'm using zero-lsp to configure lsp.
+> Adding the GitLab plugin will bypass it for the GitLab specific code suggestion.
+
+gitlab.options.code_suggestions.auto_filetypes
+gitlab.options.code_suggestions.enabled
+> It's invoking our LSP server binary through Neovim's builtin LSP integration.
+
+When using the builtin Omni completion it is recommended to leave `gitlab.options.code_suggestions.fix_newlines` set to `true` (default) to resolve issues with multiline completion.
 
 To enable completion using Code Suggestions:
 
 1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
 
 1. Run [`:GitLabBootstrapCodeSuggestions`](#cmd-GitLabBootstrapCodeSuggestions) to:
-   1. Install the latest [language server](http://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment) release.
-   1. Register your personal access token with the language server.
+   1. Install the latest GitLab language server release.
+   1. Register your personal access token with the GitLab language server.
    1. Enable Omni completion via Neovim's builtin LSP support.
 
 1. Override `gitlab.options.code_suggestions.auto_filetypes` to configure automatic startup of the Code Suggestions LSP client.
@@ -33,7 +49,7 @@ To enable completion using Code Suggestions:
 
 | Name | Description |
 |------|-------------|
-| GitLabBootstrapCodeSuggestions <a id="cmd-GitLabBootstrapCodeSuggestions">🔗</a>| <ol>Installs the LSP server for GitLab Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the Code Suggestions API.</li></ol> |
+| GitLabBootstrapCodeSuggestions <a name="cmd-GitLabBootstrapCodeSuggestions"></a>| <ol><li>Installs the LSP server for GitLab Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the Code Suggestions API.</li></ol> |
 | GitLabCodeSuggestionsStart | Starts the Code Suggestions LSP client. |
 | GitLabCodeSuggestionsStop | Stops the Code Suggestions LSP client. |
 
@@ -57,19 +73,6 @@ To disable eager loading/setup of the plugin add the following to your `init.lua
 vim.g.gitlab_autoload = false
 ```
 
-To enable [Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) which can be triggered in insert mode using `ctrl-x ctrl-o`:
-
-```lua
--- Enable Omni completion
-vim.o.completeopt = 'menu,menuone'
-
-require'gitlab'.setup{
-  code_suggestions = {
-    auto_filetypes = {'ruby'},
-  }
-}
-```
-
 #### Global Options
 
 The following global [options](https://neovim.io/doc/user/options.html) are available:
@@ -79,14 +82,14 @@ The following global [options](https://neovim.io/doc/user/options.html) are avai
 | `gitlab_autoload`      | `nil`   | Set to `false` to prevent requiring files nested under `plugin/gitlab/` automatically. |
 | `gitlab_plugin_loaded` | `nil`   | Whether the plugin should be loaded (set to `true` when loaded).                       |
 
-#### Init options
+#### Setup options
 
 Init options can be passed to the `gitlab.setup` function under the appropriate namespace.
 
 | Namespace              | Option                | Default | Description                                                                          |
 |------------------------|-----------------------|---------|--------------------------------------------------------------------------------------|
 | `code_suggestions` | `auto_filetypes`          | `{ 'python', 'ruby', ..., }`         | A list of different filetypes to enable the builtin Neovim omnifunc completion for. |
-| `code_suggestions` | `enabled`                 | `true`                               | Whether to enable Code Suggestions via the LSP binary. |
+| `code_suggestions` | `enabled`                 | `true`        | Whether to enable Code Suggestions via the LSP binary. |
 | `code_suggestions` | `language_server_version` | `nil`                                | The release tag of the language server for use in `GitLabBootstrapCodeSuggestions`. |
 | `code_suggestions` | `lsp_binary_path`         | `vim.env.GITLAB_VIM_LSP_BINARY_PATH` | The path where the language server binary is available or should be installed to. |
 
@@ -150,4 +153,5 @@ See [LICENSE](./LICENSE).
 
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
 
+[language server]: http://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment "GitLab Code Suggestions language server"
 [Personal Access Token]: https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account "Enable Code Suggestions with a Personal Access Token"

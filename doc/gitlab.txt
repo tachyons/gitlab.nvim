@@ -1,0 +1,79 @@
+*gitlab.nvim*
+*gitlab.txt*                      GitLab functionality inside of Neovim.
+
+CONTENTS                                        *gitlab-contents*
+Introduction                                    |gitlab-introduction|
+Usage                                           |gitlab-usage|
+  Commands                                      |gitlab-commands|
+  Completions                                   |gitlab-completions|
+API                                             |gitlab-api|
+
+                                      Type |gO| to see the table of contents.
+
+==============================================================================
+INTRODUCTION                                             *gitlab-introduction*
+
+`gitlab.vim` integrates GitLab functionality into Neovim.
+
+==============================================================================
+USAGE                                                           *gitlab-usage*
+
+The default installation of `gitlab.vim` registers |gitlab-commands| but does
+not add new key bindings.
+
+If configured |gitlab-completions| will run automatically for supported
+filetypes.
+
+==============================================================================
+  OPTIONS                                                       *gitlab-options*
+
+You can configure various options through a Lua table. See lua/gitlab.lua for
+example values.
+
+==============================================================================
+  COMMANDS                                                     *gitlab-commands*
+
+GitLabBootstrapCodeSuggestions                *GitLabBootstrapCodeSuggestions*
+
+==============================================================================
+  COMPLETIONS                                               *gitlab-completions*
+
+Powered by GitLab Duo Code Suggestions `gitlab.vim` supports completions
+through the builtin Neovim |lsp| client and Omni completion (e.g. |compl-omni|).
+
+Use the included |GitLabBootstrapCodeSuggestions| command to:
+
+ 1. Install the language server.
+ 2. Prompt for a personal access token (PAT) with the `api` scope.
+ 3. Register the provided PAT with the local language server.
+ 4. Start an LSP client automatically for supported filetypes binding
+    |'omnifunc'| with the builtin Neovim LSP client.
+
+>lua
+    -- Use Omni completion's popup menu
+    vim.o.completeopt = 'menu,menuone'
+
+    require'gitlab'.setup{
+      code_suggestions = {
+        auto_filetypes = {'ruby'},
+      }
+    }
+<
+     See |vim.gitlab.start()| for details.
+
+  3. Configure keymaps and autocmds to utilize LSP features.
+
+==============================================================================
+API                                              *gitlab-api*
+
+`gitlab.vim` provides the following public Lua API:
+
+gitlab.setup({options})                                         *gitlab.setup()*
+
+    Configures all GitLab plugin modules passing through their relevant
+    configuration.
+
+    Parameters: ~
+      • {options}  (table|nil) A table of options
+
+vim:tw=78:ts=8:ft=help:norl:

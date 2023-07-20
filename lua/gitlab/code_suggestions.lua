@@ -192,10 +192,16 @@ function code_suggestions.setup(logging, statusline, options)
   if code_suggestions.options.enabled then
     vim.api.nvim_create_user_command('GitLabCodeSuggestionsStart', code_suggestions.start, {})
     vim.api.nvim_create_user_command('GitLabCodeSuggestionsStop', code_suggestions.stop, {})
-    vim.api.nvim_create_autocmd({ 'FileType' }, {
-      pattern = code_suggestions.options.auto_filetypes,
-      callback = code_suggestions.start,
-    })
+
+    if code_suggestions.options.auto_filetypes and #code_suggestions.options.auto_filetypes > 0 then
+      vim.api.nvim_create_autocmd({ 'FileType' }, {
+        pattern = code_suggestions.options.auto_filetypes,
+        callback = code_suggestions.start,
+      })
+    end
+  end
+
+  if code_suggestions.options.fix_newlines then
     vim.api.nvim_create_autocmd({ 'CompleteDonePre' }, {
       callback = function()
         vim.cmd([[s/\%x00/\r/ge]])
