@@ -82,17 +82,6 @@ The following global [options](https://neovim.io/doc/user/options.html) are avai
 | `gitlab_autoload`      | `nil`   | Set to `false` to prevent requiring files nested under `plugin/gitlab/` automatically. |
 | `gitlab_plugin_loaded` | `nil`   | Whether the plugin should be loaded (set to `true` when loaded).                       |
 
-#### Setup options
-
-Init options can be passed to the `gitlab.setup` function under the appropriate namespace.
-
-| Namespace              | Option                | Default | Description                                                                          |
-|------------------------|-----------------------|---------|--------------------------------------------------------------------------------------|
-| `code_suggestions` | `auto_filetypes`          | `{ 'python', 'ruby', ..., }`         | A list of different filetypes to enable the builtin Neovim omnifunc completion for. |
-| `code_suggestions` | `enabled`                 | `true`        | Whether to enable Code Suggestions via the LSP binary. |
-| `code_suggestions` | `language_server_version` | `nil`                                | The release tag of the language server for use in `GitLabBootstrapCodeSuggestions`. |
-| `code_suggestions` | `lsp_binary_path`         | `vim.env.GITLAB_VIM_LSP_BINARY_PATH` | The path where the language server binary is available or should be installed to. |
-
 #### Environment variables
 
 | Name                 | Value                    | Purpose |
