@@ -64,6 +64,20 @@ rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
 
 1. Confirm whether you face the same issues when starting a fresh Neovim session with `nvim --clean` and sourcing the minimal [spec/init.lua](./spec/init.lua).
 
+### Release Process
+
+1. Review whether each merge request since the last release has/requires a changelog entry.
+
+1. Create a new merge request to increment the plugin version.
+
+   1. Update `PLUGIN_VERSION` in [lua/gitlab/globals.lua](./lua/gitlab/globals.lua).
+
+   1. Add a new `## vX.Y.Z` header above the previous [CHANGELOG.md](./CHANGELOG.md) entry.
+
+1. Merge the merge request once it has been approved.
+
+1. Create a new signed git tag off of the `main` branch.
+
 ## Features
 
 ### GitLab Duo Code Suggestions (Beta)
