@@ -13,6 +13,8 @@ function code_suggestions.bootstrap()
     code_suggestions.register_personal_access_token()
     code_suggestions.check_personal_access_token()
   end
+
+  utils.print('Bootstrapped Code Suggestions language server')
 end
 
 function code_suggestions.check_personal_access_token()

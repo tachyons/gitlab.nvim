@@ -19,7 +19,7 @@ function utils.formatted_line_for_print(m)
     return
   end
 
-  return string.format('GCS: %s', m)
+  return string.format('[gitlab.vim] %s', m)
 end
 
 function utils.current_os()

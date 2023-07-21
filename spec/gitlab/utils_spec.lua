@@ -61,7 +61,7 @@ describe('gitlab.utils', function()
 
   describe('formatted_line_for_print', function()
     it('prints a formatted line', function()
-      assert.equal('GCS: test', utils.formatted_line_for_print('test'))
+      assert.equal('[gitlab.vim] test', utils.formatted_line_for_print('test'))
     end)
   end)
 
