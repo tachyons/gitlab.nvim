@@ -27,3 +27,8 @@
      ```
 
 If you encounter issues running inside of your Neovim install you can use the make test targets which start a clean session with minimal plugins on the runtimepath.
+
+## Documentation
+
+New lua modules and Vim options/commands should be documented in [doc/gitlab.txt](/doc/gitlab.txt).
+Refer to this [Vim helpfiles cheatsheet](https://devhints.io/vim-help) for help formatting your docs.

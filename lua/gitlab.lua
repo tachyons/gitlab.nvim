@@ -7,7 +7,9 @@ local gitlab = {
       debug = vim.env.GITLAB_VIM_DEBUG == '1',
       enabled = vim.env.GITLAB_VIM_LOGGING ~= '0',
     },
-    statusline = {},
+    statusline = {
+      enabled = true,
+    },
     code_suggestions = {
       auto_filetypes = {
         'python',
@@ -33,6 +35,8 @@ function gitlab.init(options)
       gitlab.defaults.code_suggestions,
       gitlab.options.code_suggestions
     )
+    gitlab.options.statusline =
+      vim.tbl_deep_extend('force', gitlab.defaults.statusline, gitlab.options.statusline)
   end
 
   gitlab.initialized = true
@@ -57,6 +61,8 @@ function gitlab.setup(options)
 
   gitlab.logging.setup(gitlab.options.logging)
   gitlab.logging.info('Starting up...')
+
+  gitlab.statusline.setup(gitlab.options.statusline)
 
   if gitlab.options.code_suggestions.enabled then
     gitlab.code_suggestions.setup(

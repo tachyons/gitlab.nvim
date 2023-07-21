@@ -2,6 +2,10 @@ local statusline = {}
 
 local globals = require('gitlab.globals')
 
+function statusline.setup(options)
+  statusline.options = options
+end
+
 function statusline.status_line_for(state)
   local state_text = state or globals.GCS_UNKNOWN_TEXT
 
@@ -44,7 +48,12 @@ function statusline.state_label_for(state)
 end
 
 function statusline.update_status_line(state)
-  vim.opt.statusline = statusline.status_line_for(statusline.state_label_for(state))
+  if statusline.options and statusline.options.enabled then
+    vim.o.statusline = statusline.status_line_for(statusline.state_label_for(state))
+    return true
+  end
+
+  return false
 end
 
 return statusline
