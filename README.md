@@ -111,14 +111,11 @@ If you get `E149: Sorry, no help for gitlab.txt` you will need to generate helpt
 If using `gitlab.code_suggestions` with the builtin LSP client and Omni completion:
 - `ctrl-x ctrl-o` requests completions from GitLab Duo Code Suggestions
 
-#### Status Bar
+#### Statusline
 
-A status icon is displayed in the status bar. It provides the following:
+Enabling `gitlab.statusline` will indicate the status of the GitLab Duo Code Suggestions integration.
 
-1. A button that can quickly disable/enable code suggestions.
-1. Display a code suggestion in progress icon.
-1. Display an error icon and provide an error message as tooltip.
-1. Before the extension has been configured, the error icon will be shown with a message about configuration.
+## Issues
 
 Report issues in the
 [feedback issue](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22).

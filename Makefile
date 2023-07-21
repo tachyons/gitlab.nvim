@@ -15,13 +15,18 @@ test_all: test lint
 ifndef SPEC
 override SPEC = spec
 endif
-test:
+
+PLENARY_PATH ?= ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
+$(PLENARY_PATH):
+	git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ${PLENARY_PATH}
+
+test: | $(PLENARY_PATH)
 	@nvim --clean --headless \
 		-c "source spec/init.lua" \
 		-c "PlenaryBustedDirectory ${SPEC}" \
 		-c cquit
 
-test_file:
+test_file: | $(PLENARY_PATH)
 	@nvim --clean --headless \
 		-c "source spec/init.lua" \
 		-c "PlenaryBustedFile $(FILE)" \

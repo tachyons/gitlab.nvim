@@ -24,8 +24,14 @@ USAGE                                                           *gitlab-usage*
 Use |gitlab.setup()| to configure `gitlab.vim`.
 
                                                      *gitlab-code-suggestions*
+
 `gitlab.vim` includes functions to configure the builtin Neovim |lsp| client
 configuration to use the GitLab Duo Code Suggestions language server.
+
+                                                           *gitlab-statusline*
+
+`gitlab.vim` includes a statusline showing the status of
+|gitlab-code-suggestions|.
 
 ==============================================================================
 COMMANDS                                                     *gitlab-commands*
@@ -69,7 +75,8 @@ API                                                               *gitlab-api*
 
 `gitlab.vim` provides the following public Lua API:
 
-Lua module: gitlab 'lua_mod-gitlab'
+==============================================================================
+Lua module: gitlab                                                    *gitlab*
 
 gitlab.setup({options})                                       *gitlab.setup()*
 
@@ -91,6 +98,9 @@ gitlab.setup({options})                                       *gitlab.setup()*
                     |gitlab.code_suggestions.setup()|
                   • url (string) the GitLab instance url to use
                     if not `https://gitlab.com`.
+
+==============================================================================
+Lua module: gitlab.code_suggestions                  *gitlab.code_suggestions*
 
 gitlab.code_suggestions.setup({options})     *gitlab.code_suggestions.setup()*
 
@@ -127,6 +137,24 @@ gitlab.code_suggestions.start()              *gitlab.code_suggestions.start()*
 Runs |lsp.start()| against the |gitlab-language-server|.
 
 gitlab.code_suggestions.stop()                *gitlab.code_suggestions.stop()*
+
+==============================================================================
+Lua module: gitlab.statusline                  *gitlab.statusline*
+
+gitlab.statusline.setup({options})     *gitlab.statusline.setup()*
+
+    Example: >lua
+
+    require('gitlab.statusline').setup({
+      enabled = false,
+    })
+<
+
+    Parameters: ~
+      • {options} (table) Optional keyword arguments:
+                  • enabled (boolean) replaces |statusline| with the
+                  |gitlab-statusline|.
+
 
 ==============================================================================
 ENV                                                               *gitlab-env*

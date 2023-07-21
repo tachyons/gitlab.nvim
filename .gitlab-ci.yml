@@ -14,7 +14,6 @@ default:
 test:
   script:
   - apk add make git neovim
-  - git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
   - make test
   stage: test
 
