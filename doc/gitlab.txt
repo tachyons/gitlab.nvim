@@ -32,7 +32,7 @@ COMMANDS                                                     *gitlab-commands*
 
 GitLabBootstrapCodeSuggestions                *GitLabBootstrapCodeSuggestions*
 
-    Configure the language server and Omni completion  GitLab Duo
+    Configure the language server and Omni completion GitLab Duo
     Code Suggestions.
 
                                                      *gitlab-language-server*
