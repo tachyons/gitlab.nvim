@@ -129,9 +129,6 @@ This extension is open source and [hosted on GitLab](https://gitlab.com/gitlab-o
 
 [A list of the great people](./CONTRIBUTORS.md) who contributed this project, and made it even more awesome, is available. Thank you all! 🎉
 
-- @erran
-- @ashmckenzie
-
 ## License
 
 See [LICENSE](./LICENSE).
