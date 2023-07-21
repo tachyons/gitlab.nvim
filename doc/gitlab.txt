@@ -88,7 +88,9 @@ gitlab.setup({options})                                       *gitlab.setup()*
     Parameters: ~
       • {options} (table) Optional keyword arguments:
                   • code_suggestions (table) options to pass into
-                  |gitlab.code_suggestions.setup()|
+                    |gitlab.code_suggestions.setup()|
+                  • url (string) the GitLab instance url to use
+                    if not `https://gitlab.com`.
 
 gitlab.code_suggestions.setup({options})     *gitlab.code_suggestions.setup()*
 
@@ -136,5 +138,13 @@ Set `GITLAB_VIM_DEBUG` to `1` to configure debug logging.
 GITLAB_VIM_LOGGING                                        *GITLAB_VIM_LOGGING*
 
 Set `GITLAB_VIM_LOGGING` to `1` to enable log output to `/tmp/gitlab.vim.log`.
+
+GITLAB_VIM_URL                                                *GITLAB_VIM_URL*
+
+Override the GitLab instance to connect with (defaults to
+`https://gitlab.com`).
+
+If set the `url` keyword argument for |gitlab.code_suggestions.start()| will
+be ignored when `GITLAB_VIM_URL` is set.
 
 vim:tw=78:ts=8:ft=help:norl:
