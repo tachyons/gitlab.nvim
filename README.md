@@ -45,6 +45,15 @@ To enable completion using Code Suggestions:
 
    1. Use `ctrl-x ctrl-o` to open the Omni completion popup menu inside of supported filetypes.
 
+### Uninstalling
+
+To uninstall run the following commands:
+
+```
+rm ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
+rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
+```
+
 ## Features
 
 ### GitLab Duo Code Suggestions (Beta)
