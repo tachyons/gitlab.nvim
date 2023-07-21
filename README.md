@@ -1,12 +1,21 @@
 # GitLab Plugin for Neovim
 
-A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
+A Lua based plugin for Neovim that offers [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html).
 
-## Usage
+All feedback can be submitted in the [[Feedback] GitLab for Neovim](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22) issue.
+
+## Requirements
+
+| Software | Version |
+| -------- | ------- |
+| [GitLab SaaS](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-gitlab-saas) | 16.1+ |
+| [GitLab self-managed](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-self-managed-gitlab) | 16.1+ |
+| [Neovim](https://neovim.io/) | 0.9+ |
+## Setup
 
 ### Getting started
 
-1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed)
+1. Follow the steps to enable [GitLab Duo Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed)
 
 1. Install the [latest Neovim release](https://github.com/neovim/neovim/releases/latest)
 
@@ -22,9 +31,9 @@ A GitLab Neovim plugin including support [Code Suggestions](#code-suggestions).
 
 | Name | Description |
 |------|-------------|
-| GitLabBootstrapCodeSuggestions | <ol>Installs the LSP server for GitLab Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the Code Suggestions API.</li></ol> |
-| GitLabCodeSuggestionsStart | Starts the Code Suggestions LSP client. |
-| GitLabCodeSuggestionsStop | Stops the Code Suggestions LSP client. |
+| GitLabBootstrapCodeSuggestions | <ol>Installs the LSP server for GitLab GitLab Duo Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the GitLab Duo Code Suggestions API.</li></ol> |
+| GitLabCodeSuggestionsStart | Starts the GitLab Duo Code Suggestions LSP client. |
+| GitLabCodeSuggestionsStop | Stops the GitLab Duo Code Suggestions LSP client. |
 
 ### Configuration
 
@@ -33,7 +42,7 @@ You can configure the plugin through options documented below:
 ```lua
 require('gitlab').setup{
   code_suggestions = {
-    -- Disable Code Suggestions functionality.
+    -- Disable GitLab Duo Code Suggestions functionality.
     enabled = false
   }
 }
@@ -75,68 +84,67 @@ Init options can be passed to the `gitlab.setup` function under the appropriate 
 | Namespace              | Option                | Default | Description                                                                          |
 |------------------------|-----------------------|---------|--------------------------------------------------------------------------------------|
 | `code_suggestions` | `auto_filetypes`          | `{ 'python', 'ruby', ..., }`         | A list of different filetypes to enable the builtin Neovim omnifunc completion for. |
-| `code_suggestions` | `enabled`                 | `true`                               | Whether to enable Code Suggestions via the LSP binary. |
+| `code_suggestions` | `enabled`                 | `true`                               | Whether to enable GitLab Duo Code Suggestions via the LSP binary. |
 | `code_suggestions` | `language_server_version` | `nil`                                | The release tag of the language server for use in `GitLabBootstrapCodeSuggestions`. |
 | `code_suggestions` | `lsp_binary_path`         | `vim.env.GITLAB_VIM_LSP_BINARY_PATH` | The path where the language server binary is available or should be installed to. |
 
 #### Environment variables
 
-| Name                 | Value                    | Purpose |
-|----------------------|--------------------------|---------|
+| Name                 | Value                    | Purpose                                            |
+|----------------------|--------------------------|----------------------------------------------------|
 | `GITLAB_VIM_DEBUG`   | `0` or `1` (default `0`) | Enable debugging output into `/tmp/gitlab.vim.log` |
-| `GITLAB_VIM_LOGGING` | `0` or `1` (default `1`) | Enable logging output into `/tmp/gitlab.vim.log` |
+| `GITLAB_VIM_LOGGING` | `0` or `1` (default `1`) | Enable logging output into `/tmp/gitlab.vim.log`   |
 
-## Development
+## Features
 
-1. Install `git` to clone plenary and this project.
-2. Install `neovim`.
-3. Clone plenary.vim through your plugin manager of choice:
+### GitLab Duo Code Suggestions (Beta)
 
-   - Manual installation:
+Write code more efficiently by using generative AI to suggest code while you’re developing. To learn more about this feature, see the
+[GitLab Duo Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-vs-code)
 
-     ```sh
-     git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
-     ```
+This feature is in
+[Beta](https://docs.gitlab.com/ee/policy/experiment-beta-support.html#beta)
+GitLab Duo Code Suggestions is a generative artificial intelligence (AI) model. GitLab currently leverages [Google Cloud’s Vertex AI Codey API models](https://cloud.google.com/vertex-ai/docs/generative-ai/code/code-models-overview)
 
-4. Depending on your `~/.config/nvim/init.lua`, you may need to comment out some config as it can cause issues.
-5. Use [`plenary.test_harness`](https://github.com/nvim-lua/plenary.nvim#plenarytest_harness) to run tests:
+No new additional data is collected to enable this feature. Private non-public GitLab customer data is not used as training data.
+Learn more about [Google Vertex AI Codey APIs Data Governance](https://cloud.google.com/vertex-ai/docs/generative-ai/data-governance)
 
-   - Inside of Neovim:
+Beta users should read about the [known limitations](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#known-limitations)
 
-     ```sh
-     :PlenaryBustedDirectory spec/
-     :PlenaryBustedFile spec/gitlab/code_suggestions_spec.lua
-     ```
+#### Supported Languages
 
-   - To run tests headlessly:
+Languages supported by GitLab Duo Code Suggestions can be found in the [documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#supported-languages).
 
-     ```sh
-     nvim --headless -c "PlenaryBustedDirectory spec" -c cquit
-     ```
+#### Usage
 
-## Support
+See [doc/gitlab.txt](./doc/gitlab.txt) or run `:help gitlab.txt` to read usage information without leaving your editor.
 
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+If you get `E149: Sorry, no help for gitlab.txt` you will need to generate helptags before restarting Vim using either:
 
-## Roadmap
+* `:helptags ALL`
+* `:helptags doc/` from inside the plugin's root directory.
 
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+##### Keymaps
+
+If using `gitlab.code_suggestions` with the builtin LSP client and Omni completion:
+- `ctrl-x ctrl-o` requests completions from GitLab Duo Code Suggestions
+
+#### Status Bar
+
+A status icon is displayed in the status bar. It provides the following:
+
+1. A button that can quickly disable/enable code suggestions.
+1. Display a code suggestion in progress icon.
+1. Display an error icon and provide an error message as tooltip.
+1. Before the extension has been configured, the error icon will be shown with a message about configuration.
+
+Report issues in the
+[feedback issue](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22).
 
 ## Contributing
 
-Everyone can contribute. Consider linting and testing your code locally to save yourself and maintainer's time.
+This extension is open source and [hosted on GitLab](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim.git). Contributions are more than welcome. Feel free to fork and add new features or submit bug reports. See [CONTRIBUTING](./CONTRIBUTING.md) for more information.
 
-## Authors and acknowledgment
+[A list of the great people](./CONTRIBUTORS.md) who contributed this project, and made it even more awesome, is available. Thank you all! 🎉
 
-- @erran
-- @ashmckenzie
-
-## License
-
-See [LICENSE](./LICENSE).
-
-## Project status
-
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
-
-[Personal Access Token]: https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account "Enable Code Suggestions with a Personal Access Token"
+[Personal Access Token]: https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account "Enable GitLab Duo Code Suggestions with a Personal Access Token"
