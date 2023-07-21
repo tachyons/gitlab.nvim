@@ -1,0 +1,2 @@
+# Do not commit the results of :helptags doc/ since it easily becomes outdated.
+doc/tags

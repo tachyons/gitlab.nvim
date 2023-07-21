@@ -9,9 +9,9 @@ describe('gitlab.code_suggestions', function()
   local utils_stub = mock(require('gitlab.utils'), true)
 
   local stubbed_utils_print_output = ''
-  local captured_utils_print_output = ''
 
   before_each(function()
+    stub(vim.fn, 'system')
     logging.setup({ enabled = false })
 
     utils_stub.user_data_path = function()
@@ -23,8 +23,7 @@ describe('gitlab.code_suggestions', function()
     utils_stub.current_arch = function()
       return 'fakeArch'
     end
-    utils_stub.print = function(str)
-      captured_utils_print_output = str
+    utils_stub.print = function(_str)
       return nil
     end
     utils_stub.path_exists = function(_path)
@@ -38,13 +37,12 @@ describe('gitlab.code_suggestions', function()
 
   after_each(function()
     mock.revert(utils_stub)
+    vim.fn.system:revert()
+    code_suggestions._checked_pat = nil
   end)
 
   describe('setup', function()
     before_each(function()
-      -- TODO: Remove if we move to a service for checking authn status
-      code_suggestions.authenticated = true
-
       stub(vim.api, 'nvim_create_user_command')
     end)
 
@@ -96,13 +94,7 @@ describe('gitlab.code_suggestions', function()
 
   describe('check_personal_access_token', function()
     it('calls the LSP binary and checks if the token is enabled and has correct scopes', function()
-      code_suggestions.logging = logging
-
-      stubbed_utils_print_output = 'fake output'
-
-      code_suggestions.check_personal_access_token()
-
-      assert.equal(stubbed_utils_print_output, captured_utils_print_output)
+      assert.equal(true, code_suggestions.check_personal_access_token())
     end)
   end)
 end)

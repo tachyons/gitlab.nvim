@@ -1,0 +1,140 @@
+*gitlab.vim*
+
+*gitlab.txt*                      GitLab functionality inside of Neovim.
+
+CONTENTS                                        *gitlab-contents*
+Introduction                                    |gitlab-introduction|
+Usage                                           |gitlab-usage|
+  Code Suggestions                              |gitlab-code-suggestions|
+  Commands                                      |gitlab-commands|
+  Options                                       |gitlab-options|
+API                                             |gitlab-api|
+ENV                                             |gitlab-env|
+
+                                      Type |gO| to see the table of contents.
+
+==============================================================================
+INTRODUCTION                                             *gitlab-introduction*
+
+`gitlab.vim` integrates GitLab functionality into Neovim.
+
+==============================================================================
+USAGE                                                           *gitlab-usage*
+
+Use |gitlab.setup()| to configure `gitlab.vim`.
+
+                                                     *gitlab-code-suggestions*
+`gitlab.vim` includes functions to configure the builtin Neovim |lsp| client
+configuration to use the GitLab Duo Code Suggestions language server.
+
+==============================================================================
+COMMANDS                                                     *gitlab-commands*
+
+GitLabBootstrapCodeSuggestions                *GitLabBootstrapCodeSuggestions*
+
+    Configure the language server and Omni completion GitLab Duo
+    Code Suggestions.
+
+                                                     *gitlab-language-server*
+    1. Install the GitLab Code Suggestions language server experiment
+       available at:
+       https://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment
+    2. Prompt for a personal access token (PAT) with the `api` scope.
+    3. Register the provided PAT with the local language server.
+    4. Start an LSP client automatically for supported filetypes binding
+       |'omnifunc'| with the builtin Neovim LSP client.
+
+GitLabCodeSuggestionsStart                        *GitLabCodeSuggestionsStart*
+
+    Sugar to invoke |gitlab.code_suggestions.start()|.
+
+GitLabCodeSuggestionsStop                          *GitLabCodeSuggestionsStop*
+
+    Sugar to invoke |gitlab.code_suggestions.stop()|.
+
+==============================================================================
+OPTIONS                                                       *gitlab-options*
+
+vim.g.gitlab_plugin_loaded                        *vim.g.gitlab_plugin_loaded*
+
+Skips plugin execution if true preventing re-running setup functions.
+
+vim.g.gitlab_autoload                                  *vim.g.gitlab_autoload*
+
+Prevent automatically calling |gitlab.setup()| being invoked with default
+options.
+
+==============================================================================
+API                                                               *gitlab-api*
+
+`gitlab.vim` provides the following public Lua API:
+
+Lua module: gitlab 'lua_mod-gitlab'
+
+gitlab.setup({options})                                       *gitlab.setup()*
+
+    Invokes setup on nested GitLab plugin modules passing through their
+    relevant options.
+
+    Example: >lua
+
+    require('gitlab').setup({
+      code_suggestions = {
+        auto_filetypes = {'ruby'},
+      }
+    })
+<
+
+    Parameters: ~
+      • {options} (table) Optional keyword arguments:
+                  • code_suggestions (table) options to pass into
+                  |gitlab.code_suggestions.setup()|
+
+gitlab.code_suggestions.setup({options})     *gitlab.code_suggestions.setup()*
+
+    API to bootstrap the |gitlab-language-server| |gitlab-completions|.
+
+    Example: >lua
+
+    require('gitlab').setup({
+      code_suggestions = {
+        auto_filetypes = {'ruby'},
+      }
+    })
+<
+
+    Parameters: ~
+      • {options} (table) Optional keyword arguments:
+                  • auto_filetypes (table) filetypes to automatically invoke
+                    |gitlab.code_suggestions.start()|.
+                  • enabled (boolean) whether to enable |gitlab-code-suggestions|
+                    via the LSP binary.
+                  • fix_newlines (boolean) whether to replace newlines that
+                    have become null-byte due to switching between encodings.
+                  • language_server_version (string|nil) the release tag of
+                    the language server to install. Otherwise the latest
+                    version is installed.
+                  • lsp_binary_path (string|nil) the path where the language
+                    server binary is available or should be installed
+                    to.
+
+
+
+gitlab.code_suggestions.start()              *gitlab.code_suggestions.start()*
+
+Runs |lsp.start()| against the |gitlab-language-server|.
+
+gitlab.code_suggestions.stop()                *gitlab.code_suggestions.stop()*
+
+==============================================================================
+ENV                                                               *gitlab-env*
+
+GITLAB_VIM_DEBUG                                            *GITLAB_VIM_DEBUG*
+
+Set `GITLAB_VIM_DEBUG` to `1` to configure debug logging.
+
+GITLAB_VIM_LOGGING                                        *GITLAB_VIM_LOGGING*
+
+Set `GITLAB_VIM_LOGGING` to `1` to enable log output to `/tmp/gitlab.vim.log`.
+
+vim:tw=78:ts=8:ft=help:norl:

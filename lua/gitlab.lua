@@ -13,6 +13,7 @@ local gitlab = {
         'ruby',
       },
       enabled = true,
+      fix_newlines = true,
       langauge_server_version = nil,
       lsp_binary_path = vim.env.GITLAB_VIM_LSP_BINARY_PATH,
     },

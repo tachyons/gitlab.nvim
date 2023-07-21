@@ -4,6 +4,8 @@ A Lua based plugin for Neovim that offers [GitLab Duo Code Suggestions](https://
 
 All feedback can be submitted in the [[Feedback] GitLab for Neovim](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22) issue.
 
+If you're interested in contributing check out the [development process](docs/developer/development-process.md).
+
 ## Requirements
 
 | Software | Version |
@@ -11,11 +13,10 @@ All feedback can be submitted in the [[Feedback] GitLab for Neovim](https://gitl
 | [GitLab SaaS](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-gitlab-saas) | 16.1+ |
 | [GitLab self-managed](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-self-managed-gitlab) | 16.1+ |
 | [Neovim](https://neovim.io/) | 0.9+ |
+
 ## Setup
 
 ### Getting started
-
-1. Follow the steps to enable [GitLab Duo Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed)
 
 1. Install the [latest Neovim release](https://github.com/neovim/neovim/releases/latest)
 
@@ -27,73 +28,55 @@ All feedback can be submitted in the [[Feedback] GitLab for Neovim](https://gitl
     git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
     ```
 
-### Commands
+1. Setup helptags using `:helptags ALL` for access to [:help gitlab.txt](doc/gitlab.txt).
 
-| Name | Description |
-|------|-------------|
-| GitLabBootstrapCodeSuggestions | <ol>Installs the LSP server for GitLab GitLab Duo Code Suggestions.</li><li>Prompts for a [Personal Access Token][] to connect with the GitLab Duo Code Suggestions API.</li></ol> |
-| GitLabCodeSuggestionsStart | Starts the GitLab Duo Code Suggestions LSP client. |
-| GitLabCodeSuggestionsStop | Stops the GitLab Duo Code Suggestions LSP client. |
+To enable completion using Code Suggestions:
 
-### Configuration
+1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
 
-You can configure the plugin through options documented below:
+   1. Enable Code Suggestions for your GitLab group/user.
+   1. Create a [Personal Access Token][] with the `api` scope.
+   1. Install the GitLab Duo Code Suggestions [language server][].
+   1. Configure [Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes)'s popup menu:
 
-```lua
-require('gitlab').setup{
-  code_suggestions = {
-    -- Disable GitLab Duo Code Suggestions functionality.
-    enabled = false
-  }
-}
+      ```lua
+      vim.o.completeopt = 'menu,menuone'
+      ```
+
+   1. Use `ctrl-x ctrl-o` to open the Omni completion popup menu inside of supported filetypes.
+
+### Uninstalling
+
+To uninstall run the following commands:
+
+```
+rm ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
+rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
 ```
 
-To disable eager loading/setup of the plugin add the following to your `init.lua`:
+### Troubleshooting
 
-```lua
--- Disable eager loading of all GitLab plugin files.
-vim.g.gitlab_autoload = false
-```
+1. Setup helptags using `:helptags ALL` for access to [:help gitlab.txt](doc/gitlab.txt).
 
-To enable [Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) which can be triggered in insert mode using `ctrl-x ctrl-o`:
+1. Confirm the language server is executable outside of vim.
 
-```lua
--- Enable Omni completion
-vim.o.completeopt = 'menu,menuone'
+1. Enable debug logging to `/tmp/gitlab.vim.log` environment variables defined under `:help gitlab-env`.
 
-require'gitlab'.setup{
-  code_suggestions = {
-    auto_filetypes = {'ruby'},
-  }
-}
-```
+1. Confirm whether you face the same issues when starting a fresh Neovim session with `nvim --clean` and sourcing the minimal [spec/init.lua](./spec/init.lua).
 
-#### Global Options
+### Release Process
 
-The following global [options](https://neovim.io/doc/user/options.html) are available:
+1. Review whether each merge request since the last release has/requires a changelog entry.
 
-| Option                 | Default | Description                                                                            |
-|------------------------|---------|----------------------------------------------------------------------------------------|
-| `gitlab_autoload`      | `nil`   | Set to `false` to prevent requiring files nested under `plugin/gitlab/` automatically. |
-| `gitlab_plugin_loaded` | `nil`   | Whether the plugin should be loaded (set to `true` when loaded).                       |
+1. Create a new merge request to increment the plugin version.
 
-#### Init options
+   1. Update `PLUGIN_VERSION` in [lua/gitlab/globals.lua](./lua/gitlab/globals.lua).
 
-Init options can be passed to the `gitlab.setup` function under the appropriate namespace.
+   1. Add a new `## vX.Y.Z` header above the previous [CHANGELOG.md](./CHANGELOG.md) entry.
 
-| Namespace              | Option                | Default | Description                                                                          |
-|------------------------|-----------------------|---------|--------------------------------------------------------------------------------------|
-| `code_suggestions` | `auto_filetypes`          | `{ 'python', 'ruby', ..., }`         | A list of different filetypes to enable the builtin Neovim omnifunc completion for. |
-| `code_suggestions` | `enabled`                 | `true`                               | Whether to enable GitLab Duo Code Suggestions via the LSP binary. |
-| `code_suggestions` | `language_server_version` | `nil`                                | The release tag of the language server for use in `GitLabBootstrapCodeSuggestions`. |
-| `code_suggestions` | `lsp_binary_path`         | `vim.env.GITLAB_VIM_LSP_BINARY_PATH` | The path where the language server binary is available or should be installed to. |
+1. Merge the merge request once it has been approved.
 
-#### Environment variables
-
-| Name                 | Value                    | Purpose                                            |
-|----------------------|--------------------------|----------------------------------------------------|
-| `GITLAB_VIM_DEBUG`   | `0` or `1` (default `0`) | Enable debugging output into `/tmp/gitlab.vim.log` |
-| `GITLAB_VIM_LOGGING` | `0` or `1` (default `1`) | Enable logging output into `/tmp/gitlab.vim.log`   |
+1. Create a new signed git tag off of the `main` branch.
 
 ## Features
 
@@ -116,7 +99,6 @@ Beta users should read about the [known limitations](https://docs.gitlab.com/ee/
 Languages supported by GitLab Duo Code Suggestions can be found in the [documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#supported-languages).
 
 #### Usage
-
 See [doc/gitlab.txt](./doc/gitlab.txt) or run `:help gitlab.txt` to read usage information without leaving your editor.
 
 If you get `E149: Sorry, no help for gitlab.txt` you will need to generate helptags before restarting Vim using either:
@@ -147,4 +129,12 @@ This extension is open source and [hosted on GitLab](https://gitlab.com/gitlab-o
 
 [A list of the great people](./CONTRIBUTORS.md) who contributed this project, and made it even more awesome, is available. Thank you all! 🎉
 
+- @erran
+- @ashmckenzie
+
+## License
+
+See [LICENSE](./LICENSE).
+
+[language server]: http://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment "GitLab Code Suggestions language server"
 [Personal Access Token]: https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account "Enable GitLab Duo Code Suggestions with a Personal Access Token"

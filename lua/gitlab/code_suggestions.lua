@@ -16,6 +16,10 @@ function code_suggestions.bootstrap()
 end
 
 function code_suggestions.check_personal_access_token()
+  if code_suggestions._checked_pat ~= nil then
+    return code_suggestions._checked_pat
+  end
+
   code_suggestions.statusline.update_status_line(globals.GCS_CHECKING)
 
   local token_check_cmd = code_suggestions.token_check_cmd()
@@ -27,29 +31,19 @@ function code_suggestions.check_personal_access_token()
 
   code_suggestions.logging.debug(string.format("Using '%s'", token_check_cmd[1]))
 
-  utils.exec_cmd(token_check_cmd, function(result)
-    if result.exit_code == 0 then
-      code_suggestions.statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
-      utils.print(result.stdout)
-      code_suggestions.logging.info(result.stdout)
+  local out = vim.fn.system(token_check_cmd)
+  if vim.v.shell_error == 0 then
+    code_suggestions._checked_pat = true
+    code_suggestions.statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
+    return true
+  end
 
-      return true
-    end
-
-    code_suggestions.statusline.update_status_line(globals.GCS_UNAVAILABLE)
-
-    local msg = string.format(
-      'Error detected, stdout=[%s], stderr=[%s], code=[%s]',
-      result.stdout,
-      result.stderr,
-      result.exit_code
-    )
-
-    utils.print(msg)
-    code_suggestions.logging.error(msg)
-
-    return false
-  end)
+  vim.notify(
+    string.format('[gitlab.code_suggestions] Output from token check command: %s', tostring(out)),
+    vim.log.levels.WARN
+  )
+  code_suggestions.statusline.update_status_line(globals.GCS_UNAVAILABLE)
+  return false
 end
 
 function code_suggestions.install_language_server()
@@ -195,25 +189,33 @@ function code_suggestions.setup(logging, statusline, options)
   if code_suggestions.options.enabled then
     vim.api.nvim_create_user_command('GitLabCodeSuggestionsStart', code_suggestions.start, {})
     vim.api.nvim_create_user_command('GitLabCodeSuggestionsStop', code_suggestions.stop, {})
+
     vim.api.nvim_create_autocmd({ 'FileType' }, {
       pattern = code_suggestions.options.auto_filetypes,
-      callback = function()
-        if not code_suggestions.check_personal_access_token() then
-          return
-        end
+      callback = code_suggestions.start,
+    })
 
-        code_suggestions.start()
-      end,
-    })
-    vim.api.nvim_create_autocmd({ 'CompleteDonePre' }, {
-      callback = function()
-        vim.cmd([[s/\%x00/\r/ge]])
-      end,
-    })
+    if code_suggestions.options.fix_newlines then
+      vim.api.nvim_create_autocmd({ 'CompleteDonePre' }, {
+        callback = function()
+          vim.cmd([[s/\%x00/\r/ge]])
+        end,
+      })
+    end
   end
 end
 
 function code_suggestions.start()
+  if not code_suggestions.check_personal_access_token() then
+    vim.notify(
+      string.format(
+        '[gitlab.code_suggestions]: not starting LSP client since personal access token check failed'
+      ),
+      vim.log.levels.WARN
+    )
+    return
+  end
+
   vim.lsp.start({
     name = 'gitlab_code_suggestions',
     cmd = code_suggestions.lsp_cmd({
