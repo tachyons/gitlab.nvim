@@ -54,6 +54,16 @@ rm ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
 rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
 ```
 
+### Troubleshooting
+
+1. Setup helptags using `:helptags ALL` for access to [:help gitlab.txt](doc/gitlab.txt).
+
+1. Confirm the language server is executable outside of vim.
+
+1. Enable debug logging to `/tmp/gitlab.vim.log` environment variables defined under `:help gitlab-env`.
+
+1. Confirm whether you face the same issues when starting a fresh Neovim session with `nvim --clean` and sourcing the minimal [spec/init.lua](./spec/init.lua).
+
 ## Features
 
 ### GitLab Duo Code Suggestions (Beta)
