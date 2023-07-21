@@ -1,5 +1,12 @@
 stages:
+  - lint
   - test
+  - release
+
+include:
+  - project: 'gitlab-org/security-products/ci-templates'
+    ref: 'master'
+    file: '/includes-dev/upsert-git-tag.yml'
 
 default:
   image: alpine:3.18
@@ -9,8 +16,20 @@ test:
   - apk add make git neovim
   - git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
   - make test
+  stage: test
 
 lint:
   script:
   - apk add make luacheck stylua
   - make lint
+  stage: lint
+
+upsert git tag:
+  # Limit job execution to authorized users.
+  environment:
+    name: production
+    url: https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/releases/$CI_COMMIT_REF_SLUG
+  when: manual
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  stage: release
