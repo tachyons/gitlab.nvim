@@ -34,7 +34,9 @@ function code_suggestions.check_personal_access_token()
   local out = vim.fn.system(token_check_cmd)
   if vim.v.shell_error == 0 then
     code_suggestions.statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
-    vim.notify(out)
+    vim.notify(
+      string.format('[gitlab.code_suggestions] Output from token check command: %s', tostring(out))
+    )
 
     code_suggestions._checked_pat = true
     return true
@@ -205,7 +207,12 @@ end
 
 function code_suggestions.start()
   if not code_suggestions.check_personal_access_token() then
-    vim.notify(string.format('[gitlab.code_suggestions]: not starting LSP client since personal access token check failed'), vim.log.levels.WARN)
+    vim.notify(
+      string.format(
+        '[gitlab.code_suggestions]: not starting LSP client since personal access token check failed'
+      ),
+      vim.log.levels.WARN
+    )
     return
   end
 
