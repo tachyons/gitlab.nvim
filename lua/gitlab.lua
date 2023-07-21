@@ -2,6 +2,7 @@ local gitlab = {
   initialized = false,
   globals = require('gitlab.globals'),
   defaults = {
+    url = 'https://gitlab.com',
     logging = {
       debug = vim.env.GITLAB_VIM_DEBUG == '1',
       enabled = vim.env.GITLAB_VIM_LOGGING ~= '0',
@@ -19,6 +20,10 @@ local gitlab = {
     },
   },
 }
+
+function gitlab.url()
+  return vim.env.GITLAB_VIM_URL or gitlab.options.url
+end
 
 function gitlab.init(options)
   if not gitlab.initialized then

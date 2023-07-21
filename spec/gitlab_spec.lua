@@ -33,6 +33,43 @@ describe('gitlab', function()
     end)
   end)
 
+  describe('url', function()
+    describe('default', function()
+      it('returns https://gitlab.com', function()
+        local expected = 'https://gitlab.com'
+
+        gitlab.init({})
+
+        assert.are.same(expected, gitlab.url())
+      end)
+    end)
+
+    describe('customized', function()
+      it('supports url being set via options', function()
+        local expected = 'https://options-based.gitlab.instance'
+
+        gitlab.init({
+          url = expected,
+        })
+
+        assert.are.same(expected, gitlab.url())
+      end)
+
+      it('supports url being set via the GITLAB_VIM_URL env var', function()
+        local original = vim.env.GITLAB_VIM_URL
+        local expected = 'https://env-based.gitlab.instance'
+
+        vim.env.GITLAB_VIM_URL = expected
+
+        gitlab.init({})
+
+        assert.are.same(expected, gitlab.url())
+
+        vim.env.GITLAB_VIM_URL = original
+      end)
+    end)
+  end)
+
   describe('setup', function()
     before_each(function()
       stub(utils, 'print')
