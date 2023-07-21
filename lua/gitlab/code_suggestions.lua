@@ -29,7 +29,9 @@ function code_suggestions.check_personal_access_token()
     return false
   end
 
-  code_suggestions.logging.debug(string.format("Using '%s'", token_check_cmd[1]))
+  code_suggestions.logging.debug(
+    string.format("Using '%s' with GitLab URL '%s'", token_check_cmd[1], code_suggestions.url)
+  )
 
   local out = vim.fn.system(token_check_cmd)
   if vim.v.shell_error == 0 then
@@ -179,7 +181,8 @@ function code_suggestions.register_personal_access_token()
   end
 end
 
-function code_suggestions.setup(logging, statusline, options)
+function code_suggestions.setup(url, logging, statusline, options)
+  code_suggestions.url = url
   code_suggestions.logging = logging
   code_suggestions.options = options or {}
   code_suggestions.statusline = statusline
@@ -255,7 +258,7 @@ function code_suggestions.stop()
 end
 
 function code_suggestions.token_check_cmd()
-  return code_suggestions.lsp_cmd({ 'token', 'check' })
+  return code_suggestions.lsp_cmd({ 'token', 'check', '--gitlab-url', code_suggestions.url })
 end
 
 return code_suggestions

@@ -3,6 +3,7 @@ local mock = require('luassert.mock')
 local stub = require('luassert.stub')
 
 describe('gitlab.code_suggestions', function()
+  local url = 'https://a.gitlab.instance'
   local code_suggestions = require('gitlab.code_suggestions')
   local logging = require('gitlab.logging')
   local statusline = require('gitlab.statusline')
@@ -51,13 +52,13 @@ describe('gitlab.code_suggestions', function()
     end)
 
     it('configures logging', function()
-      code_suggestions.setup(logging, statusline, {})
+      code_suggestions.setup(url, logging, statusline, {})
 
       assert.same(code_suggestions.logging, logging)
     end)
 
     it('registers GitLabCodeSuggestions user commands', function()
-      code_suggestions.setup(logging, statusline, { enabled = true })
+      code_suggestions.setup(url, logging, statusline, { enabled = true })
 
       assert
         .stub(vim.api.nvim_create_user_command).was
@@ -65,7 +66,7 @@ describe('gitlab.code_suggestions', function()
     end)
 
     it('skips GitLabCodeSuggestions user commands', function()
-      code_suggestions.setup(logging, statusline, { enabled = false })
+      code_suggestions.setup(url, logging, statusline, { enabled = false })
 
       assert
         .stub(vim.api.nvim_create_user_command).was_not
@@ -84,10 +85,14 @@ describe('gitlab.code_suggestions', function()
 
   describe('token_check_cmd', function()
     it('returns the token check command', function()
+      code_suggestions.setup(url, logging, statusline, {})
+
       assert.same({
         '/fake/gitlab-code-suggestions-language-server-experiment-fakeOS-fakeArch',
         'token',
         'check',
+        '--gitlab-url',
+        'https://a.gitlab.instance',
       }, code_suggestions.token_check_cmd())
     end)
   end)

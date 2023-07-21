@@ -60,12 +60,11 @@ function gitlab.setup(options)
 
   if gitlab.options.code_suggestions.enabled then
     gitlab.code_suggestions.setup(
+      gitlab.url(),
       gitlab.logging,
       gitlab.statusline,
       gitlab.options.code_suggestions
     )
-
-    gitlab.code_suggestions.check_personal_access_token()
   else
     gitlab.statusline.update_status_line(gitlab.globals.GCS_UNAVAILABLE)
   end
