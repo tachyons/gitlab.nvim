@@ -35,7 +35,7 @@ To enable completion using Code Suggestions:
 1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
 
    1. Enable Code Suggestions for your GitLab group/user.
-   1. Create a [Personal Access Token][] with the `api` scope.
+   1. Create a [Personal Access Token][] with the `read_api` scope.
    1. Install the GitLab Duo Code Suggestions [language server][].
    1. Configure [Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes)'s popup menu:
 
