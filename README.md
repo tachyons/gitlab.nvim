@@ -50,19 +50,22 @@ To enable completion using Code Suggestions:
 To uninstall run the following commands:
 
 ```
-rm ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
+rm -r ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
 rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
 ```
 
 ### Troubleshooting
 
-1. Setup helptags using `:helptags ALL` for access to [:help gitlab.txt](doc/gitlab.txt).
-
-1. Confirm the language server is executable outside of vim.
-
+1. Make sure your GitLab personal access token has the correct (`api`) scope and is unexpired.
+1. Setup helptags using `:helptags ALL` for access to [`:help gitlab.txt`](doc/gitlab.txt).
+1. Confirm the language server is active by entering `:lua =vim.lsp.get_active_clients()` in the neovim command line and inspecting the output.
+1. Look at the language server logs in `~/.local/state/nvim/lsp.log`
 1. Enable debug logging to `/tmp/gitlab.vim.log` environment variables defined under `:help gitlab-env`.
-
-1. Confirm whether you face the same issues when starting a fresh Neovim session with `nvim --clean` and sourcing the minimal [spec/init.lua](./spec/init.lua).
+1. Confirm whether you face the same issues when starting a fresh Neovim session with `nvim --clean` and sourcing the minimal config from the neovim command line:
+  1. `:lua vim.opt.rtp:append('$HOME/.local/share/nvim/site/pack/gitlab/start/gitlab.vim')`
+  1. `lua require'gitlab'.setup({})`
+  1. `GitLabBootstrapCodeSuggestions`
+  1. `GitLabCodeSuggestionsStart`
 
 ### Release Process
 
