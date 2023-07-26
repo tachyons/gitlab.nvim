@@ -1,10 +1,6 @@
 local utils = {}
-
-local utils_vim = require('gitlab.utils_vim')
-
-function utils.user_data_path()
-  return utils_vim.fn.stdpath('data')
-end
+local fn = vim.fn
+local loop = vim.loop
 
 function utils.print(m)
   if m == '' then
@@ -23,15 +19,11 @@ function utils.formatted_line_for_print(m)
 end
 
 function utils.current_os()
-  local res = utils_vim.fn.system({ 'uname', '-s' })
-  res = string.gsub(res, '%s+', '')
-
-  return string.lower(res)
+  return string.lower(loop.os_uname().sysname)
 end
 
 function utils.current_arch()
-  local res = utils_vim.fn.system({ 'uname', '-m' })
-  res = string.gsub(res, '%s+', '')
+  local res = loop.os_uname().machine
 
   if res == 'arm64' then
     res = 'amd64'
@@ -40,15 +32,11 @@ function utils.current_arch()
   return string.lower(res)
 end
 
-function utils.path_exists(path)
-  return utils_vim.loop.fs_stat(path)
-end
-
-function utils.exec_cmd(cmd, fn)
+function utils.exec_cmd(cmd, callback)
   local stdout = ''
   local stderr = ''
 
-  return utils_vim.fn.jobstart(cmd, {
+  return fn.jobstart(cmd, {
     on_stdout = function(_job_id, data, _event)
       stdout = stdout .. '\n' .. vim.fn.join(data)
       stdout = vim.trim(stdout)
@@ -71,24 +59,9 @@ function utils.exec_cmd(cmd, fn)
         )
       end
 
-      fn(result)
+      callback(result)
     end,
   })
-end
-
-function utils.dump(o)
-  if type(o) == 'table' then
-    local s = '{ '
-    for k, v in pairs(o) do
-      if type(k) ~= 'number' then
-        k = '"' .. k .. '"'
-      end
-      s = s .. '[' .. k .. '] = ' .. utils.dump(v) .. ','
-    end
-    return s .. '} '
-  else
-    return tostring(o)
-  end
 end
 
 return utils

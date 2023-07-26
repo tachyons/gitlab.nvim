@@ -137,7 +137,7 @@ function code_suggestions.lsp_binary_path()
   local basename = 'gitlab-code-suggestions-language-server-experiment'
   local filename = basename .. '-' .. os .. '-' .. arch
 
-  return string.format('%s/%s', utils.user_data_path(), filename)
+  return string.format('%s/%s', vim.fn.stdpath('data'), filename)
 end
 
 function code_suggestions.lsp_cmd(subcommand)

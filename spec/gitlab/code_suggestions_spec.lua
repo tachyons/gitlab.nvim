@@ -12,12 +12,11 @@ describe('gitlab.code_suggestions', function()
   local stubbed_utils_print_output = ''
 
   before_each(function()
+    vim.env.XDG_DATA_HOME = '/fake'
+
     stub(vim.fn, 'system')
     logging.setup({ enabled = false })
 
-    utils_stub.user_data_path = function()
-      return '/fake'
-    end
     utils_stub.current_os = function()
       return 'fakeOS'
     end
@@ -77,7 +76,7 @@ describe('gitlab.code_suggestions', function()
   describe('lsp_binary_path', function()
     it('returns full path to the LSP binary', function()
       assert.equal(
-        '/fake/gitlab-code-suggestions-language-server-experiment-fakeOS-fakeArch',
+        '/fake/nvim/gitlab-code-suggestions-language-server-experiment-fakeOS-fakeArch',
         code_suggestions.lsp_binary_path()
       )
     end)
@@ -88,7 +87,7 @@ describe('gitlab.code_suggestions', function()
       code_suggestions.setup(url, logging, statusline, {})
 
       assert.same({
-        '/fake/gitlab-code-suggestions-language-server-experiment-fakeOS-fakeArch',
+        '/fake/nvim/gitlab-code-suggestions-language-server-experiment-fakeOS-fakeArch',
         'token',
         'check',
         '--gitlab-url',
