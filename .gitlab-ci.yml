@@ -7,20 +7,24 @@ include:
   - project: 'gitlab-org/security-products/ci-templates'
     ref: 'master'
     file: '/includes-dev/upsert-git-tag.yml'
+  - template: Jobs/SAST.gitlab-ci.yml
+  - template: Jobs/Dependency-Scanning.gitlab-ci.yml
+  - template: Jobs/Secret-Detection.gitlab-ci.yml
+  - template: Jobs/License-Scanning.gitlab-ci.yml
 
 default:
   image: alpine:3.18
 
 test:
   script:
-  - apk add make git neovim
-  - make test
+    - apk add make git neovim
+    - make test
   stage: test
 
 lint:
   script:
-  - apk add make luacheck stylua
-  - make lint
+    - apk add make luacheck stylua
+    - make lint
   stage: lint
 
 upsert git tag:
