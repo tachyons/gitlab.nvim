@@ -1,5 +1,7 @@
 # GitLab Plugin for Neovim
 
+[[_TOC_]]
+
 A Lua based plugin for Neovim that offers [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html).
 
 All feedback can be submitted in the [[Feedback] GitLab for Neovim](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22) issue.
@@ -16,70 +18,62 @@ If you're interested in contributing check out the [development process](docs/de
 
 ## Setup
 
-### Getting started
-
-1. Install the [latest Neovim release](https://github.com/neovim/neovim/releases/latest)
-
-    - For macOS, this can be achieved by running `brew install neovim`
-
-1. Clone this repository into `~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim`
-
-    ```sh
-    git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
-    ```
-
 1. Setup helptags using `:helptags ALL` for access to [:help gitlab.txt](doc/gitlab.txt).
 
-To enable completion using Code Suggestions:
+### Installation
 
-1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
+To use a manually install the plugin:
 
-   1. Enable Code Suggestions for your GitLab group/user.
-   1. Create a [Personal Access Token][] with the `api` scope.
-   1. Install the GitLab Duo Code Suggestions [language server][].
-   1. Configure [Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes)'s popup menu:
+1. Clone this repository into your `pack` directory:
 
-      ```lua
-      vim.o.completeopt = 'menu,menuone'
+   ```sh
+   git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
+   ```
+
+Bring your own plugin manager:
+
+1. Any plugin manager that can install from a HTTPS git repository should be able to install this project.
+
+#### Uninstalling
+
+1. Manual installation:
+   1. Clone this repository into your `pack` directory:
+
+      ```sh
+      rm -r ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
+      rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
       ```
 
-   1. Use `ctrl-x ctrl-o` to open the Omni completion popup menu inside of supported filetypes.
+### Omni completion
 
-### Uninstalling
+To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) using GitLab Duo Code Suggestions:
 
-To uninstall run the following commands:
+1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
+1. Enable Code Suggestions for your GitLab group/user.
+1. Create a [Personal Access Token][] with the `api` scope.
+1. Install the GitLab Duo Code Suggestions [language server][].
 
-```
-rm -r ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
-rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
-```
+You may find it helpful to configure omni completion's popup menu even for a single suggestion:
+
+   ```lua
+   vim.o.completeopt = 'menu,menuone'
+   ```
+
+1. Use `ctrl-x ctrl-o` to open the Omni completion popup menu inside of supported filetypes.
+
+### Keymaps
+
+| Module             | Key Bindings     | Mode           | Description                                                                        |
+| ------------------ | ---------------- | -------------- | ---------------------------------------------------------------------------------- |
+| `code_suggestions` |  `ctrl-x ctrl-o` | `NORMAL`       | Requests completions from GitLab Duo Code Suggestions through the language server. |
+
+### Statusline
+
+Enabling `gitlab.statusline` will indicate the status of the GitLab Duo Code Suggestions integration.
 
 ### Troubleshooting
 
-1. Make sure your GitLab personal access token has the correct (`api`) scope and is unexpired.
-1. Setup helptags using `:helptags ALL` for access to [`:help gitlab.txt`](doc/gitlab.txt).
-1. Confirm the language server is active by entering `:lua =vim.lsp.get_active_clients()` in the neovim command line and inspecting the output.
-1. Look at the language server logs in `~/.local/state/nvim/lsp.log`
-1. Enable debug logging to `/tmp/gitlab.vim.log` environment variables defined under `:help gitlab-env`.
-1. Confirm whether you face the same issues when starting a fresh Neovim session with `nvim --clean` and sourcing the minimal config from the neovim command line:
-  1. `:lua vim.opt.rtp:append('$HOME/.local/share/nvim/site/pack/gitlab/start/gitlab.vim')`
-  1. `lua require'gitlab'.setup({})`
-  1. `GitLabBootstrapCodeSuggestions`
-  1. `GitLabCodeSuggestionsStart`
-
-### Release Process
-
-1. Review whether each merge request since the last release has/requires a changelog entry.
-
-1. Create a new merge request to increment the plugin version.
-
-   1. Update `PLUGIN_VERSION` in [lua/gitlab/globals.lua](./lua/gitlab/globals.lua).
-
-   1. Add a new `## vX.Y.Z` header above the previous [CHANGELOG.md](./CHANGELOG.md) entry.
-
-1. Merge the merge request once it has been approved.
-
-1. Create a new signed git tag off of the `main` branch.
+For help troubleshooting please refer to the [troubleshooting guide](docs/developer/troubleshooting.md).
 
 ## Features
 
@@ -101,22 +95,21 @@ Beta users should read about the [known limitations](https://docs.gitlab.com/ee/
 
 Languages supported by GitLab Duo Code Suggestions can be found in the [documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#supported-languages).
 
-#### Usage
-See [doc/gitlab.txt](./doc/gitlab.txt) or run `:help gitlab.txt` to read usage information without leaving your editor.
+For languages not included in the [lua/gitlab.lua]
 
-If you get `E149: Sorry, no help for gitlab.txt` you will need to generate helptags before restarting Vim using either:
+## Release Process
 
-* `:helptags ALL`
-* `:helptags doc/` from inside the plugin's root directory.
+1. Review whether each merge request since the last release has/requires a changelog entry.
 
-##### Keymaps
+1. Create a new merge request to increment the plugin version.
 
-If using `gitlab.code_suggestions` with the builtin LSP client and Omni completion:
-- `ctrl-x ctrl-o` requests completions from GitLab Duo Code Suggestions
+   1. Update `PLUGIN_VERSION` in [lua/gitlab/globals.lua](./lua/gitlab/globals.lua).
 
-#### Statusline
+   1. Add a new `## vX.Y.Z` header above the previous [CHANGELOG.md](./CHANGELOG.md) entry.
 
-Enabling `gitlab.statusline` will indicate the status of the GitLab Duo Code Suggestions integration.
+1. Merge the merge request once it has been approved.
+
+1. Create a new signed git tag off of the `main` branch.
 
 ## Issues
 
