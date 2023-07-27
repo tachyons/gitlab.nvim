@@ -143,7 +143,7 @@ end
 function code_suggestions.lsp_cmd(subcommand)
   local lsp_binary_path = code_suggestions.lsp_binary_path()
 
-  if lsp_binary_path == '' or not utils.path_exists(lsp_binary_path) then
+  if lsp_binary_path == '' or not vim.loop.fs_stat(lsp_binary_path) then
     local msg = string.format("[gitlab.code_suggestions] '%s' does not exist?", lsp_binary_path)
     vim.notify(msg, vim.log.levels.WARN)
     vim.notify(
