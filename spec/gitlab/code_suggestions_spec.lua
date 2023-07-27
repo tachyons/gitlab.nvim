@@ -15,6 +15,7 @@ describe('gitlab.code_suggestions', function()
     vim.env.XDG_DATA_HOME = '/fake'
 
     stub(vim.fn, 'system')
+    stub(vim.loop, 'fs_stat').returns(true)
     logging.setup({ enabled = false })
 
     utils_stub.current_os = function()
@@ -26,9 +27,6 @@ describe('gitlab.code_suggestions', function()
     utils_stub.print = function(_str)
       return nil
     end
-    utils_stub.path_exists = function(_path)
-      return true
-    end
     utils_stub.exec_cmd = function(_cmd, fn)
       local result = { exit_code = 0, stdout = stubbed_utils_print_output, stderr = '', msg = '' }
       fn(result)
@@ -38,6 +36,7 @@ describe('gitlab.code_suggestions', function()
   after_each(function()
     mock.revert(utils_stub)
     vim.fn.system:revert()
+    vim.loop.fs_stat:revert()
     code_suggestions._checked_pat = nil
   end)
 
