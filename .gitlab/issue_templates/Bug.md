@@ -13,12 +13,17 @@ and verify the issue you're about to submit isn't a duplicate.
 
 <!-- Please test the latest versions, that will remove the possibility that you see a bug that is fixed in a newer version. -->
 
-- [ ] I'm using the latest version of the extension
-  - Extension version: _Put your extension version here_
-- [ ] Version of Neovim I'm using:
-  - Neovim Version: _Put your version here_
-- [ ] I'm using a supported version of GitLab ([see README for the supported version](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/blob/main/README.md#minimum-supported-version))
-  - GitLab version: _Put your GitLab version here, or say "happens on `gitlab.com`"_
+- [ ] I have filled in the following environment details table with versions that should meet this extension's [requirements](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/blob/main/README.md#requirements):
+  | Requirement        | Version             |
+  |--------------------|---------------------|
+  | GitLab             | _Say "happens on `gitlab.com`" or put your GitLab version here_ |
+  | Neovim             | `YOUR VERSION HERE` |
+  | gitlab.vim         | git branch/tag/commit: `YOUR VERSION HERE` |
+- [ ] I have fetched and checked out the latest remote changes for the `gitlab.vim` plugin.
+- [ ] I do not have any local changes to the `gitlab.vim` plugin.
+- [ ] I have read the [troubleshooting guide](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/blob/main/docs/developer/troubleshooting.md).
+- [ ] I have attached the relevant logs below.
+- [ ] I have attached or described a minimal configuration which reproduces the issue.
 
 ### Summary
 
@@ -42,4 +47,4 @@ and verify the issue you're about to submit isn't a duplicate.
 
 <!-- If you can, link to the line of code that might be responsible for the problem -->
 
-/label ~"type::bug" ~"devops::create" ~"group::code review" ~"Category:Editor Extension"
+/label ~"type::bug" ~"devops::create" ~"group::code review" ~"Category:Editor Extension" ~"Editor Extensions::NeoVim"
