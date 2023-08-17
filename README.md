@@ -18,21 +18,38 @@ If you're interested in contributing check out the [development process](docs/de
 
 ## Setup
 
+1. Follow the [installation](#installation) steps for your chosen plugin manager.
+
+   1. _Optional:_ Configure GitLab Duo Code Suggestions as an [Omni completion](#omni-completion) provider.
+
 1. Setup helptags using `:helptags ALL` for access to [:help gitlab.txt](doc/gitlab.txt).
 
 ### Installation
 
-To use a manually install the plugin:
+To install the GitLab Vim plugin:
 
-1. Clone this repository into your `pack` directory:
+1. Clone Neovim's packpath which is included by [packadd][] on startup.
 
    ```sh
    git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
    ```
 
-Bring your own plugin manager:
+1. Add the following plugin to your [lazy.nvim][] configuration:
 
-1. Any plugin manager that can install from a HTTPS git repository should be able to install this project.
+   ```lua
+   {
+     url = "git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git",
+     lazy = false,
+   }
+   ```
+
+1. Declare the plugin in your [packer.nvim][] configuration:
+
+   ```lua
+   use {
+     "git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git",
+   }
+   ```
 
 #### Uninstalling
 
@@ -48,7 +65,7 @@ Bring your own plugin manager:
 
 To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) using GitLab Duo Code Suggestions:
 
-1. Follow the steps to enable [Code Suggestions (Beta)](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
+1. Follow the steps to enable [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
 1. Enable Code Suggestions for your GitLab group/user.
 1. Create a [Personal Access Token][] with the `api` scope.
 1. Install the GitLab Duo Code Suggestions [language server][].
@@ -95,7 +112,13 @@ Beta users should read about the [known limitations](https://docs.gitlab.com/ee/
 
 Languages supported by GitLab Duo Code Suggestions can be found in the [documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#supported-languages).
 
-For languages not included in the [lua/gitlab.lua]
+For convenience a `code_suggestions.auto_filetypes` default value can be used to configure starting Code Suggestions when you a buffer with the correct type is opened.
+
+Run the following command `FileType` autocmds for:
+
+```
+:lua =require('gitlab').defaults.code_suggestions.auto_filetypes
+```
 
 ## Release Process
 
@@ -126,5 +149,8 @@ This extension is open source and [hosted on GitLab](https://gitlab.com/gitlab-o
 
 See [LICENSE](./LICENSE).
 
-[language server]: http://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment "GitLab Code Suggestions language server"
 [Personal Access Token]: https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account "Enable GitLab Duo Code Suggestions with a Personal Access Token"
+[language server]: http://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment "GitLab Code Suggestions language server"
+[lazy.nvim]: https://github.com/folke/lazy.nvim
+[packadd]: https://neovim.io/doc/user/repeat.html#%3Apackadd
+[packer.nvim]: https://github.com/wbthomason/packer.nvim
