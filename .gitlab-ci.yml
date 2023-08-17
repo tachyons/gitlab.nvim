@@ -1,4 +1,5 @@
 stages:
+  - documentation
   - lint
   - test
   - package
@@ -15,6 +16,15 @@ include:
 
 default:
   image: alpine:3.18
+
+check_docs_markdown:
+  stage: documentation
+  image: registry.gitlab.com/gitlab-org/gitlab-docs/lint-markdown:alpine-3.16-vale-2.20.1-markdownlint-0.32.2
+  script:
+    # Lint prose
+    - vale --minAlertLevel error docs README.md CONTRIBUTING.md CHANGELOG.md
+    # Lint Markdown
+    - markdownlint --config .markdownlint.yml 'docs/**/*.md' *.md
 
 test:
   script:

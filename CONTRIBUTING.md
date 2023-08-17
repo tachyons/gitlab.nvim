@@ -1,4 +1,6 @@
-# Developer Certificate of Origin + License
+# Contributing to the GitLab Neovim Plugin
+
+## Developer Certificate of Origin + License
 
 By contributing to GitLab B.V., You accept and agree to the following terms and
 conditions for Your present and future Contributions submitted to GitLab B.V.
@@ -16,8 +18,6 @@ repository is licensed under Creative Commons:
 _This notice should stay as the first item in the CONTRIBUTING.md file._
 
 ---
-
-## Contributing to the GitLab Neovim Plugin
 
 Thank you for your interest in contributing to the GitLab Plugin for Neovim! This guide details how to contribute
 to this plugin in a way that is easy for everyone. These are mostly guidelines, not rules.
@@ -39,7 +39,7 @@ Create a [new issue from the "Feature Proposal" template](https://gitlab.com/git
 
 ### Your First Code Contribution?
 
-For newcomers to the project, you can take a look at issues labelled as `Accepting merge requests`
+For newcomers to the project, you can take a look at issues labeled as `Accepting merge requests`
 as available [here](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues?label_name[]=Accepting%20merge%20requests).
 
 ### Configuring Development Environment

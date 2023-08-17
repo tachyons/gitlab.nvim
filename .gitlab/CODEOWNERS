@@ -2,3 +2,7 @@
 
 [Maintainers]
 * @erran @ashmckenzie
+
+^[Documentation Pages]
+/*.md @aqualls
+/docs/ @aqualls
