@@ -1,27 +1,27 @@
 # Development Process
 
 1. Install `git` to clone plenary and this project.
-2. Install `neovim`.
-3. Clone plenary.vim through your plugin manager of choice:
+1. Install `neovim`.
+1. Clone plenary.vim through your plugin manager of choice:
 
    - Manual installation:
 
-     ```sh
+     ```shell
      git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
      ```
 
-5. Use [`plenary.test_harness`](https://github.com/nvim-lua/plenary.nvim#plenarytest_harness) to run tests:
+1. Use [`plenary.test_harness`](https://github.com/nvim-lua/plenary.nvim#plenarytest_harness) to run tests:
 
    - On the command line:
 
-     ```sh
+     ```shell
      make test
      make test SPEC=spec/gitlab/code_suggestions_spec.lua
      ```
 
    - Inside of Neovim:
 
-     ```sh
+     ```shell
      :PlenaryBustedDirectory spec/
      :PlenaryBustedFile spec/gitlab/code_suggestions_spec.lua
      ```
@@ -30,5 +30,5 @@ If you encounter issues running inside of your Neovim install you can use the ma
 
 ## Documentation
 
-New lua modules and Vim options/commands should be documented in [doc/gitlab.txt](/doc/gitlab.txt).
+New lua modules and Vim options/commands should be documented in [`doc/gitlab.txt`](/doc/gitlab.txt).
 Refer to this [Vim helpfiles cheatsheet](https://devhints.io/vim-help) for help formatting your docs.
