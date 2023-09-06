@@ -12,8 +12,26 @@ local gitlab = {
     },
     code_suggestions = {
       auto_filetypes = {
-        'python',
-        'ruby',
+        'c', -- C
+        'cpp', -- C++
+        'csharp', -- C#
+        'go', -- Golang
+        'java', -- Java
+        'javascript', -- JavaScript
+        'javascriptreact', -- JavaScript React
+        'kotlin', -- Kotlin
+        'objective-c', -- Objective-C
+        'objective-cpp', -- Objective-C++
+        'php', -- PHP
+        'python', -- Python
+        'ruby', -- Ruby
+        'rust', -- Rust
+        'scala', -- Scala
+        'sql', -- SQL
+        'swift', -- Swift
+        'terraform', -- Terraform
+        'typescript', -- TypeScript
+        'typescriptreact', -- TypeScript React
       },
       enabled = true,
       fix_newlines = true,
