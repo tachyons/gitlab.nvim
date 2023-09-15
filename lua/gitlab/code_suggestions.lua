@@ -229,6 +229,8 @@ function code_suggestions.start()
       'test',
       '--srcdir',
       vim.fn.getcwd(),
+      '--gitlab-url',
+      code_suggestions.url,
       '--timeout-seconds',
       '100',
     }),
