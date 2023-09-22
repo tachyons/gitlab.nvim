@@ -10,6 +10,3 @@ vim.cmd('runtime plugin/plenary.vim')
 
 -- Add this plugin to the runtimepath
 vim.opt.rtp:append('.')
-
--- Disable plugin loading outside of specs.
-vim.g.gitlab_autoload = false

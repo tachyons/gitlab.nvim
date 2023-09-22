@@ -32,11 +32,10 @@ function utils.current_arch()
   return string.lower(res)
 end
 
-function utils.exec_cmd(cmd, callback)
+function utils.exec_cmd(cmd, job_opts, callback)
   local stdout = ''
   local stderr = ''
-
-  return fn.jobstart(cmd, {
+  local opts = {
     on_stdout = function(_job_id, data, _event)
       stdout = stdout .. '\n' .. vim.fn.join(data)
       stdout = vim.trim(stdout)
@@ -61,7 +60,14 @@ function utils.exec_cmd(cmd, callback)
 
       callback(result)
     end,
-  })
+  }
+  if job_opts ~= nil then
+    for k, v in pairs(job_opts) do
+      opts[k] = v
+    end
+  end
+
+  return fn.jobstart(cmd, opts)
 end
 
 return utils

@@ -32,9 +32,13 @@ test_file: | $(PLENARY_PATH)
 		-c "PlenaryBustedFile $(FILE)" \
 		-c cquit
 
+ifndef LINT_FILES
+override LINT_FILES = lua/ plugin/ spec/
+endif
+
 format:
 ifdef STYLUA
-	@${STYLUA} lua/ plugin/ spec/
+	@${STYLUA} ${LINT_FILES}
 else
 	$(error "${STYLUA_MISSING_ERROR}"}
 endif
@@ -43,14 +47,14 @@ lint: luacheck stylua
 
 luacheck:
 ifdef LUACHECK
-	${LUACHECK} lua/ plugin/ spec/
+	${LUACHECK} ${LINT_FILES}
 else
 	$(error "${LUACHECK_MISSING_ERROR}")
 endif
 
 stylua:
 ifdef STYLUA
-	${STYLUA} --check lua/ plugin/ spec/
+	${STYLUA} --check ${LINT_FILES}
 else
 	$(error "${STYLUA_ERROR}")
 endif

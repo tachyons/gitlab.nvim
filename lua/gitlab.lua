@@ -1,97 +1,11 @@
-local gitlab = {
-  initialized = false,
-  globals = require('gitlab.globals'),
-  defaults = {
-    url = 'https://gitlab.com',
-    logging = {
-      debug = vim.env.GITLAB_VIM_DEBUG == '1',
-      enabled = vim.env.GITLAB_VIM_LOGGING ~= '0',
-    },
-    statusline = {
-      enabled = true,
-    },
-    code_suggestions = {
-      auto_filetypes = {
-        'c', -- C
-        'cpp', -- C++
-        'csharp', -- C#
-        'go', -- Golang
-        'java', -- Java
-        'javascript', -- JavaScript
-        'javascriptreact', -- JavaScript React
-        'kotlin', -- Kotlin
-        'objective-c', -- Objective-C
-        'objective-cpp', -- Objective-C++
-        'php', -- PHP
-        'python', -- Python
-        'ruby', -- Ruby
-        'rust', -- Rust
-        'scala', -- Scala
-        'sql', -- SQL
-        'swift', -- Swift
-        'terraform', -- Terraform
-        'typescript', -- TypeScript
-        'typescriptreact', -- TypeScript React
-      },
-      enabled = true,
-      fix_newlines = true,
-      langauge_server_version = nil,
-      lsp_binary_path = vim.env.GITLAB_VIM_LSP_BINARY_PATH,
-    },
-  },
-}
+local gitlab = {}
 
-function gitlab.url()
-  return vim.env.GITLAB_VIM_URL or gitlab.options.url
+function gitlab.plugin_root()
+  return vim.fn.fnamemodify(debug.getinfo(1).source:sub(2), ':p:h:h')
 end
 
-function gitlab.init(options)
-  if not gitlab.initialized then
-    gitlab.options = vim.tbl_deep_extend('force', gitlab.defaults, options)
-    gitlab.options.code_suggestions = vim.tbl_deep_extend(
-      'force',
-      gitlab.defaults.code_suggestions,
-      gitlab.options.code_suggestions
-    )
-    gitlab.options.statusline =
-      vim.tbl_deep_extend('force', gitlab.defaults.statusline, gitlab.options.statusline)
-  end
-
-  gitlab.initialized = true
-
-  if not gitlab.logging then
-    gitlab.logging = require('gitlab.logging')
-  end
-
-  if not gitlab.statusline then
-    gitlab.statusline = require('gitlab.statusline')
-  end
-
-  if not gitlab.code_suggestions then
-    gitlab.code_suggestions = require('gitlab.code_suggestions')
-  end
-
-  return gitlab
-end
-
-function gitlab.setup(options)
-  gitlab.init(options)
-
-  gitlab.logging.setup(gitlab.options.logging)
-  gitlab.logging.info('Starting up...')
-
-  gitlab.statusline.setup(gitlab.options.statusline)
-
-  if gitlab.options.code_suggestions.enabled then
-    gitlab.code_suggestions.setup(
-      gitlab.url(),
-      gitlab.logging,
-      gitlab.statusline,
-      gitlab.options.code_suggestions
-    )
-  else
-    gitlab.statusline.update_status_line(gitlab.globals.GCS_UNAVAILABLE)
-  end
+function gitlab.setup(user_config)
+  require('gitlab.config').setup(user_config)
 end
 
 return gitlab

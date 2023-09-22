@@ -30,7 +30,7 @@ function M.setup()
       require('gitlab').setup({})
 
       if vim.env.LSP_INSTALLER == 'gitlab.vim' then
-        vim.cmd.GitLabBootstrapCodeSuggestions()
+        vim.cmd.GitLabCodeSuggestionsInstallLanguageServer()
       end
     end,
   })
