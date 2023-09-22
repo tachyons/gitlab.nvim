@@ -53,8 +53,7 @@ To install the GitLab Vim plugin:
 
 #### Uninstalling
 
-1. Manual installation:
-   1. Clone this repository into your `pack` directory:
+1. Remove this plugin and any language server binaries with the following commands
 
       ```shell
       rm -r ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
@@ -67,8 +66,13 @@ To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-fi
 
 1. Follow the steps to enable [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
 1. Enable Code Suggestions for your GitLab group/user.
-1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account) with the `api` scope.
-1. Install the GitLab Duo Code Suggestions [language server](http://gitlab.com/gitlab-org/editor-extensions/experiments/gitlab-code-suggestions-language-server-experiment).
+1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account) with the following scopes:
+
+   - `ai_features`
+   - `api`
+   - `read_api`
+
+1. Install the GitLab Duo Code Suggestions [language server](https://gitlab.com/gitlab-org/editor-extensions/gitlab-language-server-for-code-suggestions).
 
 You may find it helpful to configure omni completion's popup menu even for a single suggestion:
 
@@ -80,13 +84,22 @@ You may find it helpful to configure omni completion's popup menu even for a sin
 
 ### Keymaps
 
-| Module             | Key Bindings    | Mode     | Description                                                                        |
-|--------------------|-----------------|----------|------------------------------------------------------------------------------------|
-| `code_suggestions` | `ctrl-x ctrl-o` | `NORMAL` | Requests completions from GitLab Duo Code Suggestions through the language server. |
+| Type     | Key Bindings    | Mode     | Description                                                                        |
+|----------|-----------------|----------|------------------------------------------------------------------------------------|
+| Builtin  | `ctrl-x ctrl-o` | `NORMAL` | Requests completions from GitLab Duo Code Suggestions through the language server. |
+| `<Plug>` | `<Plug>(GitLabToggleCodeSuggestions)` | `NORMAL` | Toggles Code Suggestions for the current buffer on/off.      |
 
 ### Statusline
 
-Enabling `gitlab.statusline` will indicate the status of the GitLab Duo Code Suggestions integration.
+`gitlab.statusline` is enabled by default which hooks into the builtin `statusline` to indicate the status of the GitLab Duo Code Suggestions integration.
+
+```lua
+require('gitlab').setup({
+  statusline = {
+    enabled = false
+  }
+})
+```
 
 ### Troubleshooting
 
@@ -133,8 +146,7 @@ You can configure this behavior for additional filetypes through the `code_sugge
 
 ## Issues
 
-Report issues in the
-[feedback issue](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22).
+Looking to [report an issue](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues)?
 
 ## Contributing
 

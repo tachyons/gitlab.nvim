@@ -20,24 +20,11 @@ If you get `E149: Sorry, no help for gitlab.txt` you will need to generate helpt
 
 ### Enable debug logging
 
-Enable plugin log messages for `/tmp/gitlab.vim.log`:
-
-1. Environment variables
-
-   ```zsh
-   GITLAB_VIM_DEBUG=1 GITLAB_VIM_LOGGING=1 nvim your_file.rb
-   ```
-
-1. Passing arguments to `gitlab.setup({opts})`
+1. Set the `vim.lsp` log level in init.lua:
 
    ```lua
-   logging = {
-     enabled = true,
-     debug = true,
-   }`
+   vim.lsp.set_log_level('debug')
    ```
-
- `:help gitlab-env`
 
 ### Create a minimal reproduction
 
@@ -62,17 +49,9 @@ Outlined below are some steps you can take to help in troubleshooting an issue w
    
    vim.cmd('runtime plugin/gitlab.lua')
    
-   require('gitlab').setup({
-     -- Enable gitlab.vim's debug logging /tmp/gitlab.vim.log
-     logging = {
-       debug = true,
-       enabled = true,
-     },
-
-     code_suggestions = {
-       enabled = true,
-     },
-   })
+   -- gitlab.config options overrides:
+   local minimal_user_options = {}
+   require('gitlab').setup(minimal_user_options)
    ```
 
 1. Edit `hello.rb` under a minimal Neovim session:
@@ -83,7 +62,8 @@ Outlined below are some steps you can take to help in troubleshooting an issue w
 
 1. Attempt to reproduce the behavior you experienced.
    - Adjust minimal.lua or project files as needed.
-1. View recent entries in `/tmp/gitlab.vim.log`.
+1. View recent entries in `~/.local/state/nvim/lsp.log`.
+echo ~/.local/state/nvim/lsp.log
 
 ## Feature specific
 

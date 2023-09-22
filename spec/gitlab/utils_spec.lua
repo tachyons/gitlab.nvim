@@ -2,6 +2,19 @@ local mock = require('luassert.mock')
 local spy = require('luassert.spy')
 local match = require('luassert.match')
 
+assert:register('matcher', 'has_property', function(_state, arguments)
+  return function(value)
+    if value == nil then
+      return false
+    end
+
+    local actual = value[arguments[1]]
+    local expected = arguments[2]
+
+    return actual == expected
+  end
+end)
+
 describe('gitlab.utils', function()
   local utils = require('gitlab.utils')
 
@@ -44,9 +57,20 @@ describe('gitlab.utils', function()
 
       spy.on(vim.fn, 'jobstart')
 
-      utils.exec_cmd(job, function() end)
+      utils.exec_cmd(job, {}, function() end)
 
       assert.spy(vim.fn.jobstart).was_called_with(job, match.is_table())
+    end)
+
+    it('calls jobstart with the _right_ current working directory', function()
+      local job = "echo -n 'true'"
+
+      spy.on(vim.fn, 'jobstart')
+
+      local expected_cwd = debug.getinfo(1).source:match('@?(/.*/)utils_spec.lua')
+      utils.exec_cmd(job, { cwd = expected_cwd }, function() end)
+
+      assert.spy(vim.fn.jobstart).was_called_with(job, match.has_property('cwd', expected_cwd))
     end)
   end)
 end)

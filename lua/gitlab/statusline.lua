@@ -2,10 +2,6 @@ local statusline = {}
 
 local globals = require('gitlab.globals')
 
-function statusline.setup(options)
-  statusline.options = options
-end
-
 function statusline.status_line_for(state)
   local state_text = state or globals.GCS_UNKNOWN_TEXT
 
@@ -40,15 +36,20 @@ function statusline.state_label_for(state)
     return globals.GCS_AVAILABLE_BUT_DISABLED_TEXT
   elseif state == globals.GCS_CHECKING then
     return globals.GCS_CHECKING_TEXT
+  elseif state == globals.GCS_INSTALLED then
+    return globals.GCS_INSTALLED_TEXT
   elseif state == globals.GCS_UNAVAILABLE then
     return globals.GCS_UNAVAILABLE_TEXT
+  elseif state == globals.GCS_UPDATED then
+    return globals.GCS_UPDATED_TEXT
   else
     return globals.GCS_UNKNOWN_TEXT
   end
 end
 
 function statusline.update_status_line(state)
-  if statusline.options and statusline.options.enabled then
+  local config = require('gitlab.config').current()
+  if config.statusline.enabled then
     vim.o.statusline = statusline.status_line_for(statusline.state_label_for(state))
     return true
   end
