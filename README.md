@@ -84,10 +84,20 @@ You may find it helpful to configure omni completion's popup menu even for a sin
 
 ### Keymaps
 
-| Type     | Key Bindings    | Mode     | Description                                                                        |
-|----------|-----------------|----------|------------------------------------------------------------------------------------|
-| Builtin  | `ctrl-x ctrl-o` | `NORMAL` | Requests completions from GitLab Duo Code Suggestions through the language server. |
-| `<Plug>` | `<Plug>(GitLabToggleCodeSuggestions)` | `NORMAL` | Toggles Code Suggestions for the current buffer on/off.      |
+| Mode     | Keymaps                               | Type     | Description                                                                        |
+|----------|---------------------------------------|----------|------------------------------------------------------------------------------------|
+| `INSERT` | `<C-X><C-O>`                          | Builtin  | Requests completions from GitLab Duo Code Suggestions through the language server. |
+| `NORMAL` | `<Plug>(GitLabToggleCodeSuggestions)` | `<Plug>` | Toggles Code Suggestions on/off for the current buffer.                            |
+
+1. Builtin keymaps extend existing functionality. For example because Code Suggestions provides an LSP server the builtin `ctrl-x ctrl-o` omni complete keymap works.
+1. `<Plug>` keymaps are provided for convenience.
+
+To use `<Plug>(GitLab...)` maps above you must include your own keymap that references it:
+
+```lua
+-- Toggle Code Suggestions on/off with CTRL-g in normal mode:
+vim.keymap.set('n', '<C-g>', '<Plug>(GitLabToggleCodeSuggestions)')
+```
 
 ### Statusline
 

@@ -69,11 +69,6 @@ vim.g.gitlab_plugin_loaded                        *vim.g.gitlab_plugin_loaded*
 
 Skips plugin execution if true preventing re-running setup functions.
 
-vim.g.gitlab_autoload                                  *vim.g.gitlab_autoload*
-
-Prevent automatically calling |gitlab.setup()| being invoked with default
-options.
-
 ==============================================================================
 API                                                               *gitlab-api*
 
@@ -92,66 +87,21 @@ gitlab.setup({options})                                       *gitlab.setup()*
     require('gitlab').setup({
       code_suggestions = {
         auto_filetypes = {'ruby'},
-      }
-    })
-<
-
-    Parameters: ~
-      • {options} (table) Optional keyword arguments:
-                  • code_suggestions (table) options to pass into
-                    |gitlab.code_suggestions.setup()|
-                  • url (string) the GitLab instance url to use
-                    if not `https://gitlab.com`.
-
-==============================================================================
-Lua module: gitlab.code_suggestions                  *gitlab.code_suggestions*
-
-gitlab.code_suggestions.setup({options})     *gitlab.code_suggestions.setup()*
-
-    API to bootstrap the |gitlab-language-server| |gitlab-completions|.
-
-    Example: >lua
-
-    require('gitlab').setup({
-      code_suggestions = {
-        auto_filetypes = {'ruby'},
-      }
-    })
-<
-
-    Parameters: ~
-      • {options} (table) Optional keyword arguments:
-                  • auto_filetypes (table) filetypes to automatically invoke
-                    |gitlab.code_suggestions.start()|.
-                  • enabled (boolean) whether to enable |gitlab-code-suggestions|
-                    via the LSP binary.
-                  • fix_newlines (boolean) whether to replace newlines that
-                    have become null-byte due to switching between encodings.
-                  • lsp_binary_path (string|nil) the path where the language
-                    server binary is available or should be installed
-                    to.
-
-
-
-gitlab.code_suggestions.start()              *gitlab.code_suggestions.start()*
-
-Runs |lsp.start()| against the |gitlab-language-server|.
-
-gitlab.code_suggestions.stop()                *gitlab.code_suggestions.stop()*
-
-==============================================================================
-Lua module: gitlab.statusline                  *gitlab.statusline*
-
-gitlab.statusline.setup({options})     *gitlab.statusline.setup()*
-
-    Example: >lua
-
-    require('gitlab').setup({
+      },
       statusline = {
-        enabled = false
-      }
+        enabled = false,
+      },
     })
 <
+
+    Parameters: ~
+      • {options} (table) Optional keyword arguments:
+                  • code_suggestions (table)    *gitlab.config.code_suggestions*
+                    Suggestions.
+                  • gitlab_url (string) the GitLab instance url to use
+                    if not `https://gitlab.com`.
+                  • statusline (table)          *gitlab.config.statusline*
+                    • enabled (boolean) Whether to enable the statusline.
 
     Parameters: ~
       • {options} (table) Optional keyword arguments:
