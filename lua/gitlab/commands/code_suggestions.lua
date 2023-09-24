@@ -101,7 +101,7 @@ function CodeSuggestionsCommands:start(options)
     -- Invoke :redraw before vim.notify to ensure users will see the warning.
     vim.cmd.redraw()
     vim.notify(
-      'gitlab.vim: Run :GitLabConfigure to configure LSP integration to authenticate to your GitLab instance.',
+      'gitlab.vim: Run :GitLabCodeSuggestionsStart to interactively authenticate the LSP.',
       vim.log.levels.WARN
     )
     return
@@ -115,11 +115,11 @@ function CodeSuggestionsCommands:start(options)
   })
 
   if self.lsp_client then
-    statusline.update_status_line(globals.GCS_AVAILABLE_BUT_DISABLED)
+    statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
     vim.notify('gitlab.vim: Started Code Suggestions LSP integration.', vim.lsp.log_levels.INFO)
   else
     vim.notify(
-      'gitlab.vim: Unable to start LSP try using :GitLabConfigure first.',
+      'gitlab.vim: Unable to start LSP try using :GitLabConfigure before reattempting.',
       vim.lsp.log_levels.WARN
     )
   end
