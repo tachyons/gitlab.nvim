@@ -24,7 +24,7 @@ function M.new()
       vim.notify('gitlab.vim: Subscribing client ' .. tostring(client_id), vim.lsp.log_levels.DEBUG)
       notify_lsp_client = function(...)
         local client = vim.lsp.get_client_by_id(client_id)
-        return client.notify(...)
+        return client and client.notify(...)
       end
     end,
   }

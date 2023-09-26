@@ -45,6 +45,10 @@ function M.start(options)
       )
       vim.lsp.stop_client(client_id)
     end,
+    notify = function(self, ...)
+      local client = vim.lsp.get_client_by_id(self.client_id)
+      return client and client.notify(...)
+    end,
     workspace = options.workspace,
   }
 end
