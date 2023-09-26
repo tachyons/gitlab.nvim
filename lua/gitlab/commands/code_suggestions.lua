@@ -2,12 +2,27 @@ local globals = require('gitlab.globals')
 local statusline = require('gitlab.statusline')
 local utils = require('gitlab.utils')
 
+local function lsp_user_data(item)
+  local user_data = item and item.user_data
+  if user_data then
+    return user_data.nvim and user_data.nvim.lsp
+  end
+end
+
+local function suggestion_data_from_completion_item(item)
+  local lsp = lsp_user_data(item)
+  if lsp and lsp.completion_item then
+    return lsp.completion_item.data
+  end
+end
+
 local CodeSuggestionsCommands = {}
 
 --{{{[CodeSuggestionsCommands]
 function CodeSuggestionsCommands.new(options)
   vim.validate({
     ['options.auth'] = { options.auth, 'table' },
+    ['options.group'] = { options.group, 'number' },
     ['options.lsp_server'] = { options.lsp_server, 'table' },
     ['options.workspace'] = { options.workspace, 'table' },
   })
@@ -149,24 +164,79 @@ end
 
 return {
   create = function(options)
-    vim.validate({
-      ['options.auth'] = { options.auth, 'table' },
-      ['options.group'] = { options.group, 'number' },
-      ['options.workspace'] = { options.workspace, 'table' },
-    })
     local code_suggestions_commands = CodeSuggestionsCommands.new({
       auth = options.auth,
+      group = options.group,
       lsp_server = require('gitlab.lsp.server').new(),
       workspace = options.workspace,
     })
+    local suggestion_events = {}
 
     --{{{[Automatic commands]
     vim.api.nvim_create_autocmd({ 'CompleteDonePre' }, {
       callback = function()
-        vim.cmd([[s/\%x00/\r/ge]])
+        local config = require('gitlab.config').current()
+        if config.language_server.workspace_settings.telemetry.enabled then
+          -- complete_info() is only available before CompleteDonePre is complete.
+          -- Save the results here since context for rejected suggestions may not make it to
+          -- further automatic commands.
+          local complete_info = vim.fn.complete_info()
+          local items = complete_info and complete_info.items or {}
+          local suggestion = suggestion_data_from_completion_item(items[1])
+          if suggestion then
+            -- Suggestion selected = 0 or the completion item's zero-based index.
+            -- No item selected = -1
+            --
+            -- See also :help complete_info() since the initial state depends on user configuration.
+            if complete_info.selected == 0 or complete_info.selected == -1 then
+              suggestion_events[suggestion.trackingId] = {
+                action = 'suggestion_rejected',
+              }
+            end
+          end
+        end
       end,
       group = options.group,
-      desc = 'Replace invalid newline characters with "\\r".',
+      desc = 'Process completed GitLab Code Suggestions.',
+    })
+
+    vim.api.nvim_create_autocmd({ 'CompleteDone' }, {
+      callback = function()
+        local config = require('gitlab.config').current()
+        if config.language_server.workspace_settings.telemetry.enabled then
+          -- If v:completed_item event item was set it might be a code suggestion.
+          local completed_item = vim.v.completed_item
+          if completed_item then
+            local suggestion = suggestion_data_from_completion_item(completed_item)
+            if suggestion then
+              suggestion_events[suggestion.trackingId] = {
+                action = 'suggestion_accepted',
+              }
+            end
+          end
+
+          -- Flush suggestion telemetry events upon completion so we can rely on the shortlived
+          -- lifecycle to avoid mixups due to strange user cancellation/unrelated completion in the
+          -- middle of completing a code suggestion.
+          for trackingId, event in pairs(suggestion_events) do
+            suggestion_events[trackingId] = nil
+            code_suggestions_commands.lsp_client:notify('$/gitlab/telemetry', {
+              category = 'code_suggestions',
+              action = event.action,
+              context = {
+                trackingId = trackingId,
+              },
+            })
+          end
+        end
+
+        -- This happens outside of insert mode so should be done after we're done with v:completed_item
+        if config.code_suggestions.fix_newlines then
+          vim.cmd([[s/\%x00/\r/ge]])
+        end
+      end,
+      group = options.group,
+      desc = 'Process completed GitLab Code Suggestions.',
     })
 
     vim.api.nvim_create_autocmd({ 'FileType' }, {
