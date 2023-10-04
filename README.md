@@ -68,9 +68,8 @@ To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-fi
 1. Enable Code Suggestions for your GitLab group/user.
 1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account) with the following scopes:
 
-   - `ai_features`
    - `api`
-   - `read_api`
+   - `read_user`
 
 1. Install the GitLab Duo Code Suggestions [language server](https://gitlab.com/gitlab-org/editor-extensions/gitlab-language-server-for-code-suggestions).
 
