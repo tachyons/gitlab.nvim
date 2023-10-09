@@ -40,10 +40,9 @@ end
 --
 -- This function may modify package.json/package-lock.json if the environment differs.
 function CodeSuggestionsCommands:install_language_server()
-  local package = '@gitlab-org/gitlab-lsp'
   local ok = self.lsp_server:is_installed()
   if ok then
-    vim.notify(package .. ' already installed.')
+    vim.notify('@gitlab-org/gitlab-lsp already installed.')
     statusline.update_status_line(globals.GCS_INSTALLED)
   end
 
@@ -62,13 +61,12 @@ function CodeSuggestionsCommands:install_language_server()
     return
   end
 
-  vim.notify('gitlab.vim: Installing ' .. package .. ' to ' .. lsp_path .. '')
+  vim.notify('gitlab.vim: Installing @gitlab-org/gitlab-lsp to ' .. lsp_path .. '')
 
   local job_opts = { cwd = lsp_path }
   local cmd = {
     'npm',
     'install',
-    package,
     '--userconfig',
     './npmrc',
   }
