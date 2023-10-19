@@ -1,62 +1,47 @@
-.docker in docker:
+.build and push to registry:
   before_script:
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   image: docker:24
   services:
     - docker:24-dind
+  stage: package
 
-.neovim env:
-  variables:
-    NEOVIM_VERSION: 0.9.1
-
-package neovim image:
-  extends:
-    - .docker in docker
-    - .neovim env
+publish gitlab.vim image:
+  extends: .build and push to registry
   rules:
     - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+      variables:
+        NEOVIM_IMAGE: $CI_REGISTRY_IMAGE/neovim:nightly
+    - when: never
+  script:
+    - docker build --build-arg "NEOVIM_IMAGE=$NEOVIM_IMAGE" -t $CI_REGISTRY_IMAGE:$IMAGE_TAG ./docker
+    - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
+
+publish neovim image:
+  extends: .build and push to registry
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+      variables:
+        NEOVIM_CHECKSUM: sha256:8db17c2a1f4776dcda00e59489ea0d98ba82f7d1a8ea03281d640e58d8a3a00e
+        NEOVIM_SOURCE_URL: "https://github.com/neovim/neovim/archive/refs/tags/v0.9.1.tar.gz"
+        NEOVIM_VERSION: 0.9.1
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+      variables:
+        # Skip checksum verification for nightly neovim builds.
+        NEOVIM_CHECKSUM: ''
+        NEOVIM_SOURCE_URL: "https://github.com/neovim/neovim/archive/refs/tags/nightly.tar.gz"
+        NEOVIM_VERSION: nightly
+    - when: never
   script:
     - docker build
         -f ./docker/neovim.Dockerfile
-        --build-arg "NEOVIM_CHECKSUM=sha256:8db17c2a1f4776dcda00e59489ea0d98ba82f7d1a8ea03281d640e58d8a3a00e"
-        --build-arg "NEOVIM_SOURCE_URL=https://github.com/neovim/neovim/archive/refs/tags/v$NEOVIM_VERSION.tar.gz"
+        --build-arg "NEOVIM_CHECKSUM=$NEOVIM_CHECKSUM"
+        --build-arg "NEOVIM_SOURCE_URL=$NEOVIM_SOURCE_URL"
         --build-arg "NEOVIM_VERSION=$NEOVIM_VERSION"
         --target "$TARGET"
-        -t $IMAGE_NAME:$NEOVIM_VERSION
-        -t $IMAGE_NAME:$NEOVIM_VERSION-$CI_COMMIT_REF_SLUG
-        -t $IMAGE_NAME:latest
+        -t $CI_REGISTRY_IMAGE/neovim:$NEOVIM_VERSION
         ./docker
-    - docker push $IMAGE_NAME:$NEOVIM_VERSION
-    - docker push $IMAGE_NAME:$NEOVIM_VERSION-$CI_COMMIT_REF_SLUG
-    - docker push $IMAGE_NAME:latest
-  stage: package
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/neovim
-  when: manual
-
-package playground-neovim image:
-  extends:
-    - .docker in docker
-    - .neovim env
-  rules:
-    # TODO: Remove feature branch before merge.
-    - if: $CI_COMMIT_BRANCH == '24-add-reference-configurations'
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-  script:
-    - docker build
-        --build-arg "NEOVIM_IMAGE=$NEOVIM_IMAGE:$NEOVIM_VERSION"
-        --build-arg "NEOVIM_VERSION=$NEOVIM_VERSION"
-        -t $IMAGE_NAME:$NEOVIM_VERSION
-        -t $IMAGE_NAME:$NEOVIM_VERSION-$CI_COMMIT_REF_SLUG
-        -t $IMAGE_NAME:latest
-        ./docker
-    - docker push $IMAGE_NAME:$NEOVIM_VERSION
-    - docker push $IMAGE_NAME:$NEOVIM_VERSION-$CI_COMMIT_REF_SLUG
-    - docker push $IMAGE_NAME:latest
-  variables:
-    IMAGE_NAME: $CI_REGISTRY_IMAGE/playground-neovim
-    NEOVIM_IMAGE: $CI_REGISTRY_IMAGE/neovim
-
-  stage: package
-  # TODO: Set to manual before merge.
-  when: on_success
+    - docker push $CI_REGISTRY_IMAGE/neovim:$NEOVIM_VERSION
