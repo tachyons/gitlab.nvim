@@ -1,3 +1,5 @@
+local notifier = require('gitlab.notifier')
+
 local M = {}
 
 local function packadd(plugin_path, pattern)
@@ -22,10 +24,10 @@ local function git_clone_plugin(params)
     local output = vim.fn.system(git_cmd)
 
     if vim.v.shell_error == 0 then
-      vim.notify(output, vim.log.levels.DEBUG)
+      notifier.notify(output, vim.log.levels.DEBUG)
       packadd(params.destination, '^site/pack/[%w_]+/start')
     else
-      vim.notify(output, vim.log.levels.ERROR)
+      notifier.notify(output, vim.log.levels.ERROR)
       return
     end
   end

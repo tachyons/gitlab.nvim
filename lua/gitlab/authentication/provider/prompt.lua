@@ -1,3 +1,5 @@
+local notifier = require('gitlab.notifier')
+
 -- Lua module: gitlab.authentication.provider.prompt
 local M = {}
 
@@ -25,9 +27,12 @@ local function notify_input_error(err)
   local err_msg = tostring(err)
 
   if err_msg:match('Keyboard interrupt') then
-    vim.notify('User cancelled configuration request (with CTRL-C)', vim.log.levels.ERROR)
+    notifier.notify('User cancelled configuration request (with CTRL-C)', vim.log.levels.ERROR)
   else
-    vim.notify('Unexpected error when waiting on user input: ' .. err_msg, vim.log.levels.ERROR)
+    notifier.notify(
+      'Unexpected error when waiting on user input: ' .. err_msg,
+      vim.log.levels.ERROR
+    )
   end
 end
 

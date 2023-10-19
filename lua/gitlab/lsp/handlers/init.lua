@@ -1,3 +1,4 @@
+local notifier = require('gitlab.notifier')
 local globals = require('gitlab.globals')
 local statusline = require('gitlab.statusline')
 
@@ -11,7 +12,7 @@ return {
       message = 'gitlab.vim: Unexpected error from LSP server: ' .. vim.inspect(result)
     end
 
-    vim.notify(message, vim.log.levels.ERROR, {
+    notifier.notify(message, vim.log.levels.ERROR, {
       title = 'LSP method: $/gitlab/token/check',
     })
     statusline.update_status_line(globals.GCS_UNAVAILABLE)

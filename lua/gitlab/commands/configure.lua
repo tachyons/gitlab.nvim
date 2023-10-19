@@ -1,3 +1,4 @@
+local notifier = require('gitlab.notifier')
 local M = {}
 
 function M.create(options)
@@ -11,7 +12,7 @@ function M.create(options)
       force = true,
     })
     if err or not auth then
-      vim.notify('gitlab.vim: Error resolving authentication.', vim.lsp.log_levels.ERROR)
+      notifier.notify('gitlab.vim: Error resolving authentication.', vim.lsp.log_levels.ERROR)
       return
     end
 
