@@ -1,3 +1,5 @@
+local notifier = require('gitlab.notifier')
+
 -- Lua module: gitlab.lsp.workspace
 local M = {}
 
@@ -18,10 +20,13 @@ function M.new()
         settings = self.configuration,
       })
 
-      vim.notify('gitlab.vim: Workspace configuration changed', vim.log.levels.WARN)
+      notifier.notify('gitlab.vim: Workspace configuration changed', vim.log.levels.WARN)
     end,
     subscribe_client = function(client_id)
-      vim.notify('gitlab.vim: Subscribing client ' .. tostring(client_id), vim.lsp.log_levels.DEBUG)
+      notifier.notify(
+        'gitlab.vim: Subscribing client ' .. tostring(client_id),
+        vim.lsp.log_levels.DEBUG
+      )
       notify_lsp_client = function(...)
         local client = vim.lsp.get_client_by_id(client_id)
         return client and client.notify(...)

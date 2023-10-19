@@ -1,3 +1,4 @@
+local notifier = require('gitlab.notifier')
 local lspconfig = require('gitlab.lspconfig')
 local validate = require('gitlab.config.validate')
 
@@ -39,7 +40,7 @@ function M.start(options)
   return {
     client_id = client_id,
     stop = function()
-      vim.notify(
+      notifier.notify(
         'gitlab.vim: Stopping GitLab LSP client ' .. client_id .. '...',
         vim.lsp.log_levels.DEBUG
       )

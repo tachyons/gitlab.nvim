@@ -1,6 +1,7 @@
 local globals = require('gitlab.globals')
 local statusline = require('gitlab.statusline')
 local utils = require('gitlab.utils')
+local notifier = require('gitlab.notifier')
 
 local function lsp_user_data(item)
   local user_data = item and item.user_data
@@ -42,12 +43,12 @@ end
 function CodeSuggestionsCommands:install_language_server()
   local ok = self.lsp_server:is_installed()
   if ok then
-    vim.notify('@gitlab-org/gitlab-lsp already installed.')
+    notifier.notify('@gitlab-org/gitlab-lsp already installed.')
     statusline.update_status_line(globals.GCS_INSTALLED)
   end
 
   if vim.fn.exepath('npm') == '' then
-    vim.notify(
+    notifier.notify(
       'gitlab.vim: Unsatisfied dependency "npm". Unable to find "npm" in PATH.',
       vim.log.levels.ERROR
     )
@@ -57,11 +58,14 @@ function CodeSuggestionsCommands:install_language_server()
   local lsp_path = vim.fn.join({ require('gitlab').plugin_root(), 'lsp' }, '/')
 
   if vim.fn.isdirectory(lsp_path) == 0 then
-    vim.notify('gitlab.vim: Invalid LSP installation directory: ' .. lsp_path, vim.log.levels.ERROR)
+    notifier.notify(
+      'gitlab.vim: Invalid LSP installation directory: ' .. lsp_path,
+      vim.log.levels.ERROR
+    )
     return
   end
 
-  vim.notify('gitlab.vim: Installing @gitlab-org/gitlab-lsp to ' .. lsp_path .. '')
+  notifier.notify('gitlab.vim: Installing @gitlab-org/gitlab-lsp to ' .. lsp_path .. '')
 
   local job_opts = { cwd = lsp_path }
   local cmd = {
@@ -74,11 +78,11 @@ function CodeSuggestionsCommands:install_language_server()
   local job_id = utils.exec_cmd(cmd, job_opts, function(result)
     if result.exit_code == 0 then
       statusline.update_status_line(globals.GCS_UPDATED)
-      vim.notify('gitlab.vim: Successfully installed @gitlab-org/gitlab-lsp')
+      notifier.notify('gitlab.vim: Successfully installed @gitlab-org/gitlab-lsp')
       return
     end
 
-    vim.notify(
+    notifier.notify(
       'gitlab.vim: Unable to install @gitlab-org/gitlab-lsp please install it manually before continuing.',
       vim.log.levels.WARN
     )
@@ -101,7 +105,7 @@ function CodeSuggestionsCommands:start(options)
 
   if not self.lsp_server:is_installed() then
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
-    vim.notify(
+    notifier.notify(
       'Run :GitLabCodeSuggestionsInstallLanguageServer to install the required binary.',
       vim.log.levels.WARN
     )
@@ -111,9 +115,9 @@ function CodeSuggestionsCommands:start(options)
   local auth = self.auth.resolve({ prompt_user = options.prompt_user })
   if not auth or not auth:token_set() then
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
-    -- Invoke :redraw before vim.notify to ensure users will see the warning.
+    -- Invoke :redraw before notifier.notify to ensure users will see the warning.
     vim.cmd.redraw()
-    vim.notify(
+    notifier.notify(
       'gitlab.vim: Run :GitLabCodeSuggestionsStart to interactively authenticate the LSP.',
       vim.log.levels.WARN
     )
@@ -129,9 +133,12 @@ function CodeSuggestionsCommands:start(options)
 
   if self.lsp_client then
     statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
-    vim.notify('gitlab.vim: Started Code Suggestions LSP integration.', vim.lsp.log_levels.INFO)
+    notifier.notify(
+      'gitlab.vim: Started Code Suggestions LSP integration.',
+      vim.lsp.log_levels.INFO
+    )
   else
-    vim.notify(
+    notifier.notify(
       'gitlab.vim: Unable to start LSP try using :GitLabConfigure before reattempting.',
       vim.lsp.log_levels.WARN
     )
@@ -143,7 +150,7 @@ function CodeSuggestionsCommands:stop()
     self.lsp_client.stop()
     self.lsp_client = nil
   else
-    vim.notify('gitlab.vim: No active client found.', vim.lsp.log_levels.ERROR)
+    notifier.notify('gitlab.vim: No active client found.', vim.lsp.log_levels.ERROR)
   end
 
   statusline.update_status_line(globals.GCS_AVAILABLE_BUT_DISABLED)
@@ -151,10 +158,10 @@ end
 
 function CodeSuggestionsCommands:toggle()
   if self.lsp_client then
-    vim.notify('gitlab.vim: Toggling Code Suggestions LSP client integration off.')
+    notifier.notify('gitlab.vim: Toggling Code Suggestions LSP client integration off.')
     self:stop()
   else
-    vim.notify('gitlab.vim: Toggling Code Suggestions LSP client integration on.')
+    notifier.notify('gitlab.vim: Toggling Code Suggestions LSP client integration on.')
     self:start({ prompt_user = true })
   end
 end

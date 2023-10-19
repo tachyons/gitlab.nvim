@@ -3,6 +3,7 @@ return {
   statusline = {
     enabled = true,
   },
+  minimal_message_level = 0,
   code_suggestions = {
     auto_filetypes = {
       'c', -- C
