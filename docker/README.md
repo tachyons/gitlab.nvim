@@ -1,51 +1,27 @@
 # gitlab.vim Docker images
 
-This directory contains Neovim reference configurations which are compatible with the `gitlab.vim` plugin.
-It also includes language server installation methods.
+This directory contains docker build configurations for building and testing the `gitlab.vim` plugin.
 
-## Quickstart
+Images are built as defined in the [docker.yml CI template](../.gitlab/ci_templates/docker.yml).
 
-Use the `registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim/playground-neovim:latest` image to open the latest stable Neovim using `packadd` to install the `gitlab.vim` plugin manager.
+## `registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim`<!-- {{{ -->
 
-```bash
-docker run --rm -it registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim/playground-neovim:latest
-```
+A linux image with build and test dependencies installed.
 
-Refer to the [usage](#usage) steps below for a breakdown of how to run the image.
+1. The branch pipeline for `main` publishes the `latest` and `neovim-stable` image tags.
+2. A scheduled pipeline publishes the `neovim-nightly` image tag.
 
-## Building
+### Plugin installation<!-- {{{ -->
 
-Use `docker build ./docker` to build with this directory's contents as the docker build context.
-
-```bash
-# Include the registry image name tag so local test runs will use your local container image.
-docker build -t registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim/playground-neovim:latest ./docker
-```
-
-[neovim.Dockerfile](./neovim.Dockerfile) provides the `neovim` image:
-1. Installs Neovim's build dependencies.
-2. Builds the latest Neovim [stable](https://github.com/neovim/neovim/releases/stable) version.
-3. Sets `nvim` as the default command when the image is used.
-
-[Dockerfile](./Dockerfile) provides the `playground-neovim` image:
-1. Extends the `neovim.Dockerfile` build.
-1. Installs the stable Neovim version built by `neovim.Dockerfile`.
-2. Installs gitlab.vim's requirements.
-3. Adds [init.lua](./init.lua) to configure Neovim.
-4. Sets `nvim` as the default command when the image is used.
-
-## Usage
-
-You can pass environment variables or volume mounts at runtime to configure startup:
+You can pass environment variables at runtime to configure the [plugin installation](#plugin-installation) or [LSP server installation](#lsp-server-installation).
 
 ```bash
 docker run --rm -it \
            -v "$HOME/.local/share/nvim/site/pack/gitlab/start/gitlab.vim:/root/.local/share/nvim/site/pack/gitlab/start/gitlab.vim:ro" \
            -e PLUGIN_MANAGER=packadd \
-           registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim/playground-neovim:latest
+           registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim:latest
 ```
 
-### Plugin installation
 
 Use the `PLUGIN_MANAGER` environment variable as follows:
 
@@ -55,11 +31,31 @@ Use the `PLUGIN_MANAGER` environment variable as follows:
 | `packer`       | [packer.nvim](https://github.com/wbthomason/packer.nvim)     |
 | `lazy`         | [lazy.nvim](https://github.com/folke/lazy.nvim)              |
 
-### LSP server installation
+<!-- }}} -->
+
+### LSP server installation<!-- {{{ -->
 
 Use the `LSP_INSTALLER` environment variable as follows:
 
 | Value              | Installation method                                                               |
 |--------------------|-----------------------------------------------------------------------------------|
-| `gitlab.vim`       | Invoke the `:GitLabBoostrapCodeSuggestions` command.                              |
+| `gitlab.vim`       | Invoke the `:GitLabCodeSuggestionsInstallLanguageServer` command.                 |
 | `manual` (default) | Expect the user who starts the container to manually install the language server. |
+
+<!-- }}} -->
+
+<!-- }}} -->
+
+## `registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim/neovim`<!-- {{{ -->
+
+A linux image including Neovim installed from source.
+
+1. The branch pipeline for `main` includes a manual job `package neovim` which accepts the following CI/CD variables:
+   1. `$NEOVIM_SOURCE_URL` - _(required)_ The GitHub archive URL containing the source code for the Neovim version to be built.
+   2. `$NEOVIM_VERSION`- _(required)_ The Neovim version to be installed (e.g. `0.9.1`, `nightly`, `stable`).
+   3. `$NEOVIM_CHECKSUM` - _(optional)_ The SHA256 checksum use for verifying the Neovim source code archive.
+2. A scheduled pipeline builds `latest` and `nightly` image tags.
+
+<!-- }}} -->
+
+<!-- vi: set fdm=marker : -->
