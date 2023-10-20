@@ -1,47 +1,85 @@
 .build and push to registry:
-  before_script:
+  before_script: &login_to_container_registry
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   image: docker:24
   services:
     - docker:24-dind
-  stage: package
 
-publish gitlab.vim image:
+build and push gitlab.vim:neovim-stable image:
   extends: .build and push to registry
+  variables:
+    NEOVIM_IMAGE_TAG: "0.9.1"
+  before_script:
+    - *login_to_container_registry
+    - |
+      test -n "$NEOVIM_IMAGE_TAG" && exit 0
+      echo -e "\e[31mRequired CI/CD variable NEOVIM_IMAGE_TAG must not be empty.\e[0m"
+      exit 1
   rules:
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
-      variables:
-        NEOVIM_IMAGE: $CI_REGISTRY_IMAGE/neovim:nightly
-    - when: never
-  script:
-    - docker build --build-arg "NEOVIM_IMAGE=$NEOVIM_IMAGE" -t $CI_REGISTRY_IMAGE:$IMAGE_TAG ./docker
-    - docker push $CI_REGISTRY_IMAGE:$IMAGE_TAG
-
-publish neovim image:
-  extends: .build and push to registry
-  rules:
-    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
-      when: always
-      variables:
-        NEOVIM_CHECKSUM: sha256:8db17c2a1f4776dcda00e59489ea0d98ba82f7d1a8ea03281d640e58d8a3a00e
-        NEOVIM_SOURCE_URL: "https://github.com/neovim/neovim/archive/refs/tags/v0.9.1.tar.gz"
-        NEOVIM_VERSION: 0.9.1
     - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
       variables:
-        # Skip checksum verification for nightly neovim builds.
-        NEOVIM_CHECKSUM: ''
-        NEOVIM_SOURCE_URL: "https://github.com/neovim/neovim/archive/refs/tags/nightly.tar.gz"
-        NEOVIM_VERSION: nightly
-    - when: never
+        TAG_AS_LATEST: "true"
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
   script:
+    - docker build --build-arg "NEOVIM_IMAGE=$CI_REGISTRY_IMAGE/neovim:$NEOVIM_IMAGE_TAG" -t $CI_REGISTRY_IMAGE:neovim-$NEOVIM_IMAGE_TAG ./docker
+    - docker push $CI_REGISTRY_IMAGE:neovim-$NEOVIM_IMAGE_TAG
+    - |
+      if [[ "$TAG_AS_LATEST" = "true" ]]; then
+        docker tag $CI_REGISTRY_IMAGE:neovim-$NEOVIM_IMAGE_TAG $CI_REGISTRY_IMAGE:latest
+        docker push $CI_REGISTRY_IMAGE:latest
+      fi
+  stage: test
+
+build and push gitlab.vim:neovim-nightly image:
+  extends: build and push gitlab.vim:neovim-stable image
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+      variables:
+        NEOVIM_IMAGE_TAG: "nightly"
+
+build and push neovim image:
+  extends: .build and push to registry
+  variables:
+    NEOVIM_CHECKSUM: "sha256:8db17c2a1f4776dcda00e59489ea0d98ba82f7d1a8ea03281d640e58d8a3a00e"
+    NEOVIM_VERSION: "0.9.1"
+  before_script:
+    - *login_to_container_registry
+    - |
+      test -n "$NEOVIM_VERSION" && exit 0
+      echo -e "\e[31mRequired CI/CD variable NEOVIM_VERSION must not be empty.\e[0m"
+      exit 1
+    - |
+      if [[ -z "$NEOVIM_CHECKSUM" -a "$NEOVIM_VERSION" != "nightly" ]]; then
+        echo -e "\e[31mMissing CI/CD variable NEOVIM_CHECKSUM.\e[0m"
+        echo -e "\e[31mChecksum validation is required when NEOVIM_VERSION is not 'nightly'.\e[0m"
+        echo -e "\e[31mSHA-256 Checksums can be found at https://github.com/neovim/neovim/releases.\e[0m"
+        echo -e "\e[31mSHA-256 Set NEOVIM_CHECKSUM to can be found at https://github.com/neovim/neovim/releases.\e[0m"
+      fi
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  script:
+    - export NEOVIM_TAG_REF="${NEOVIM_VERSION/#[0-9]*/v$NEOVIM_VERSION}"
     - docker build
         -f ./docker/neovim.Dockerfile
         --build-arg "NEOVIM_CHECKSUM=$NEOVIM_CHECKSUM"
-        --build-arg "NEOVIM_SOURCE_URL=$NEOVIM_SOURCE_URL"
+        --build-arg "NEOVIM_SOURCE_URL=https://github.com/neovim/neovim/archive/refs/tags/$NEOVIM_TAG_REF.tar.gz"
         --build-arg "NEOVIM_VERSION=$NEOVIM_VERSION"
         --target "$TARGET"
         -t $CI_REGISTRY_IMAGE/neovim:$NEOVIM_VERSION
         ./docker
     - docker push $CI_REGISTRY_IMAGE/neovim:$NEOVIM_VERSION
+  stage: package
+
+build and push neovim:nightly image:
+  extends: build and push neovim image
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+      variables:
+        NEOVIM_VERSION: "nightly"
