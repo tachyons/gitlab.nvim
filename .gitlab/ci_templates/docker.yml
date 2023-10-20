@@ -15,12 +15,16 @@ build and push gitlab.vim:neovim-stable image:
       test -n "$NEOVIM_IMAGE_TAG" && exit 0
       echo -e "\e[31mRequired CI/CD variable NEOVIM_IMAGE_TAG must not be empty.\e[0m"
       exit 1
+  needs:
+    - job: build and push neovim image
+      optional: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
       variables:
         TAG_AS_LATEST: "true"
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      allow_failure: true
       when: manual
   script:
     - docker build --build-arg "NEOVIM_IMAGE=$CI_REGISTRY_IMAGE/neovim:$NEOVIM_IMAGE_TAG" -t $CI_REGISTRY_IMAGE:neovim-$NEOVIM_IMAGE_TAG ./docker
@@ -30,10 +34,13 @@ build and push gitlab.vim:neovim-stable image:
         docker tag $CI_REGISTRY_IMAGE:neovim-$NEOVIM_IMAGE_TAG $CI_REGISTRY_IMAGE:latest
         docker push $CI_REGISTRY_IMAGE:latest
       fi
-  stage: test
+  stage: package
 
 build and push gitlab.vim:neovim-nightly image:
   extends: build and push gitlab.vim:neovim-stable image
+  needs:
+    - job: build and push neovim:nightly image
+      optional: true
   rules:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
@@ -62,6 +69,7 @@ build and push neovim image:
     - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: always
     - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      allow_failure: true
       when: manual
   script:
     - export NEOVIM_TAG_REF="${NEOVIM_VERSION/#[0-9]*/v$NEOVIM_VERSION}"
