@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# Change to the lsp/ directory at the repository root so
+# package-lock.json uses consistent relative names.
+cd $(dirname $(dirname $0))
+npm install --userconfig ./npmrc
