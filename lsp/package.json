@@ -1,5 +1,5 @@
 {
   "dependencies": {
-    "@gitlab-org/gitlab-lsp": "3.3.0"
+    "@gitlab-org/gitlab-lsp": "3.10.0"
   }
 }

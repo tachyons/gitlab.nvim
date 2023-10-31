@@ -1,5 +1,4 @@
 stages:
-  - documentation
   - lint
   - test
   - package
@@ -18,7 +17,7 @@ default:
   image: alpine:3.18
 
 check_docs_markdown:
-  stage: documentation
+  stage: lint
   image: registry.gitlab.com/gitlab-org/gitlab-docs/lint-markdown:alpine-3.16-vale-2.20.1-markdownlint-0.32.2
   script:
     # Lint prose
@@ -36,6 +35,13 @@ lint:
   script:
     - apk add make luacheck stylua
     - make lint
+  stage: lint
+
+lint gitlab-lsp dependencies:
+  before_script:
+    - apk add bash git make nodejs npm
+  script:
+    - make lint-lsp-deps
   stage: lint
 
 upsert git tag:

@@ -58,3 +58,14 @@ ifdef STYLUA
 else
 	$(error "${STYLUA_ERROR}")
 endif
+
+lint-lsp-deps: lsp/package-lock.json
+	@echo 'Checking for uncommitted changes in lsp/package.json or lsp/package-lock.json.'
+	git diff --exit-code lsp/package-lock.json lsp/package.json
+
+lsp/package.json:
+	./lsp/scripts/npm-wrapper install
+
+lsp/package-lock.json: lsp/package.json
+
+.PHONY: lsp/package.json lsp/package-lock.json lint-lsp-deps
