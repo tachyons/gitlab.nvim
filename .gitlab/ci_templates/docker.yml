@@ -91,3 +91,16 @@ build and push neovim:nightly image:
       when: always
       variables:
         NEOVIM_VERSION: "nightly"
+
+build and push snowplow-micro image:
+  extends: .build and push to registry
+  script:
+    - docker build -f ./docker/snowplow-micro.Dockerfile -t $IMAGE ./docker
+    - docker push $IMAGE
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "schedule" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: always
+      variables:
+        NEOVIM_VERSION: "nightly"
+  variables:
+    IMAGE: $CI_REGISTRY_IMAGE/snowplow-micro:latest

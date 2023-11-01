@@ -26,10 +26,27 @@ check_docs_markdown:
     - markdownlint --config .markdownlint.yml 'docs/**/*.md' *.md
 
 test:
+  before_script:
+    - apk add git make neovim
   script:
-    - apk add make git neovim
     - make test
   stage: test
+
+integration_test:
+  before_script:
+    - apk add curl git make neovim nodejs npm
+  script:
+    - make integration_test
+  services:
+    - alias: snowplow-micro
+      # TODO: Set name to snowplow/snowplow-micro:latest once it includes 'EXPOSE 9090/tcp'.
+      name: registry.gitlab.com/gitlab-org/editor-extensions/gitlab.vim/snowplow-micro:latest
+      variables:
+        MICRO_IGLU_REGISTRY_URL: https://gitlab-org.gitlab.io/iglu
+  stage: test
+  variables:
+    GITLAB_TOKEN: $GITLAB_PERSONAL_ACCESS_TOKEN
+    SNOWPLOW_MICRO_URL: http://snowplow-micro:9090
 
 lint:
   script:

@@ -1,4 +1,4 @@
-.PHONY: default test_all test test_file format lint luacheck stylua
+.PHONY: default integration_test test format lint luacheck stylua
 
 LUACHECK := $(shell command -v luacheck 2> /dev/null)
 LUACHECK_MISSING_ERROR := ERROR: luacheck is not installed, run `asdf plugin add lua ; asdf install && asdf reshim lua && luarocks install luacheck`
@@ -10,26 +10,20 @@ default:
 	@echo "The folllowing are the available make targets that can be run:\n"
 	@grep '^[^#[:space:]].*:' Makefile
 
-test_all: test lint
-
-ifndef SPEC
-override SPEC = spec
-endif
-
 PLENARY_PATH ?= ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
 $(PLENARY_PATH):
 	git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ${PLENARY_PATH}
 
+integration_test: | $(PLENARY_PATH)
+	@env RUN_INTEGRATION_TESTS=true nvim --clean --headless \
+		-c "source spec/init.lua" \
+		-c "PlenaryBustedDirectory $${SPEC:-spec/integration}" \
+		-c cquit
+
 test: | $(PLENARY_PATH)
 	@nvim --clean --headless \
 		-c "source spec/init.lua" \
-		-c "PlenaryBustedDirectory ${SPEC}" \
-		-c cquit
-
-test_file: | $(PLENARY_PATH)
-	@nvim --clean --headless \
-		-c "source spec/init.lua" \
-		-c "PlenaryBustedFile $(FILE)" \
+		-c "PlenaryBustedDirectory $${SPEC:-spec}" \
 		-c cquit
 
 ifndef LINT_FILES
