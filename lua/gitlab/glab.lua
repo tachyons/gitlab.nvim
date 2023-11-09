@@ -5,7 +5,12 @@ local jobs = require('gitlab.lib.jobs')
 -- Exposes GitLab CLI commands.
 local M = {}
 
+local _default_request_options = {
+  params = {},
+}
+
 function M.api(endpoint, req)
+  req = vim.tbl_extend('keep', req or {}, _default_request_options)
   local auth = require('gitlab.authentication').default_resolver():resolve()
   local opts = {
     env = {
