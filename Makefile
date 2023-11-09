@@ -14,7 +14,7 @@ PLENARY_PATH ?= ~/.local/share/nvim/site/pack/vendor/start/plenary.nvim
 $(PLENARY_PATH):
 	git clone --depth 1 https://github.com/nvim-lua/plenary.nvim ${PLENARY_PATH}
 
-integration_test: | $(PLENARY_PATH)
+integration_test: clean-lsp-deps | $(PLENARY_PATH)
 	@env RUN_INTEGRATION_TESTS=true nvim --clean --headless \
 		-c "source spec/init.lua" \
 		-c "PlenaryBustedDirectory $${SPEC:-spec/integration}" \
@@ -53,6 +53,9 @@ else
 	$(error "${STYLUA_ERROR}")
 endif
 
+clean-lsp-deps:
+	rm -rf lsp/node_modules
+
 lint-lsp-deps: lsp/package-lock.json
 	@echo 'Checking for uncommitted changes in lsp/package.json or lsp/package-lock.json.'
 	git diff --exit-code lsp/package-lock.json lsp/package.json
@@ -62,4 +65,4 @@ lsp/package.json:
 
 lsp/package-lock.json: lsp/package.json
 
-.PHONY: lsp/package.json lsp/package-lock.json lint-lsp-deps
+.PHONY: clean-lsp-deps lsp/package.json lsp/package-lock.json lint-lsp-deps
