@@ -17,15 +17,15 @@ local function api_v4_path(path) --{{{
   }, '/')
 end --}}}
 
-function M.current_personal_access_token()
+function M.current_personal_access_token(request_options)
   local url = api_v4_path('/personal_access_tokens/self')
 
   if glab.available() then
-    return glab.api(url)
+    return glab.api(url, request_options)
   end
 
   if curl.available() then
-    return curl.request(url)
+    return curl.request(url, request_options)
   end
 
   return nil, 'Expected either "glab" or "curl" to be executable under PATH.'

@@ -1,6 +1,11 @@
 local M = {}
 
 --{{{[Validation functions]
+function M.is_dict()
+  return function(tbl)
+    return type(tbl) == 'table' and not vim.tbl_islist(tbl)
+  end, 'a dict'
+end
 function M.is_dict_of(value_type)
   return function(tbl)
     if type(tbl) ~= 'table' or vim.tbl_islist(tbl) then

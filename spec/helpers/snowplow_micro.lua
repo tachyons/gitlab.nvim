@@ -16,7 +16,7 @@ local _snowplow_running = nil
 return {
   available = function()
     if _snowplow_running == nil then
-      local job = require('plenary.curl').get({
+      local job = curl.get({
         callback = function(response)
           _snowplow_running = response.status == 200
         end,

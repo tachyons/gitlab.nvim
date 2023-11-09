@@ -14,11 +14,19 @@ function M.request(endpoint, req)
     ['Content-Type'] = 'application/json',
   })
 
-  local auth = require('gitlab.authentication').default_resolver():resolve()
-  req.headers = vim.tbl_extend('force', req.headers, {
-    Accept = 'application/json',
-    Authorization = 'Bearer ' .. auth.token(),
-  })
+  req.headers = vim.tbl_extend('force', req.headers, { Accept = 'application/json' })
+
+  local auth = req.auth or require('gitlab.authentication').default_resolver():resolve()
+  if auth then
+    local token
+    if type(auth.token) == 'function' then
+      token = auth.token()
+    else
+      token = tostring(auth.token)
+    end
+
+    req.headers = vim.tbl_extend('force', req.headers, { Authorization = 'Bearer ' .. token })
+  end
 
   local cmd = { 'curl', endpoint }
   for header, value in pairs(req.headers) do
