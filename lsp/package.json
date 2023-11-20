@@ -1,5 +1,0 @@
-{
-  "dependencies": {
-    "@gitlab-org/gitlab-lsp": "3.10.0"
-  }
-}
