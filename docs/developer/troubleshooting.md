@@ -89,7 +89,7 @@ On top of the [general](#general) troubleshooting advice the following feature s
 
 #### LSP
 
-1. Confirm the language server is active by entering in the neovim command line.
+1. Confirm the language server is active by entering in the Neovim command line.
 
    ```lua
    :lua =vim.lsp.get_active_clients()
