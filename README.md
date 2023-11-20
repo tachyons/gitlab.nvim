@@ -151,7 +151,7 @@ You can configure this behavior for additional filetypes through the `code_sugge
 
 1. Merge the merge request once it has been approved.
 
-1. Create a new signed git tag off of the `main` branch.
+1. Create a new signed Git tag off of the `main` branch.
 
 ## Issues
 

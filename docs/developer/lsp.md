@@ -29,6 +29,7 @@
    git commit -m 'Upgrade @gitlab-org/gitlab-lsp to v3.10.0' -- lsp/package.json lsp/package-lock.json
    ```
 
-1. Create a merge request using the [Update Language Server version](../../.gitlab/merge_request_templates/Update Language Server version.md) merge request template.
+1. Create a merge request using the [Update Language Server version](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/blob/main/.gitlab/merge_request_templates/Update%20Language%20Server%20version.md)
+   merge request template.
 1. Confirm MR pipeline tests are passing.
 1. Configure and run [local integration tests](testing.md#integration-tests).
