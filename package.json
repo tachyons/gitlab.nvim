@@ -1,0 +1,8 @@
+{
+  "name": "gitlab.vim",
+  "description": "Bring your favourite DevSecOps platform to your fingertips through a Vim plugin.",
+  "dependencies": {
+    "@gitlab-org/gitlab-lsp": "3.10.0"
+  },
+  "private": true
+}

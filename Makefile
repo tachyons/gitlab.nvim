@@ -54,15 +54,15 @@ else
 endif
 
 clean-lsp-deps:
-	rm -rf lsp/node_modules
+	rm -rf node_modules
 
-lint-lsp-deps: lsp/package-lock.json
-	@echo 'Checking for uncommitted changes in lsp/package.json or lsp/package-lock.json.'
-	git diff --exit-code lsp/package-lock.json lsp/package.json
+lint-lsp-deps: package-lock.json
+	@echo 'Checking for uncommitted changes in package.json or package-lock.json.'
+	git diff --exit-code package-lock.json package.json
 
-lsp/package.json:
-	./lsp/scripts/npm-wrapper install
+package.json:
+	npm install
 
-lsp/package-lock.json: lsp/package.json
+package-lock.json: package.json
 
-.PHONY: clean-lsp-deps lsp/package.json lsp/package-lock.json lint-lsp-deps
+.PHONY: clean-lsp-deps package.json package-lock.json lint-lsp-deps

@@ -55,7 +55,7 @@ function CodeSuggestionsCommands:install_language_server()
     return
   end
 
-  local lsp_path = vim.fn.join({ require('gitlab').plugin_root(), 'lsp' }, '/')
+  local lsp_path = require('gitlab').plugin_root()
 
   if vim.fn.isdirectory(lsp_path) == 0 then
     notifier.notify(
@@ -71,8 +71,6 @@ function CodeSuggestionsCommands:install_language_server()
   local cmd = {
     'npm',
     'install',
-    '--userconfig',
-    './npmrc',
   }
 
   local job_id = utils.exec_cmd(cmd, job_opts, function(result)
