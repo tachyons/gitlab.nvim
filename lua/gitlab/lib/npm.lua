@@ -3,7 +3,7 @@ return function(...)
   local gitlab = require('gitlab')
 
   local cmd = vim.tbl_flatten({ 'npm', ... })
-  local cwd = vim.fn.join({ gitlab.plugin_root(), 'lsp' }, '/')
+  local cwd = gitlab.plugin_root()
 
   return {
     cmd = cmd,
