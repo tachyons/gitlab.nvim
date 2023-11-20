@@ -45,7 +45,7 @@ local function new_auth_resolver(options)
         return prompt_auth, nil
       end
 
-      return nil, 'Unable to find a valid authentication provider.'
+      return nil, 'Unable to resolve authentication details from environment.'
     end,
   }
 end

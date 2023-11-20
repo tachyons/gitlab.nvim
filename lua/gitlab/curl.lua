@@ -1,10 +1,24 @@
 local jobs = require('gitlab.lib.jobs')
 
 -- Lua module: gitlab.curl
-local M = {}
+local M = {
+  name = 'curl',
+}
 
 function M.available()
   return vim.fn.exepath('curl') ~= ''
+end
+
+function M.install_advice()
+  local advice = {}
+  if vim.fn.exepath('brew') ~= '' then
+    table.insert(
+      advice,
+      'Install `glab` using `brew install glab` (see https://formulae.brew.sh/formula/glab).'
+    )
+  end
+  --    - You may disable this provider (and warning) by adding `let g:loaded_ruby_provider = 0` to your init.vim
+  return advice
 end
 
 function M.request(endpoint, req)
@@ -52,6 +66,23 @@ function M.request(endpoint, req)
   end
 
   return nil, 'Unable to decode API response'
+end
+
+function M.version()
+  if not M.available() then
+    return ''
+  end
+
+  local job, err = jobs.start_wait({ 'curl', '--version' }, {})
+  if err then
+    return nil, err
+  end
+
+  return job.stdout
+end
+
+function M.enabled()
+  return not vim.g.gitlab_api_provider_curl_disabled
 end
 
 return M
