@@ -35,9 +35,9 @@ function CodeSuggestionsCommands.new(options)
   return instance
 end
 
--- Install the @gitlab-org/gitlab-lsp node module from the GitLab Package Registry into lsp/ under the plugin root.
--- The lsp/ directory includes package.json and package-lock.json files which can be used to enforce version constraints
--- and perform security scans.
+-- Install the @gitlab-org/gitlab-lsp npm package along with any other dependencies.
+-- This project's package.json and package-lock.json files which can be used to
+-- enforce version constraints and perform security scans.
 --
 -- This function may modify package.json/package-lock.json if the environment differs.
 function CodeSuggestionsCommands:install_language_server()
@@ -56,17 +56,7 @@ function CodeSuggestionsCommands:install_language_server()
   end
 
   local lsp_path = require('gitlab').plugin_root()
-
-  if vim.fn.isdirectory(lsp_path) == 0 then
-    notifier.notify(
-      'gitlab.vim: Invalid LSP installation directory: ' .. lsp_path,
-      vim.log.levels.ERROR
-    )
-    return
-  end
-
-  notifier.notify('gitlab.vim: Installing @gitlab-org/gitlab-lsp to ' .. lsp_path .. '')
-
+  notifier.notify('gitlab.vim: Installing @gitlab-org/gitlab-lsp under ' .. lsp_path .. '')
   local job_opts = { cwd = lsp_path }
   local cmd = {
     'npm',
