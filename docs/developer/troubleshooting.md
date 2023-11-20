@@ -7,6 +7,7 @@ It's important to confirm whether an issue still occurs in isolation from other 
 ## General
 
 1. Enable [generate helptags](#generate-helptags).
+1. Run [`:checkhealth` checks](#checkhealth).
 1. Enable [debug logging](#enable-debug-logging).
 1. Try to [create a minimal reproduction](#create-a-minimal-reproduction) if possible.
 1. Please [report an issue](../../README.md#issues) or [leave feedback](../../README.md#issues).
@@ -17,6 +18,13 @@ If you get `E149: Sorry, no help for gitlab.txt` you will need to generate helpt
 
 - `:helptags ALL`
 - `:helptags doc/` from inside the plugin's root directory.
+
+### Checkhealth
+
+Neovim users can use `:checkhealth gitlab*` to get diagnostics on their current session's configuration.
+These checks aim to give advice to help users self-service configuration issues.
+
+Maintainers may also ask for the results of certain checks to help through the troubleshooting process.
 
 ### Enable debug logging
 
