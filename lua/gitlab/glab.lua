@@ -1,31 +1,29 @@
 local jobs = require('gitlab.lib.jobs')
 
--- Lua module: gitlab.glab
---
--- Exposes GitLab CLI commands.
-local M = {}
-
-local _default_request_options = {
-  params = {},
-}
-
-function M.api(endpoint, req)
-  req = vim.tbl_extend('keep', req or {}, _default_request_options)
+local function _default_opts()
   local auth = require('gitlab.authentication').default_resolver():resolve()
-  local opts = {
+  return {
     env = {
       GITLAB_TOKEN = auth.token(),
       GITLAB_URI = auth.url(),
     },
   }
+end
 
+-- Lua module: gitlab.glab
+--
+-- Exposes GitLab CLI commands.
+local M = { name = 'glab' }
+
+function M.api(endpoint, req)
+  req = vim.tbl_extend('keep', req or {}, { params = {} })
   local cmd = { 'glab', 'api', endpoint }
   for param, value in pairs(req.params) do
     table.insert(cmd, '-f')
     table.insert(cmd, string.format('%s=%s', param, value))
   end
 
-  local job, err = jobs.start_wait(cmd, opts)
+  local job, err = jobs.start_wait(cmd, _default_opts())
   if err then
     return nil, err
   end
@@ -42,6 +40,36 @@ end
 
 function M.available()
   return vim.fn.exepath('glab') ~= ''
+end
+
+function M.auth_status()
+  if not M.available() then
+    return ''
+  end
+
+  local job, err = jobs.start_wait({ 'glab', 'auth', 'status' }, _default_opts())
+  if err then
+    return nil, err
+  end
+
+  return job.stdout
+end
+
+function M.version()
+  if not M.available() then
+    return ''
+  end
+
+  local job, err = jobs.start_wait({ 'glab', 'version' }, {})
+  if err then
+    return nil, err
+  end
+
+  return job.stdout
+end
+
+function M.warning_enabled()
+  return not vim.g.gitlab_api_provider_glab_disabled
 end
 
 return M
