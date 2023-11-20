@@ -1,9 +1,9 @@
-return function(...)
-  local jobs = require('gitlab.lib.jobs')
-  local gitlab = require('gitlab')
+local gitlab = require('gitlab')
+local jobs = require('gitlab.lib.jobs')
 
+return function(...)
   local cmd = vim.tbl_flatten({ 'npm', ... })
-  local cwd = vim.fn.join({ gitlab.plugin_root(), 'lsp' }, '/')
+  local cwd = gitlab.plugin_root()
 
   return {
     cmd = cmd,
