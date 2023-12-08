@@ -69,6 +69,16 @@ To install the GitLab Vim plugin:
       rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
       ```
 
+### Configuration
+
+These environment variables are the most frequently used.
+For a full list, see this plugin's help text at [`doc/gitlab.txt`](doc/gitlab.txt).
+
+| Environment variable | Default              | Description |
+|----------------------|----------------------|-------------|
+| `GITLAB_TOKEN`.      | n/a                  | The default GitLab Personal Access Token to use for authenticated requests. If provided, interactive authentication is skipped. |
+| `GITLAB_VIM_URL`.    | `https://gitlab.com` | Override the GitLab instance to connect with. Defaults to `https://gitlab.com`. |
+
 ### Omni completion
 
 To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) using GitLab Duo Code Suggestions:
@@ -78,7 +88,6 @@ To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-fi
 1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account) with the following scopes:
 
    - `api`
-   - `read_user`
 
 1. Install the GitLab Duo Code Suggestions [language server](https://gitlab.com/gitlab-org/editor-extensions/gitlab-language-server-for-code-suggestions).
 
