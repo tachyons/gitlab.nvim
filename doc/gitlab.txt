@@ -117,6 +117,7 @@ Environment variables
 GITLAB_TOKEN                                                *GITLAB_TOKEN*
 
 The default GitLab Personal Access Token to use for authenticated requests.
+If provided, interactive authentication will be skipped.
 
 GITLAB_VIM_URL                                                *GITLAB_VIM_URL*
 

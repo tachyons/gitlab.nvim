@@ -65,7 +65,7 @@ guard_describe('gitlab.commands.code_suggestions', conditions.snowplow_micro_ava
 
   guard_describe(
     'with valid personal access token',
-    conditions.token({ using = 'GITLAB_TOKEN', require_scopes = { 'api', 'read_user' } }),
+    conditions.token({ using = 'GITLAB_TOKEN', require_scopes = { 'api' } }),
     function()
       before_each(function()
         local status, err = pcall(function()
