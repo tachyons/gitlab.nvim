@@ -30,7 +30,7 @@ return {
     enabled = true,
     fix_newlines = true,
     lsp_binary_path = 'node',
-    offset_encoding = 'utf-8',
+    offset_encoding = 'utf-16',
     redact_secrets = true,
   },
   language_server = {
