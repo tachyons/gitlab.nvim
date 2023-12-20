@@ -19,10 +19,8 @@ If you're interested in contributing check out the [development process](docs/de
 ## Setup
 
 1. Follow the [installation](#installation) steps for your chosen plugin manager.
-
-   1. _Optional:_ Configure GitLab Duo Code Suggestions as an [Omni completion](#omni-completion) provider.
-
-1. Setup helptags using `:helptags ALL` for access to [`:help gitlab.txt`](doc/gitlab.txt).
+1. Optional. [Configure GitLab Duo Code Suggestions](#omni-completion) as an Omni completion provider.
+1. Set up helptags using `:helptags ALL` for access to [`:help gitlab.txt`](doc/gitlab.txt).
 
 ### Installation
 
@@ -81,23 +79,30 @@ For a full list, see this plugin's help text at [`doc/gitlab.txt`](doc/gitlab.tx
 
 ### Omni completion
 
-To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) using GitLab Duo Code Suggestions:
+To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes)
+using GitLab Duo Code Suggestions, you must meet all these conditions:
 
-1. Follow the steps to enable [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html) for your GitLab instance (SaaS or self-managed).
-1. Enable Code Suggestions for your GitLab group/user.
-1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account) with the following scopes:
+- You must be using GitLab Enterprise Edition.
+- For self-managed installations, Code Suggestions must be
+  [enabled for your instance](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/self_managed.html).
+- For GitLab.com, Code Suggestions must be
+  enabled for your top-level group. See instructions
+  [for SaaS](https://docs.gitlab.com/ee/user/group/manage.html#enable-code-suggestions-for-a-group).
 
-   - `api`
+If you meet all these conditions, you can enable
+[Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) using GitLab Duo Code Suggestions:
+
+1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account) with the `api` scope.
 
 1. Install the GitLab Duo Code Suggestions [language server](https://gitlab.com/gitlab-org/editor-extensions/gitlab-language-server-for-code-suggestions).
 
-You may find it helpful to configure omni completion's popup menu even for a single suggestion:
+   You may find it helpful to configure omni completion's popup menu even for a single suggestion:
 
    ```lua
    vim.o.completeopt = 'menu,menuone'
    ```
 
-1. Use `ctrl-x ctrl-o` to open the Omni completion popup menu inside of supported filetypes.
+1. When working in a supported file type, use <kbd>Ctrl</kbd> + <kbd>X</kbd> then <kbd>Ctrl</kbd> + <kbd>O</kbd> to open the Omni completion menu.
 
 ### Keymaps
 
