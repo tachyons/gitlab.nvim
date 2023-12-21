@@ -139,19 +139,17 @@ For help troubleshooting please refer to the [troubleshooting guide](docs/develo
 
 ## Features
 
-### GitLab Duo Code Suggestions (Beta)
+### GitLab Duo Code Suggestions
 
 Write code more efficiently by using generative AI to suggest code while you’re developing. To learn more about this feature, see the
 [GitLab Duo Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-vs-code)
 
-This feature is in
-[Beta](https://docs.gitlab.com/ee/policy/experiment-beta-support.html#beta)
 GitLab Duo Code Suggestions is a generative artificial intelligence (AI) model. GitLab currently leverages [Google Cloud’s Vertex AI Codey API models](https://cloud.google.com/vertex-ai/docs/generative-ai/code/code-models-overview)
 
 No new additional data is collected to enable this feature. Private non-public GitLab customer data is not used as training data.
 Learn more about [Google Vertex AI Codey APIs Data Governance](https://cloud.google.com/vertex-ai/docs/generative-ai/data-governance)
 
-Beta users should read about the [known limitations](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#known-limitations)
+Users should read about the [known limitations](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#known-limitations)
 
 #### Supported Languages
 
