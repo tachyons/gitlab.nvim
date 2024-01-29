@@ -6,6 +6,7 @@ end
 
 function gitlab.setup(user_config)
   require('gitlab.config').setup(user_config)
+  require('gitlab.resource_editing')
 end
 
 return gitlab
