@@ -3,6 +3,9 @@ return {
   statusline = {
     enabled = true,
   },
+  resource_editing = {
+    enabled = false,
+  },
   minimal_message_level = 0,
   code_suggestions = {
     auto_filetypes = {

@@ -58,6 +58,7 @@ local function validate_config(config)
       'expected table with string values',
     },
     ['code_suggestions.enabled'] = { config.code_suggestions.enabled, 'boolean' },
+    ['resource_editing.enabled'] = { config.resource_editing.enabled, 'boolean' },
     ['code_suggestions.fix_newlines'] = { config.code_suggestions.fix_newlines, 'boolean' },
     ['code_suggestions.redact_secrets'] = { config.code_suggestions.redact_secrets, 'boolean' },
     --}}}

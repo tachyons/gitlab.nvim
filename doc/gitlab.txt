@@ -6,6 +6,7 @@ CONTENTS                                        *gitlab-contents*
 Introduction                                    |gitlab-introduction|
 Usage                                           |gitlab-usage|
   Code Suggestions                              |gitlab-code-suggestions|
+  Resource Editing                              |gitlab-resource-editing|
   Commands                                      |gitlab-commands|
   Options                                       |gitlab-options|
 API                                             |gitlab-api|
@@ -27,6 +28,17 @@ Use |gitlab.setup()| to configure `gitlab.vim`.
 
 `gitlab.vim` includes functions to configure the builtin Neovim |lsp| client
 configuration to use the GitLab Duo Code Suggestions language server.
+
+                                                     *gitlab-resource-editing*
+
+View and edit Issue, Merge Request, and Epics using `:edit RESOURCE_URL`:
+
+Example: >lua
+
+    :edit https://gitlab.com/gitlab-org/gitlab/-/issues/1
+    :edit https://gitlab.com/gitlab-org/gitlab/-/merge_requests/1
+    :edit https://gitlab.com/groups/gitlab-org/a-subgroup/-/epics/1
+<
 
                                                            *gitlab-statusline*
 
@@ -88,6 +100,9 @@ gitlab.setup({options})                                       *gitlab.setup()*
       code_suggestions = {
         auto_filetypes = {'ruby'},
       },
+      resource_editing = {
+        enabled = true,
+      },
       statusline = {
         enabled = false,
       },
@@ -100,6 +115,9 @@ gitlab.setup({options})                                       *gitlab.setup()*
                     Suggestions.
                   • gitlab_url (string) the GitLab instance url to use
                     if not `https://gitlab.com`.
+                  • resource_editing (table)          *gitlab.config.resource_editing*
+                    • enabled (boolean) Whether to enable support for editing
+                      GitLab URLs.
                   • statusline (table)          *gitlab.config.statusline*
                     • enabled (boolean) Whether to enable the statusline.
 

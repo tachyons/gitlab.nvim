@@ -2,12 +2,14 @@ local jobs = require('gitlab.lib.jobs')
 
 local function _default_opts()
   local auth = require('gitlab.authentication').default_resolver():resolve()
-  return {
-    env = {
-      GITLAB_TOKEN = auth.token(),
-      GITLAB_URI = auth.url(),
-    },
-  }
+  if auth then
+    return {
+      env = {
+        GITLAB_TOKEN = auth.token(),
+        GITLAB_URI = auth.url(),
+      },
+    }
+  end
 end
 
 -- Lua module: gitlab.glab
@@ -23,6 +25,11 @@ function M.api(endpoint, req)
     table.insert(cmd, string.format('%s=%s', param, value))
   end
 
+  if req.method then
+    table.insert(cmd, '-X')
+    table.insert(cmd, req.method)
+  end
+
   local job, err = jobs.start_wait(cmd, _default_opts())
   if err then
     return nil, err
@@ -32,6 +39,10 @@ function M.api(endpoint, req)
     return vim.fn.json_decode(job.stdout)
   end)
   if ok then
+    if decoded and decoded.error_description then
+      return decoded, decoded.error_description
+    end
+
     return decoded
   end
 

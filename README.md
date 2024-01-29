@@ -121,6 +121,13 @@ To use `<Plug>(GitLab...)` maps above you must include your own keymap that refe
 vim.keymap.set('n', '<C-g>', '<Plug>(GitLabToggleCodeSuggestions)')
 ```
 
+### Resource editing
+
+Enable the `gitlab.resource_editing` to enable:
+
+1. Use `:edit https://gitlab.com/RESOURCE_URL` to open a buffer with the description of an epic, issue, or merge request.
+1. Saving the buffer with `:w` will update the resource's Markdown description.
+
 ### Statusline
 
 `gitlab.statusline` is enabled by default which hooks into the builtin `statusline` to indicate the status of the GitLab Duo Code Suggestions integration.

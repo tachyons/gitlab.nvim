@@ -48,6 +48,11 @@ function M.request(endpoint, req)
     table.insert(cmd, string.format('%s: %s', header, value))
   end
 
+  if req.method then
+    table.insert(cmd, '-X')
+    table.insert(cmd, req.method)
+  end
+
   if req.body then
     table.insert(cmd, '-d')
     table.insert(cmd, vim.fn.json_encode(req.body))
