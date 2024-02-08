@@ -1,4 +1,4 @@
 lua 5.4.6
 nodejs latest:18 18.17.0
 stylua 0.18.0
-vale 2.29.6
+vale 3.0.7
