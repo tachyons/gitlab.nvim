@@ -1,4 +1,5 @@
 local rest = require('gitlab.api.rest')
+local config = require('gitlab.config')
 
 local M = {}
 
@@ -7,8 +8,26 @@ local function url_encode_parent(str)
   return str:gsub('/', '%%2F')
 end
 
+local function string_without_prefix(str, prefix)
+  local s, e = str:find(prefix, 1, true)
+  if s ~= 1 or e == nil then
+    return nil
+  end
+
+  return str:sub(e + 1)
+end
+
 function M.resource_url_to_api_url(url)
-  local parent_path, resource_type, resource_id = url:match('gitlab%.com/(.+)%/%-%/([%w_]+)%/(%d+)')
+  local cfg = config.current()
+  -- Remove possible trailing slash
+  local base_url = cfg.gitlab_url:gsub('/$', '')
+  local resource_path = string_without_prefix(url, base_url)
+
+  if not resource_path then
+    return nil, url .. ' does not start with gitlab_url ' .. cfg.gitlab_url
+  end
+
+  local parent_path, resource_type, resource_id = resource_path:match('/(.+)%/%-%/([%w_]+)%/(%d+)')
 
   if not resource_id then
     return nil, 'Invalid GitLab resource URL: ' .. url
