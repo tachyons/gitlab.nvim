@@ -9,9 +9,10 @@ function M.api_v4_url(path) --{{{
   local cfg = config.current()
   path = path or ''
   path = path:gsub('^/', '')
+  local base_url = cfg.gitlab_url:gsub('/$', '')
 
   return vim.fn.join({
-    cfg.gitlab_url,
+    base_url,
     'api',
     'v4',
     path,

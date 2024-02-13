@@ -55,5 +55,19 @@ describe('gitlab.api.rest', function()
 
       mock.revert(config_mock)
     end)
+
+    it('handles gitlab_url with relative url ending in slash', function()
+      local config_mock = mock(config, true)
+      config_mock.current.returns({ gitlab_url = 'https://gitlab.example.com/my/relative-url/' })
+
+      local result = rest.api_v4_url('projects/123')
+      assert.equal('https://gitlab.example.com/my/relative-url/api/v4/projects/123', result)
+
+      -- It removes the extra leading slash
+      result = rest.api_v4_url('/projects/123')
+      assert.equal('https://gitlab.example.com/my/relative-url/api/v4/projects/123', result)
+
+      mock.revert(config_mock)
+    end)
   end)
 end)
