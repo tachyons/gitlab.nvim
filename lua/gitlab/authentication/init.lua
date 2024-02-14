@@ -1,4 +1,3 @@
-local notifier = require('gitlab.notifier')
 local provider = require('gitlab.authentication.provider')
 
 -- Lua module: gitlab.authentication
@@ -34,14 +33,14 @@ local function new_auth_resolver(options)
       )
       if env_auth:resolve() then
         resolved = env_auth
-        notifier.notify('gitlab.vim: Resolved authentication details from environment.')
+        vim.notify_once('gitlab.vim: Resolved authentication details from environment.')
         return env_auth, nil
       end
 
       local prompt_auth = provider.prompt()
       if prompt_auth:resolve(opts) then
         resolved = prompt_auth
-        notifier.notify('gitlab.vim: Resolved authentication details from user input.')
+        vim.notify_once('gitlab.vim: Resolved authentication details from user input.')
         return prompt_auth, nil
       end
 

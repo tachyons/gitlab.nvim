@@ -36,4 +36,14 @@ function M.current_personal_access_token(request_options)
   return M.request(url, request_options)
 end
 
+function M.metadata()
+  local url = M.api_v4_url('/metadata')
+  local response, err = M.request(url)
+  if err then
+    err = 'Unable to get GitLab instance metadata: ' .. err
+  end
+
+  return response, err
+end
+
 return M
