@@ -1,4 +1,5 @@
 local globals = require('gitlab.globals')
+local enforce_gitlab = require('gitlab.lib.enforce_gitlab')
 local statusline = require('gitlab.statusline')
 local utils = require('gitlab.utils')
 local notifier = require('gitlab.notifier')
@@ -108,6 +109,16 @@ function CodeSuggestionsCommands:start(options)
     notifier.notify(
       'gitlab.vim: Run :GitLabCodeSuggestionsStart to interactively authenticate the LSP.',
       vim.log.levels.WARN
+    )
+    return
+  end
+
+  if not enforce_gitlab.at_least('16.8') then
+    statusline.update_status_line(globals.GCS_UNAVAILABLE)
+    notifier.notify(
+      'GitLab Duo Code Suggestions requires GitLab version 16.8 or later',
+      vim.log.levels.WARN,
+      { title = 'GitLab Duo Code Suggestions' }
     )
     return
   end

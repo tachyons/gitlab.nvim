@@ -18,9 +18,29 @@ local function check_auth_status(auth, err)
   end
 end
 
+local function check_gitlab_metadata()
+  local rest = require('gitlab.api.rest')
+  local metadata, err = rest.metadata()
+  if not err then
+    vim.health.info(
+      'GitLab version: ' .. metadata.version .. ' (revision: ' .. metadata.revision .. ')'
+    )
+    if metadata.enterprise then
+      vim.health.info('Edition: Enterprise Edition (EE)')
+    elseif metadata.enterprise == false then
+      vim.health.info('Edition: Community Edition (CE)')
+    end
+  else
+    vim.health.warn(err, {
+      'Refer to the Metadata API docs at https://docs.gitlab.com/ee/api/metadata.html',
+    })
+  end
+end
+
 M.check = function()
   local auth, err = require('gitlab.authentication').default_resolver():resolve()
   check_auth_status(auth, err)
+  check_gitlab_metadata()
 end
 
 return M
