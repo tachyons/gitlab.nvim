@@ -10,11 +10,14 @@ If you're interested in contributing check out the [development process](docs/de
 
 ## Requirements
 
-| Software                                                                                                                                       | Version |
-|------------------------------------------------------------------------------------------------------------------------------------------------|---------|
-| [GitLab SaaS](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-gitlab-saas)                 | 16.1+   |
-| [GitLab self-managed](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-self-managed-gitlab) | 16.1+   |
-| [Neovim](https://neovim.io/)                                                                                                                   | 0.9+    |
+This plugin requires:
+
+- GitLab version 16.1 or later for both
+  [SaaS](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-gitlab-saas) and
+  [self-managed](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-self-managed-gitlab).
+  While many extension features might work with earlier versions, they are unsupported.
+  - The GitLab Duo Code Suggestions feature requires GitLab version 16.8 or later.
+- [Neovim](https://neovim.io/) version 0.9 or later.
 
 ## Setup
 
