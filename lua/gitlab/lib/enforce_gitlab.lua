@@ -16,7 +16,7 @@ function enforce_gitlab.at_least(min)
   local expected = vim.version.parse(min)
   local actual, err = instance_version()
   if err then
-    notifier.notify(err, vim.log.levels.ERROR)
+    notifier.notify(err, vim.log.levels.WARN)
     return nil
   end
 
