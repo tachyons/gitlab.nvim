@@ -1,5 +1,7 @@
 local globals = require('gitlab.globals')
 local enforce_gitlab = require('gitlab.lib.enforce_gitlab')
+local graphql = require('gitlab.api.graphql')
+local pick = require('gitlab.lib.pick')
 local statusline = require('gitlab.statusline')
 local utils = require('gitlab.utils')
 local notifier = require('gitlab.notifier')
@@ -121,6 +123,24 @@ function CodeSuggestionsCommands:start(options)
       { title = 'GitLab Duo Code Suggestions' }
     )
     return
+  end
+
+  local response, err = graphql.current_user_duo_status()
+  err = err or pick(response, { 'errors', 1, 'message' })
+  if err then
+    statusline.update_status_line(globals.GCS_UNAVAILABLE)
+    vim.notify('Unable to get Duo Code Suggestions license status.\n' .. err, vim.log.levels.ERROR)
+    return
+  else
+    local current_user = pick(response, { 'data', 'currentUser' })
+    if not pick(current_user, { 'duoCodeSuggestionsAvailable' }) then
+      statusline.update_status_line(globals.GCS_UNAVAILABLE)
+      vim.notify(
+        'Code Suggestions is now a paid feature, part of Duo Pro. Contact your GitLab administrator to upgrade.',
+        vim.log.levels.WARN
+      )
+      return
+    end
   end
 
   self.lsp_client = require('gitlab.lsp.client').start({
