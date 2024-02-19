@@ -11,9 +11,40 @@ local function check_auth_status(auth, err)
 
   if auth and auth:token_set() then
     vim.health.ok('Personal access token configured.')
+    return true
   else
     vim.health.error(err, {
       'Use :GitLabConfigure to interactively update your GitLab connection settings.',
+    })
+    return false
+  end
+end
+
+local function check_duo_status()
+  local enforce_gitlab = require('gitlab.lib.enforce_gitlab')
+  if not enforce_gitlab.at_least('16.8') then
+    vim.health.warn('GitLab Duo Code Suggestions requires GitLab version 16.8 or later', {
+      'Confirm your GitLab version: https://docs.gitlab.com/ee/user/version.html',
+    })
+    return
+  end
+
+  local graphql = require('gitlab.api.graphql')
+  local pick = require('gitlab.lib.pick')
+
+  local response, err = graphql.current_user_duo_status()
+  err = err or pick(response, { 'errors', 1, 'message' })
+  if err then
+    vim.health.error('Unable to detect GitLab Duo status for current user: ' .. err)
+    return
+  end
+
+  local current_user = pick(response, { 'data', 'currentUser' })
+  if pick(current_user, { 'duoCodeSuggestionsAvailable' }) then
+    vim.health.ok('GitLab Duo Code Suggestions: Available')
+  else
+    vim.health.warn('Code Suggestions is now a paid feature, part of Duo Pro.', {
+      'Contact your GitLab administrator to upgrade.',
     })
   end
 end
@@ -31,16 +62,24 @@ local function check_gitlab_metadata()
       vim.health.info('Edition: Community Edition (CE)')
     end
   else
-    vim.health.warn(err, {
-      'Refer to the Metadata API docs at https://docs.gitlab.com/ee/api/metadata.html',
+    vim.health.error(err, {
+      'This healthcheck uses the Metadata API: https://docs.gitlab.com/ee/api/metadata.html',
+      'Configure a Personal Access Token with the `read_api` scope to enable automatic version detection.',
     })
+    return
   end
 end
 
 M.check = function()
   local auth, err = require('gitlab.authentication').default_resolver():resolve()
-  check_auth_status(auth, err)
+  local auth_ok = check_auth_status(auth, err)
+  if not auth_ok then
+    vim.health.warn('Skipping authenticated health checks.')
+    return
+  end
+
   check_gitlab_metadata()
+  check_duo_status()
 end
 
 return M

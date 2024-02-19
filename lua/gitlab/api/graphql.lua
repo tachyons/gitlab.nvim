@@ -34,4 +34,14 @@ function M.query(query)
   return nil, 'Expected either "glab" or "curl" to be executable under PATH.'
 end
 
+function M.current_user_duo_status()
+  return M.query([[
+    query currentUserDuoStatus {
+      currentUser {
+        duoCodeSuggestionsAvailable
+      }
+    }
+  ]])
+end
+
 return M

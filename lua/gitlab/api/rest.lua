@@ -39,9 +39,6 @@ end
 function M.metadata()
   local url = M.api_v4_url('/metadata')
   local response, err = M.request(url)
-  if err then
-    err = 'Unable to get GitLab instance metadata: ' .. err
-  end
 
   return response, err
 end
