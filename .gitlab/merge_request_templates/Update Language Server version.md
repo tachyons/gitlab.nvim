@@ -15,3 +15,7 @@
 
 - [ ] The `lint-lsp-deps` job passed confirming a reproducible environment.
 - [ ] End-to-end integration tests are passing with the updated LSP server version.
+
+
+/label ~"Editor Extensions::Neovim" ~"Category:Editor Extensions" ~"devops::create" ~"group::editor extensions" ~"section::dev"
+/assign me
