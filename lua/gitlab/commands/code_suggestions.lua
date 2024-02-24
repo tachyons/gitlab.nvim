@@ -129,13 +129,16 @@ function CodeSuggestionsCommands:start(options)
   err = err or pick(response, { 'errors', 1, 'message' })
   if err then
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
-    vim.notify('Unable to get Duo Code Suggestions license status.\n' .. err, vim.log.levels.ERROR)
+    notifier.notify(
+      'Unable to get Duo Code Suggestions license status.\n' .. err,
+      vim.log.levels.ERROR
+    )
     return
   else
     local current_user = pick(response, { 'data', 'currentUser' })
     if not pick(current_user, { 'duoCodeSuggestionsAvailable' }) then
       statusline.update_status_line(globals.GCS_UNAVAILABLE)
-      vim.notify(
+      notifier.notify(
         'Code Suggestions is now a paid feature, part of Duo Pro. Contact your GitLab administrator to upgrade.',
         vim.log.levels.WARN
       )
