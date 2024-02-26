@@ -1,8 +1,34 @@
-# Code Owners - https://docs.gitlab.com/ee/user/project/code_owners.html
+# {{{Required Approvals
 
-[Maintainers]
-* @erran @ashmckenzie
+# Require at least one approval from a Code Owner by default:
+* @gitlab-org/editor-extensions/team @ashmckenzie 
 
-^[Documentation Pages]
-/*.md @aqualls
-/docs/ @aqualls
+# Relax the Code Owner requirement for docs:
+/doc/*.txt
+/**/*.md
+
+[Maintainer (Lua)] @erran @ashmckenzie
+**/*.lua
+
+[Maintainer (Vimscript)] @erran @ashmckenzie
+**/*.vim
+
+[Technical Writing] @marcel.amirault @eread @aqualls @gitlab-org/tw-leadership
+.markdownlint-cli2.yml
+/docs/.vale/
+.vale.ini
+
+[Tests] @gitlab-org/editor-extensions/team @ashmckenzie @jay_mccure
+docker/
+spec/
+
+# }}}
+
+# {{{Optional Approvals
+
+^[Documentation] @marcel.amirault @eread @aqualls @gitlab-org/tw-leadership
+/doc/gitlab.txt
+/docs/**/*
+/**/*.md
+
+# }}}
