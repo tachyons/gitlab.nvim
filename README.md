@@ -143,10 +143,6 @@ require('gitlab').setup({
 })
 ```
 
-### Troubleshooting
-
-For help troubleshooting please refer to the [troubleshooting guide](docs/developer/troubleshooting.md).
-
 ## Features
 
 ### GitLab Duo Code Suggestions
@@ -188,11 +184,25 @@ You can configure this behavior for additional filetypes through the `code_sugge
 
 Looking to [report an issue](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues)?
 
+## Roadmap
+
+To learn more about this project's team, processes, and plans, see
+the [Create:Editor Extensions Group](https://handbook.gitlab.com/handbook/engineering/development/dev/create/editor-extensions/)
+page in the GitLab handbook.
+
+For a list of all open issues in this project, see the
+[issues page](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues)
+for this project.
+
 ## Contributing
 
 This extension is open source and [hosted on GitLab](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim.git). Contributions are more than welcome. Feel free to fork and add new features or submit bug reports. See [CONTRIBUTING](CONTRIBUTING.md) for more information.
 
 [A list of the great people](CONTRIBUTORS.md) who contributed this project, and made it even more awesome, is available. Thank you all! 🎉
+
+## Troubleshooting
+
+For help troubleshooting please refer to the [troubleshooting guide](docs/developer/troubleshooting.md).
 
 ## License
 
