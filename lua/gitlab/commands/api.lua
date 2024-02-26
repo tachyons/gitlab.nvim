@@ -1,12 +1,13 @@
 local rest = require('gitlab.api.rest')
+local notifier = require('gitlab.notifier')
 
 local function gitlab_metadata()
   local response, err = rest.metadata()
 
   if err then
-    vim.notify(err, vim.log.levels.ERROR)
+    notifier.notify(err, vim.log.levels.ERROR)
   else
-    vim.notify(
+    notifier.notify(
       response.version .. ' (revision: ' .. response.revision .. ')',
       vim.log.levels.INFO,
       { title = 'GitLab version' }

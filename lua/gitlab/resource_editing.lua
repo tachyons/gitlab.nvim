@@ -1,6 +1,7 @@
 local resource_helper = require('gitlab.resource_helper')
 local rest = require('gitlab.api.rest')
 local config = require('gitlab.config').current()
+local notifier = require('gitlab.notifier')
 
 local function update_gitlab_issuable(buffer, api_url)
   local lines = vim.api.nvim_buf_get_lines(buffer, 0, -1, false)
@@ -14,7 +15,7 @@ local function open_gitlab_issuable(api_url)
   local issuable, err = rest.request(api_url, { method = 'GET' })
 
   if err then
-    vim.notify(err, vim.log.levels.ERROR)
+    notifier.notify(err, vim.log.levels.ERROR)
     return
   end
 
@@ -36,7 +37,7 @@ end
 local function open_gitlab_resource(url)
   local api_url, err = resource_helper.resource_url_to_api_url(url)
   if err then
-    vim.notify(err, vim.log.levels.ERROR)
+    notifier.notify(err, vim.log.levels.ERROR)
     return
   end
 
