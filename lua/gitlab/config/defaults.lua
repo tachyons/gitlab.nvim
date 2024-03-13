@@ -29,6 +29,9 @@ return {
       'terraform', -- Terraform
       'typescript', -- TypeScript
       'typescriptreact', -- TypeScript React
+      'sh', -- Shell scripts
+      'html', -- HTML
+      'css', -- CSS
     },
     enabled = true,
     fix_newlines = true,
