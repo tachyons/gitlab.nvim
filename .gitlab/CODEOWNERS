@@ -1,7 +1,7 @@
 # {{{Required Approvals
 
 # Require at least one approval from a Code Owner by default:
-* @gitlab-org/editor-extensions/team @ashmckenzie
+* @gitlab-org/editor-extensions/team @ashmckenzie @DylanGriffith
 
 # Relax the Code Owner requirement for docs:
 /doc/*.txt
