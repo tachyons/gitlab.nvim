@@ -125,8 +125,8 @@ function CodeSuggestionsCommands:start(options)
     return
   end
 
-  local response, err = graphql.current_user_duo_status()
-  err = err or pick(response, { 'errors', 1, 'message' })
+  local user_response, err = graphql.current_user_duo_status()
+  err = err or pick(user_response, { 'errors', 1, 'message' })
   if err then
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
     notifier.notify(
@@ -135,13 +135,44 @@ function CodeSuggestionsCommands:start(options)
     )
     return
   else
-    local current_user = pick(response, { 'data', 'currentUser' })
+    local current_user = pick(user_response, { 'data', 'currentUser' })
     if not pick(current_user, { 'duoCodeSuggestionsAvailable' }) then
       statusline.update_status_line(globals.GCS_UNAVAILABLE)
       notifier.notify(
         'Code Suggestions is now a paid feature, part of Duo Pro. Contact your GitLab administrator to upgrade.',
         vim.log.levels.WARN
       )
+      return
+    end
+
+    local at_least_one_duo_project = false
+    for name, uri in pairs(require('gitlab.lib.git_remote').remotes()) do
+      if not at_least_one_duo_project then
+        local parsed = require('gitlab.lib.gitlab_project_url').parse(uri)
+        local project_response, project_err = graphql.project_settings(parsed.full_path)
+        err = project_err or pick(project_response, { 'errors', 1, 'message' })
+        if err then
+          notifier.notify(
+            string.format('Unable to check GitLab Duo status %s (remote %s)', uri, name),
+            vim.log.levels.ERROR
+          )
+        elseif pick(project_response, { 'data', 'project', 'duoFeaturesEnabled' }) then
+          at_least_one_duo_project = true
+        else
+          notifier.notify(
+            string.format(
+              'GitLab Duo is currently disabled for this project %s (remote %s)',
+              uri,
+              name
+            ),
+            vim.log.levels.WARN
+          )
+        end
+      end
+    end
+
+    if not at_least_one_duo_project then
+      statusline.update_status_line(globals.GCS_UNAVAILABLE)
       return
     end
   end

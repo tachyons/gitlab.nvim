@@ -43,9 +43,33 @@ describe('pick', function()
     assert.equal(nil, pick(tbl, { 'existing_key', 'multiple', 'missing', 'keys' }))
   end)
 
+  it('returns nil for a null json nested given extra keys', function()
+    local tbl = vim.fn.json_decode('{"existing_key": { "multiple": null }}')
+
+    assert.equal(nil, pick(tbl, { 'existing_key', 'multiple', 'missing', 'keys' }))
+  end)
+
+  it('returns nil for a vim.NIL nested given extra keys', function()
+    local tbl = { existing_key = { multiple = vim.NIL } }
+
+    assert.equal(nil, pick(tbl, { 'existing_key', 'multiple', 'missing', 'keys' }))
+  end)
+
   it('returns nil for a missing nested', function()
     local tbl = { existing_key = {} }
 
     assert.equal(nil, pick(tbl, { 'existing_key', 'missing_key' }))
+  end)
+
+  it('returns nil for null json value', function()
+    local tbl = vim.fn.json_decode('{"existing_key": null}')
+
+    assert.equal(nil, pick(tbl, { 'existing_key' }))
+  end)
+
+  it('returns nil for vim.NIL value', function()
+    local tbl = { existing_key = vim.NIL }
+
+    assert.equal(nil, pick(tbl, { 'existing_key' }))
   end)
 end)
