@@ -7,10 +7,10 @@
 /doc/*.txt
 /**/*.md
 
-[Maintainer (Lua)] @erran @ashmckenzie
+[Maintainer (Lua)] @erran @ashmckenzie @DylanGriffith
 **/*.lua
 
-[Maintainer (Vimscript)] @erran @ashmckenzie
+[Maintainer (Vimscript)] @erran @ashmckenzie @DylanGriffith
 **/*.vim
 
 [Technical Writing] @marcel.amirault @eread @aqualls @gitlab-org/tw-leadership
@@ -18,7 +18,7 @@
 /docs/.vale/
 .vale.ini
 
-[Tests] @ashmckenzie @erran @jay_mccure
+[Tests] @ashmckenzie @erran @jay_mccure @DylanGriffith
 docker/
 spec/
 
