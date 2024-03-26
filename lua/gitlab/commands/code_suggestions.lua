@@ -153,7 +153,12 @@ function CodeSuggestionsCommands:start(options)
         err = project_err or pick(project_response, { 'errors', 1, 'message' })
         if err then
           notifier.notify(
-            string.format('Unable to check GitLab Duo status %s (remote %s)', uri, name),
+            string.format(
+              'Unable to check GitLab Duo status %s (remote %s) - error: %s',
+              uri,
+              name,
+              err
+            ),
             vim.log.levels.ERROR
           )
         elseif pick(project_response, { 'data', 'project', 'duoFeaturesEnabled' }) then
