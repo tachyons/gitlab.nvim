@@ -22,4 +22,22 @@ describe('enforce_gitlab', function()
   it('.at_least("999.99.9") returns false', function()
     assert.equal(false, enforce_gitlab.at_least('999.99.9'))
   end)
+
+  it('.at_least() given an API error returns nil, error', function()
+    stub(rest_api, 'metadata').returns(nil, 'specific error')
+
+    local ok, err = enforce_gitlab.at_least('17.0')
+
+    assert.equal(nil, ok)
+    assert.same('specific error', err)
+  end)
+
+  it('.at_least() given an empty response returns nil, error', function()
+    stub(rest_api, 'metadata').returns(vim.empty_dict(), nil)
+
+    local ok, err = enforce_gitlab.at_least('17.0')
+
+    assert.equal(nil, ok)
+    assert.not_equal(nil, err)
+  end)
 end)
