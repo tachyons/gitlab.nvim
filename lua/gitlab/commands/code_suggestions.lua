@@ -115,7 +115,12 @@ function CodeSuggestionsCommands:start(options)
     return
   end
 
-  if not enforce_gitlab.at_least('16.8') then
+  local minimum_version, api_error = enforce_gitlab.at_least('16.8')
+  if api_error then
+    -- NOTE: We use WARN here to avoid an captive error state on VimEnter.
+    notifier.notify(api_error, vim.log.levels.WARN, { title = 'GitLab Duo Code Suggestions' })
+    return
+  elseif not minimum_version then
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
     notifier.notify(
       'GitLab Duo Code Suggestions requires GitLab version 16.8 or later',
