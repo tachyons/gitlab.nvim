@@ -95,9 +95,9 @@ using GitLab Duo Code Suggestions, you must meet all these conditions:
 If you meet all these conditions, you can enable
 [Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) using GitLab Duo Code Suggestions:
 
-1. Create a [Personal Access Token](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-your-gitlab-saas-account) with the `api` scope.
+1. Create a [Personal Access Token](https://gitlab.com/-/user_settings/personal_access_tokens) with the `api` scope.
 
-1. Install the GitLab Duo Code Suggestions [language server](https://gitlab.com/gitlab-org/editor-extensions/gitlab-language-server-for-code-suggestions).
+1. Install the GitLab Duo Code Suggestions [language server](https://gitlab.com/gitlab-org/editor-extensions/gitlab-lsp).
 
    You may find it helpful to configure omni completion's popup menu even for a single suggestion:
 
