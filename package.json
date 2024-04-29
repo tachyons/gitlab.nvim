@@ -3,7 +3,7 @@
   "description": "Bring your favourite DevSecOps platform to your fingertips through a Vim plugin.",
   "dependencies": {
     "@gitlab-org/gitlab-lsp": "4.4.1",
-    "dayjs": "^1.11.10"
+    "dayjs": "^1.11.11"
   },
   "private": true
 }
