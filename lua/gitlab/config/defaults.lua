@@ -13,6 +13,7 @@ return {
       'javascript', -- JavaScript
       'javascriptreact', -- JavaScript React
       'kotlin', -- Kotlin
+      'markdown', -- Markdown
       'objective-c', -- Objective-C
       'objective-cpp', -- Objective-C++
       'php', -- PHP
