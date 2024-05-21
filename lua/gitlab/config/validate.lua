@@ -1,14 +1,22 @@
 local M = {}
 
+local function islist(tbl)
+  if vim.islist then
+    return vim.islist(tbl)
+  end
+
+  return vim.tbl_islist(tbl)
+end
+
 --{{{[Validation functions]
 function M.is_dict()
   return function(tbl)
-    return type(tbl) == 'table' and not vim.tbl_islist(tbl)
+    return type(tbl) == 'table' and not islist(tbl)
   end, 'a dict'
 end
 function M.is_dict_of(value_type)
   return function(tbl)
-    if type(tbl) ~= 'table' or vim.tbl_islist(tbl) then
+    if type(tbl) ~= 'table' or islist(tbl) then
       return false
     end
 
@@ -24,7 +32,7 @@ function M.is_dict_of(value_type)
 end
 
 function M.is_string_list(tbl)
-  if type(tbl) ~= 'table' or not vim.tbl_islist(tbl) then
+  if type(tbl) ~= 'table' or not islist(tbl) then
     return false
   end
 
