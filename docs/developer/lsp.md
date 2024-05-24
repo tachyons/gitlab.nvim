@@ -1,6 +1,8 @@
 # Language Server Integration
 
-`gitlab.vim` integrates with the [GitLab Language Server for Code Suggestions](https://gitlab.com/gitlab-org/editor-extensions/gitlab-language-server-for-code-suggestions) by installing the `@gitlab-org/gitlab-lsp` package and using the `node` interpreter.
+`gitlab.vim` integrates with the
+[GitLab Language Server for Code Suggestions](https://gitlab.com/gitlab-org/editor-extensions/gitlab-lsp)
+by installing the `@gitlab-org/gitlab-lsp` package and using the `node` interpreter.
 
 ## Dependencies
 
