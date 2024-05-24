@@ -2,7 +2,7 @@
 
 [[_TOC_]]
 
-A Lua based plugin for Neovim that offers [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html).
+A Lua based plugin for Neovim that offers [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/index.html).
 
 All feedback can be submitted in the [[Feedback] GitLab for Neovim](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22) issue.
 
@@ -12,9 +12,7 @@ If you're interested in contributing check out the [development process](docs/de
 
 This plugin requires:
 
-- GitLab version 16.1 or later for both
-  [SaaS](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-gitlab-saas) and
-  [self-managed](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-on-self-managed-gitlab).
+- GitLab version 16.1 or later for both SaaS and self-managed.
   While many extension features might work with earlier versions, they are unsupported.
   - The GitLab Duo Code Suggestions feature requires GitLab version 16.8 or later.
 - [Neovim](https://neovim.io/) version 0.9 or later.
@@ -83,17 +81,7 @@ For a full list, see this plugin's help text at [`doc/gitlab.txt`](doc/gitlab.tx
 ### Omni completion
 
 To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes)
-using GitLab Duo Code Suggestions, you must meet all these conditions:
-
-- You must be using GitLab Enterprise Edition.
-- For self-managed installations, Code Suggestions must be
-  [enabled for your instance](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/self_managed.html).
-- For GitLab.com, Code Suggestions must be
-  enabled for your top-level group. See instructions
-  [for SaaS](https://docs.gitlab.com/ee/user/group/manage.html#enable-code-suggestions-for-a-group).
-
-If you meet all these conditions, you can enable
-[Omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes) using GitLab Duo Code Suggestions:
+using GitLab Duo Code Suggestions:
 
 1. Create a [Personal Access Token](https://gitlab.com/-/user_settings/personal_access_tokens) with the `api` scope.
 
@@ -148,18 +136,16 @@ require('gitlab').setup({
 ### GitLab Duo Code Suggestions
 
 Write code more efficiently by using generative AI to suggest code while you’re developing. To learn more about this feature, see the
-[GitLab Duo Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#enable-code-suggestions-in-vs-code)
+[GitLab Duo Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/index.html)
 
-GitLab Duo Code Suggestions is a generative artificial intelligence (AI) model. GitLab currently leverages [Google Cloud’s Vertex AI Codey API models](https://cloud.google.com/vertex-ai/docs/generative-ai/code/code-models-overview)
+GitLab Duo Code Suggestions is a generative artificial intelligence (AI) model. GitLab currently leverages [Google Cloud’s Vertex AI Codey API models](https://cloud.google.com/vertex-ai/generative-ai/docs/code/code-models-overview)
 
 No new additional data is collected to enable this feature. Private non-public GitLab customer data is not used as training data.
-Learn more about [Google Vertex AI Codey APIs Data Governance](https://cloud.google.com/vertex-ai/docs/generative-ai/data-governance)
-
-Users should read about the [known limitations](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#known-limitations)
+Learn more about [Google Vertex AI Codey APIs Data Governance](https://cloud.google.com/vertex-ai/generative-ai/docs/data-governance)
 
 #### Supported Languages
 
-Languages supported by GitLab Duo Code Suggestions can be found in the [documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#supported-languages).
+For the languages supported by GitLab Duo Code Suggestions, see [Supported extensions and languages](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/supported_extensions.html) in the GitLab documentation.
 
 For your convenience this plugin provides Vim auto-commands to start the LSP integration for some supported filetypes.
 That is Ruby is a supported language so the plugin will add a `FileType ruby` auto-command.
@@ -196,7 +182,7 @@ for this project.
 
 ## Contributing
 
-This extension is open source and [hosted on GitLab](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim.git). Contributions are more than welcome. Feel free to fork and add new features or submit bug reports. See [CONTRIBUTING](CONTRIBUTING.md) for more information.
+This extension is open source and [hosted on GitLab](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim). Contributions are more than welcome. Feel free to fork and add new features or submit bug reports. See [CONTRIBUTING](CONTRIBUTING.md) for more information.
 
 [A list of the great people](CONTRIBUTORS.md) who contributed this project, and made it even more awesome, is available. Thank you all! 🎉
 
