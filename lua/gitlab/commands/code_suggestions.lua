@@ -88,6 +88,11 @@ function CodeSuggestionsCommands:install_language_server()
   end
 end
 
+local auth
+local minimum_version
+local at_least_one_duo_project = false
+local user_response
+local api_error, err
 function CodeSuggestionsCommands:start(options)
   vim.validate({
     ['options.prompt_user'] = { options.prompt_user, 'boolean' },
@@ -103,7 +108,9 @@ function CodeSuggestionsCommands:start(options)
     return
   end
 
-  local auth = self.auth.resolve({ prompt_user = options.prompt_user })
+  if not auth then
+    auth = self.auth.resolve({ prompt_user = options.prompt_user })
+  end
   if not auth or not auth:token_set() then
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
     -- Invoke :redraw before notifier.notify to ensure users will see the warning.
@@ -115,7 +122,9 @@ function CodeSuggestionsCommands:start(options)
     return
   end
 
-  local minimum_version, api_error = enforce_gitlab.at_least('16.8')
+  if not minimum_version then
+    minimum_version, api_error = enforce_gitlab.at_least('16.8')
+  end
   if api_error then
     -- NOTE: We use WARN here to avoid an captive error state on VimEnter.
     notifier.notify(api_error, vim.log.levels.WARN, { title = 'GitLab Duo Code Suggestions' })
@@ -130,7 +139,9 @@ function CodeSuggestionsCommands:start(options)
     return
   end
 
-  local user_response, err = graphql.current_user_duo_status()
+  if not user_response then
+    user_response, err = graphql.current_user_duo_status()
+  end
   err = err or pick(user_response, { 'errors', 1, 'message' })
   if err then
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
@@ -150,7 +161,6 @@ function CodeSuggestionsCommands:start(options)
       return
     end
 
-    local at_least_one_duo_project = false
     for name, uri in pairs(require('gitlab.lib.git_remote').remotes()) do
       if not at_least_one_duo_project then
         local parsed = require('gitlab.lib.gitlab_project_url').parse(uri)
