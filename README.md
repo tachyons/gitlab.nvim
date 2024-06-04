@@ -4,7 +4,7 @@
 
 A Lua based plugin for Neovim that offers [GitLab Duo Code Suggestions](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/index.html).
 
-All feedback can be submitted in the [[Feedback] GitLab for Neovim](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22) issue.
+All feedback can be submitted in the [(Feedback) GitLab for Neovim](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/22) issue.
 
 If you're interested in contributing check out the [development process](docs/developer/development-process.md).
 
@@ -23,37 +23,43 @@ This plugin requires:
 1. Optional. [Configure GitLab Duo Code Suggestions](#omni-completion) as an Omni completion provider.
 1. Set up helptags using `:helptags ALL` for access to [`:help gitlab.txt`](doc/gitlab.txt).
 
-### Installation
+## Install
 
-#### Without a plugin manager
+### Without a plugin manager
 
-Included by [packadd](https://neovim.io/doc/user/repeat.html#%3Apackadd) on startup.
+Run this command to include this project with [packadd](https://neovim.io/doc/user/repeat.html#%3Apackadd) on startup:
 
 ```shell
 git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
 ```
 
-#### lazy.nvim
+### lazy.nvim
 
-Add the following plugin to your [lazy.nvim](https://github.com/folke/lazy.nvim) configuration:
+Add this plugin to your [lazy.nvim](https://github.com/folke/lazy.nvim) configuration:
 
 ```lua
 {
   'git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git',
-  event = { 'BufReadPre', 'BufNewFile' }, -- Activate when a file is created/opened
-  ft = { 'go', 'javascript', 'python', 'ruby' }, -- Activate when a supported filetype is open
+  -- Activate when a file is created/opened
+  event = { 'BufReadPre', 'BufNewFile' },
+  -- Activate when a supported filetype is open
+  ft = { 'go', 'javascript', 'python', 'ruby' },
   cond = function()
-    return vim.env.GITLAB_TOKEN ~= nil and vim.env.GITLAB_TOKEN ~= '' -- Only activate if token is present in environment variable (remove to use interactive workflow)
+    -- Only activate if token is present in environment variable.
+    -- Remove this line to use the interactive workflow.
+    return vim.env.GITLAB_TOKEN ~= nil and vim.env.GITLAB_TOKEN ~= ''
   end,
   opts = {
     statusline = {
-      enabled = true, -- Hook into the builtin statusline to indicate the status of the GitLab Duo Code Suggestions integration
+      -- Hook into the built-in statusline to indicate the status
+      -- of the GitLab Duo Code Suggestions integration
+      enabled = true,
     },
   },
 }
 ```
 
-#### packer.nvim
+### packer.nvim
 
 Declare the plugin in your [packer.nvim](https://github.com/wbthomason/packer.nvim) configuration:
 
@@ -63,9 +69,9 @@ use {
 }
 ```
 
-### Uninstalling
+## Uninstall
 
-1. Remove this plugin and any language server binaries with the following commands
+1. Remove this plugin and any language server binaries with these commands:
 
    ```shell
    rm -r ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
@@ -77,10 +83,10 @@ use {
 These environment variables are the most frequently used.
 For a full list, see this plugin's help text at [`doc/gitlab.txt`](doc/gitlab.txt).
 
-| Environment variable | Default              | Description                                                                                                                     |
-| -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Environment variable | Default              | Description |
+|----------------------|----------------------|-------------|
 | `GITLAB_TOKEN`.      | n/a                  | The default GitLab Personal Access Token to use for authenticated requests. If provided, interactive authentication is skipped. |
-| `GITLAB_VIM_URL`.    | `https://gitlab.com` | Override the GitLab instance to connect with. Defaults to `https://gitlab.com`.                                                 |
+| `GITLAB_VIM_URL`.    | `https://gitlab.com` | Override the GitLab instance to connect with. Defaults to `https://gitlab.com`. |
 
 ### Omni completion
 
