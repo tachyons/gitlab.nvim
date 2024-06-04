@@ -25,39 +25,43 @@ This plugin requires:
 
 ### Installation
 
-To install the GitLab Vim plugin:
+#### Without a plugin manager
 
-1. Clone Neovim's packpath which is included by [packadd](https://neovim.io/doc/user/repeat.html#%3Apackadd) on startup.
+Included by [packadd](https://neovim.io/doc/user/repeat.html#%3Apackadd) on startup.
 
-   ```shell
-   git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
-   ```
+```shell
+git clone git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
+```
 
-1. Add the following plugin to your [lazy.nvim](https://github.com/folke/lazy.nvim) configuration:
+#### lazy.nvim
 
-   ```lua
-   {
-     'git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git',
-     event = { 'BufReadPre', 'BufNewFile' }, -- Activate when a file is created/opened
-     ft = { 'go', 'javascript', 'python', 'ruby' }, -- Activate when a supported filetype is open
-     cond = function()
-       return vim.env.GITLAB_TOKEN ~= nil and vim.env.GITLAB_TOKEN ~= '' -- Only activate if token is present in environment variable (remove to use interactive workflow)
-     end,
-     opts = {
-       statusline = {
-         enabled = true, -- Hook into the builtin statusline to indicate the status of the GitLab Duo Code Suggestions integration
-       },
-     },
-   }
-   ```
+Add the following plugin to your [lazy.nvim](https://github.com/folke/lazy.nvim) configuration:
 
-1. Declare the plugin in your [packer.nvim](https://github.com/wbthomason/packer.nvim) configuration:
+```lua
+{
+  'git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git',
+  event = { 'BufReadPre', 'BufNewFile' }, -- Activate when a file is created/opened
+  ft = { 'go', 'javascript', 'python', 'ruby' }, -- Activate when a supported filetype is open
+  cond = function()
+    return vim.env.GITLAB_TOKEN ~= nil and vim.env.GITLAB_TOKEN ~= '' -- Only activate if token is present in environment variable (remove to use interactive workflow)
+  end,
+  opts = {
+    statusline = {
+      enabled = true, -- Hook into the builtin statusline to indicate the status of the GitLab Duo Code Suggestions integration
+    },
+  },
+}
+```
 
-   ```lua
-   use {
-     "git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git",
-   }
-   ```
+#### packer.nvim
+
+Declare the plugin in your [packer.nvim](https://github.com/wbthomason/packer.nvim) configuration:
+
+```lua
+use {
+  "git@gitlab.com:gitlab-org/editor-extensions/gitlab.vim.git",
+}
+```
 
 #### Uninstalling
 
