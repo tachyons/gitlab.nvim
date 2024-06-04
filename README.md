@@ -63,24 +63,24 @@ use {
 }
 ```
 
-#### Uninstalling
+### Uninstalling
 
 1. Remove this plugin and any language server binaries with the following commands
 
-      ```shell
-      rm -r ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
-      rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
-      ```
+   ```shell
+   rm -r ~/.local/share/nvim/site/pack/gitlab/start/gitlab.vim
+   rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
+   ```
 
 ### Configuration
 
 These environment variables are the most frequently used.
 For a full list, see this plugin's help text at [`doc/gitlab.txt`](doc/gitlab.txt).
 
-| Environment variable | Default              | Description |
-|----------------------|----------------------|-------------|
+| Environment variable | Default              | Description                                                                                                                     |
+| -------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `GITLAB_TOKEN`.      | n/a                  | The default GitLab Personal Access Token to use for authenticated requests. If provided, interactive authentication is skipped. |
-| `GITLAB_VIM_URL`.    | `https://gitlab.com` | Override the GitLab instance to connect with. Defaults to `https://gitlab.com`. |
+| `GITLAB_VIM_URL`.    | `https://gitlab.com` | Override the GitLab instance to connect with. Defaults to `https://gitlab.com`.                                                 |
 
 ### Omni completion
 
@@ -102,7 +102,7 @@ using GitLab Duo Code Suggestions:
 ### Keymaps
 
 | Mode     | Keymaps                               | Type     | Description                                                                        |
-|----------|---------------------------------------|----------|------------------------------------------------------------------------------------|
+| -------- | ------------------------------------- | -------- | ---------------------------------------------------------------------------------- |
 | `INSERT` | `<C-X><C-O>`                          | Builtin  | Requests completions from GitLab Duo Code Suggestions through the language server. |
 | `NORMAL` | `<Plug>(GitLabToggleCodeSuggestions)` | `<Plug>` | Toggles Code Suggestions on/off for the current buffer.                            |
 
