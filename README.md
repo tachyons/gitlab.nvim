@@ -23,7 +23,7 @@ This plugin requires:
 ## Setup
 
 1. Follow the [installation](#install) steps for your chosen plugin manager.
-1. Optional. [Configure GitLab Duo Code Suggestions](#omni-completion) as an Omni completion provider.
+1. Optional. [Configure GitLab Duo Code Suggestions](#omni-completion) as an Omni Completion provider.
 1. Set up helptags using `:helptags ALL` for access to [`:help gitlab.txt`](doc/gitlab.txt).
 
 ## Install
@@ -89,12 +89,12 @@ For a full list, see this plugin's help text at [`doc/gitlab.txt`](doc/gitlab.tx
 
 | Environment variable | Default              | Description |
 |----------------------|----------------------|-------------|
-| `GITLAB_TOKEN`.      | n/a                  | The default GitLab Personal Access Token to use for authenticated requests. If provided, interactive authentication is skipped. |
+| `GITLAB_TOKEN`.      | n/a                  | The default GitLab Personal Access Token to use for authenticated requests. If provided, skips interactive authentication. |
 | `GITLAB_VIM_URL`.    | `https://gitlab.com` | Override the GitLab instance to connect with. Defaults to `https://gitlab.com`. |
 
-### Omni completion
+### Omni Completion
 
-To enable [omni completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes)
+To enable [Omni Completion](https://neovim.io/doc/user/insert.html#compl-omni-filetypes)
 using GitLab Duo Code Suggestions:
 
 1. Create a [Personal Access Token](https://gitlab.com/-/user_settings/personal_access_tokens) with the `api` scope.
@@ -102,27 +102,27 @@ using GitLab Duo Code Suggestions:
 1. Install the GitLab Duo Code Suggestions
    [language server](https://gitlab.com/gitlab-org/editor-extensions/gitlab-lsp).
 
-   You might find it helpful to configure omni completion's popup menu even for a single suggestion:
+   Consider configuring Omni Completion's dialog even for a single suggestion:
 
    ```lua
    vim.o.completeopt = 'menu,menuone'
    ```
 
 1. When working in a supported file type, use <kbd>Ctrl</kbd> + <kbd>X</kbd>
-   then <kbd>Ctrl</kbd> + <kbd>O</kbd> to open the Omni completion menu.
+   then <kbd>Ctrl</kbd> + <kbd>O</kbd> to open the Omni Completion menu.
 
-### Keymaps
+### Key mappings
 
-| Mode     | Keymaps                               | Type     | Description                                                                        |
+| Mode     | Key mappings                          | Type     | Description                                                                        |
 | -------- | ------------------------------------- | -------- | ---------------------------------------------------------------------------------- |
 | `INSERT` | `<C-X><C-O>`                          | Builtin  | Requests completions from GitLab Duo Code Suggestions through the language server. |
 | `NORMAL` | `<Plug>(GitLabToggleCodeSuggestions)` | `<Plug>` | Toggles Code Suggestions on/off for the current buffer.                            |
 
-1. Builtin keymaps extend existing features. For example, because Code Suggestions
-   provides a LSP server, the built-in `ctrl-x ctrl-o` omni complete keymap works.
-1. `<Plug>` keymaps are provided for convenience.
+1. Builtin key mappings extend existing features. For example, because Code Suggestions
+   provides a LSP server, the built-in `ctrl-x ctrl-o` Omni Completion key mapping works.
+1. This plugin provides `<Plug>` key mappings for convenience.
 
-To use `<Plug>(GitLab...)` maps above you must include your own keymap that references it:
+To use `<Plug>(GitLab...)` maps above you must include your own key mapping that references it:
 
 ```lua
 -- Toggle Code Suggestions on/off with CTRL-g in normal mode:
@@ -139,7 +139,7 @@ Enable the `gitlab.resource_editing` to enable:
 
 ### Statusline
 
-`gitlab.statusline` is enabled by default. It hooks into the built-in `statusline`
+This plugin enables `gitlab.statusline` by default. It hooks into the built-in `statusline`
 to show the status of the GitLab Duo Code Suggestions integration.
 
 ```lua
@@ -159,7 +159,7 @@ developing. To learn more about this feature, see the
 [GitLab Duo Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/index.html)
 
 GitLab Duo Code Suggestions is a generative artificial intelligence (AI) model.
-GitLab currently leverages [Google Cloud's Vertex AI Codey API models](https://cloud.google.com/vertex-ai/generative-ai/docs/code/code-models-overview)
+GitLab uses [Google Cloud's Vertex AI Codey API models](https://cloud.google.com/vertex-ai/generative-ai/docs/code/code-models-overview).
 
 No new additional data is collected to enable this feature. Private non-public
 GitLab customer data is not used as training data. Learn more about
@@ -186,7 +186,7 @@ You can configure this behavior for additional file types with the
    1. Update `PLUGIN_VERSION` in [`lua/gitlab/globals.lua`](lua/gitlab/globals.lua).
    1. Add a new `## vX.Y.Z` header above the previous [CHANGELOG.md](CHANGELOG.md) entry.
 
-1. After it has been approved, merge the merge request.
+1. After the merge request is approved, merge the merge request.
 1. Create a new signed Git tag off of the `main` branch.
 
 ## Issues
