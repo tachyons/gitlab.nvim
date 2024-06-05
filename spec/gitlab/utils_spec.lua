@@ -73,4 +73,31 @@ describe('gitlab.utils', function()
       assert.spy(vim.fn.jobstart).was_called_with(job, match.has_property('cwd', expected_cwd))
     end)
   end)
+
+  describe('joinpaths', function()
+    it('returns the empty string given no arguments', function()
+      assert.equal('', utils.joinpath())
+    end)
+
+    it('returns the empty string given the empty string', function()
+      assert.equal('', utils.joinpath(''))
+    end)
+
+    it('returns / given /', function()
+      assert.equal('/', utils.joinpath('/'))
+    end)
+
+    it('returns one path segment as-is', function()
+      assert.equal('foo', utils.joinpath('foo'))
+    end)
+
+    it('joins path segments with a /', function()
+      assert.equal('foo/bar/baz', utils.joinpath('foo', 'bar', 'baz'))
+    end)
+
+    it('merges consecutive / characters', function()
+      -- From https://github.com/neovim/neovim/blob/v0.10.0/test/functional/lua/fs_spec.lua#L318
+      assert.equal('foo/bar/baz', utils.joinpath('foo', '/bar/', '/baz'))
+    end)
+  end)
 end)

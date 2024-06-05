@@ -70,4 +70,14 @@ function utils.exec_cmd(cmd, job_opts, callback)
   return fn.jobstart(cmd, opts)
 end
 
+--- Reimplementation of vim.fs.joinpath.
+---
+--- From https://github.com/neovim/neovim/blob/v0.10.0/runtime/lua/vim/fs.lua#L95.
+---
+--- @param ... string
+--- @return string
+function utils.joinpath(...)
+  return (table.concat({ ... }, '/'):gsub('//+', '/'))
+end
+
 return utils
