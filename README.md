@@ -22,7 +22,7 @@ This plugin requires:
 
 ## Setup
 
-1. Follow the [installation](#installation) steps for your chosen plugin manager.
+1. Follow the [installation](#install) steps for your chosen plugin manager.
 1. Optional. [Configure GitLab Duo Code Suggestions](#omni-completion) as an Omni completion provider.
 1. Set up helptags using `:helptags ALL` for access to [`:help gitlab.txt`](doc/gitlab.txt).
 
