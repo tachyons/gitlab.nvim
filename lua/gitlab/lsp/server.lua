@@ -19,7 +19,7 @@ function M.new()
   local exepath = resolve_exepath()
   local node_main_script = vim.fn.join({
     require('gitlab').plugin_root(),
-    'node_modules/@gitlab-org/gitlab-lsp/out/node/main.js',
+    'node_modules/@gitlab-org/gitlab-lsp/out/node/main-bundle.js',
   }, '/')
 
   return {
