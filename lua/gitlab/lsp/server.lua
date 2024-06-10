@@ -1,3 +1,5 @@
+local utils = require('gitlab.utils')
+
 local M = {}
 
 local function resolve_exepath()
@@ -15,12 +17,25 @@ local function resolve_exepath()
   return vim.fn.exepath(path)
 end
 
+local function resolve_node_main_script()
+  local lsp_package_dir =
+    utils.joinpath(require('gitlab').plugin_root(), 'node_modules', '@gitlab-org', 'gitlab-lsp')
+
+  local package_json = io.open(utils.joinpath(lsp_package_dir, 'package.json'), 'r')
+
+  if not package_json then
+    return ''
+  end
+
+  local json = package_json:read('*a')
+  package_json:close()
+
+  return utils.joinpath(lsp_package_dir, vim.json.decode(json)['bin']['gitlab-lsp'])
+end
+
 function M.new()
   local exepath = resolve_exepath()
-  local node_main_script = vim.fn.join({
-    require('gitlab').plugin_root(),
-    'node_modules/@gitlab-org/gitlab-lsp/out/node/main-bundle.js',
-  }, '/')
+  local node_main_script = resolve_node_main_script()
 
   return {
     cmd = function(self, opts)
@@ -41,7 +56,7 @@ function M.new()
       end
 
       if self.is_node() then
-        return vim.loop.fs_stat(node_main_script)
+        return node_main_script ~= '' and vim.loop.fs_stat(node_main_script)
       end
 
       return true
