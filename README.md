@@ -82,7 +82,7 @@ use {
    rm ~/.local/share/nvim/gitlab-code-suggestions-language-server-*
    ```
 
-### Configuration
+## Configuration
 
 These environment variables are the most frequently used.
 For a full list, see this plugin's help text at [`doc/gitlab.txt`](doc/gitlab.txt).
