@@ -3,3 +3,6 @@ doc/tags
 
 # Ignore vendored files
 node_modules/
+
+# Ignore files added in MacOS
+.DS_Store
