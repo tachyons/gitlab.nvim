@@ -1,8 +1,10 @@
-# Development Process
+# Development process
+
+## Create a local development environment
 
 1. Install `git` to clone plenary and this project.
 1. Install `neovim`.
-1. Clone plenary.vim through your plugin manager of choice:
+1. Clone `plenary.vim` through your plugin manager of choice:
 
    - Manual installation:
 
@@ -26,9 +28,9 @@
      :PlenaryBustedFile spec/gitlab/code_suggestions_spec.lua
      ```
 
-If you encounter issues running inside of your Neovim install you can use the make test targets which start a clean session with minimal plugins on the runtimepath.
+If you encounter issues running inside of your Neovim install, use the make test targets which start a clean session with minimal plugins on the runtimepath.
 
 ## Documentation
 
-New lua modules and Vim options/commands should be documented in `doc/gitlab.txt`.
+New Lua modules, and Vim options and commands should be documented in `doc/gitlab.txt`.
 Refer to this [Vim helpfiles cheatsheet](https://devhints.io/vim-help) for help formatting your docs.
