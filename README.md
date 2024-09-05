@@ -8,19 +8,17 @@ This extension provides:
 - Vim auto-commands.
 - Local editing of GitLab issues, epics, and merge requests.
 
-## GitLab Duo Code Suggestions
+With Duo Code Suggestions, you get:
 
-Use GitLab Duo Code Suggestions to write code more efficiently by using generative AI to suggest code while you're
-developing. It's a generative artificial intelligence (AI) model that uses
-[Google Cloud's Vertex AI Codey API models](https://cloud.google.com/vertex-ai/generative-ai/docs/code/code-models-overview).
+- **Code completion**, which suggests completions for the current line you are typing.
+  These suggestions usually have low latency.
+- **Code generation**, which generates code based on a natural-language code comment block.
+  Responses for code generation are slower than code completion, and returned in a single block.
 
-To learn more about this feature, see the
-[GitLab Duo Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/index.html)
-and the list of [supported languages](https://docs.gitlab.com/ee/user/project/repository/code_suggestions/supported_extensions.html#supported-languages).
+To learn more, see:
 
-No new additional data is collected to enable this feature. Private non-public
-GitLab customer data is not used as training data. Learn more about
-[Google Vertex AI Codey APIs Data Governance](https://cloud.google.com/vertex-ai/generative-ai/docs/data-governance)
+- [Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html)
+- [Supported languages](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#supported-languages)
 
 ## Extension requirements
 
