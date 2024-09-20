@@ -41,7 +41,7 @@ make integration_test SPEC=spec/integration/categories/code_suggestions/telemetr
 
 #### GitLab
 
-Today functional tests assume you'll export `GITLAB_TOKEN` variable with the appropriate scopes to connect to GitLab.com.
+Today, functional tests assume that you export `GITLAB_TOKEN` variable with the appropriate scopes to connect to GitLab.com.
 
 #### Snowplow Micro
 
