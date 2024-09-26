@@ -61,7 +61,7 @@ lint-lsp-deps: package-lock.json
 	git diff --exit-code package-lock.json package.json
 
 package.json:
-	npm install
+	npm install --omit=peer
 
 package-lock.json: package.json
 
