@@ -261,7 +261,7 @@ return {
           local complete_info = vim.fn.complete_info()
           local items = complete_info and complete_info.items or {}
           local suggestion = suggestion_data_from_completion_item(items[1])
-          if suggestion then
+          if suggestion and suggestion.trackingId then
             -- Suggestion selected = 0 or the completion item's zero-based index.
             -- No item selected = -1
             --
@@ -286,7 +286,7 @@ return {
           local completed_item = vim.v.completed_item
           if completed_item then
             local suggestion = suggestion_data_from_completion_item(completed_item)
-            if suggestion then
+            if suggestion and suggestion.trackingId then
               suggestion_events[suggestion.trackingId] = {
                 action = 'suggestion_accepted',
               }
