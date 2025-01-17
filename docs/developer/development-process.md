@@ -33,4 +33,4 @@ If you encounter issues running inside of your Neovim install, use the make test
 ## Documentation
 
 New Lua modules, and Vim options and commands should be documented in `doc/gitlab.txt`.
-Refer to this [Vim helpfiles cheatsheet](https://devhints.io/vim-help) for help formatting your docs.
+Refer to this [Vim helpfiles cheatsheet](https://devhints.io/vim-help) for help formatting your documentation.
