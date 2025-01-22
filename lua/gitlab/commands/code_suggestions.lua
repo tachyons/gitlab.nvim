@@ -1,7 +1,4 @@
 local globals = require('gitlab.globals')
-local enforce_gitlab = require('gitlab.lib.enforce_gitlab')
-local graphql = require('gitlab.api.graphql')
-local pick = require('gitlab.lib.pick')
 local statusline = require('gitlab.statusline')
 local utils = require('gitlab.utils')
 local notifier = require('gitlab.notifier')
@@ -89,10 +86,6 @@ function CodeSuggestionsCommands:install_language_server()
 end
 
 local auth
-local minimum_version
-local at_least_one_duo_project = false
-local user_response
-local api_error, err
 function CodeSuggestionsCommands:start(options)
   vim.validate({
     ['options.prompt_user'] = { options.prompt_user, 'boolean' },
@@ -120,81 +113,6 @@ function CodeSuggestionsCommands:start(options)
       vim.log.levels.WARN
     )
     return
-  end
-
-  if not minimum_version then
-    minimum_version, api_error = enforce_gitlab.at_least('16.8')
-  end
-  if api_error then
-    -- NOTE: We use WARN here to avoid an captive error state on VimEnter.
-    notifier.notify(api_error, vim.log.levels.WARN, { title = 'GitLab Duo Code Suggestions' })
-    return
-  elseif not minimum_version then
-    statusline.update_status_line(globals.GCS_UNAVAILABLE)
-    notifier.notify(
-      'GitLab Duo Code Suggestions requires GitLab version 16.8 or later',
-      vim.log.levels.WARN,
-      { title = 'GitLab Duo Code Suggestions' }
-    )
-    return
-  end
-
-  if not user_response then
-    user_response, err = graphql.current_user_duo_status()
-  end
-  err = err or pick(user_response, { 'errors', 1, 'message' })
-  if err then
-    statusline.update_status_line(globals.GCS_UNAVAILABLE)
-    notifier.notify(
-      'Unable to get Duo Code Suggestions license status.\n' .. err,
-      vim.log.levels.ERROR
-    )
-    return
-  else
-    local current_user = pick(user_response, { 'data', 'currentUser' })
-    if not pick(current_user, { 'duoCodeSuggestionsAvailable' }) then
-      statusline.update_status_line(globals.GCS_UNAVAILABLE)
-      notifier.notify(
-        'Code Suggestions is now a paid feature, part of Duo Pro. Contact your GitLab administrator to upgrade.',
-        vim.log.levels.WARN
-      )
-      return
-    end
-
-    for name, uri in pairs(require('gitlab.lib.git_remote').remotes()) do
-      if not at_least_one_duo_project then
-        local parsed = require('gitlab.lib.gitlab_project_url').parse(uri)
-        local project_response, project_err = graphql.project_settings(parsed.full_path)
-        err = project_err or pick(project_response, { 'errors', 1, 'message' })
-        if err then
-          notifier.notify(
-            string.format(
-              'Unable to check GitLab Duo status %s (remote %s) - error: %s',
-              uri,
-              name,
-              err
-            ),
-            vim.log.levels.ERROR
-          )
-        elseif pick(project_response, { 'data', 'project', 'duoFeaturesEnabled' }) then
-          at_least_one_duo_project = true
-        else
-          notifier.notify(
-            string.format(
-              'GitLab Duo is currently disabled for this project %s (remote %s)',
-              uri,
-              name
-            ),
-            vim.log.levels.WARN
-          )
-        end
-      end
-    end
-
-    if not at_least_one_duo_project then
-      statusline.update_status_line(globals.GCS_UNAVAILABLE)
-      return
-    end
   end
 
   self.lsp_client = require('gitlab.lsp.client').start({

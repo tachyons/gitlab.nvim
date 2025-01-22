@@ -20,36 +20,6 @@ local function check_auth_status(auth, err)
   end
 end
 
-local function check_duo_status()
-  local enforce_gitlab = require('gitlab.lib.enforce_gitlab')
-  if not enforce_gitlab.at_least('16.8') then
-    vim.health.warn('GitLab Duo Code Suggestions requires GitLab version 16.8 or later', {
-      'Confirm your GitLab version: https://docs.gitlab.com/ee/user/version.html',
-    })
-    return
-  end
-
-  local graphql = require('gitlab.api.graphql')
-  local pick = require('gitlab.lib.pick')
-
-  local response, err = graphql.current_user_duo_status()
-  err = err or pick(response, { 'errors', 1, 'message' })
-  if err then
-    vim.health.error('Unable to detect GitLab Duo status for current user: ' .. err)
-    return
-  end
-
-  local current_user = pick(response, { 'data', 'currentUser' })
-  if pick(current_user, { 'duoCodeSuggestionsAvailable' }) then
-    vim.health.ok('GitLab Duo Code Suggestions: Available')
-    return true
-  else
-    vim.health.warn('Code Suggestions is now a paid feature, part of Duo Pro.', {
-      'Contact your GitLab administrator to upgrade.',
-    })
-  end
-end
-
 local function check_gitlab_metadata()
   local rest = require('gitlab.api.rest')
   local metadata, err = rest.metadata()
@@ -71,57 +41,6 @@ local function check_gitlab_metadata()
   end
 end
 
-local function check_project_duo_status()
-  local enforce_gitlab = require('gitlab.lib.enforce_gitlab')
-  if not enforce_gitlab.at_least('16.8') then
-    vim.health.warn('GitLab Duo Code Suggestions requires GitLab version 16.8 or later', {
-      'Confirm your GitLab version: https://docs.gitlab.com/ee/user/version.html',
-    })
-    return
-  end
-
-  local graphql = require('gitlab.api.graphql')
-  local pick = require('gitlab.lib.pick')
-
-  local remotes = require('gitlab.lib.git_remote').remotes()
-  local at_least_one_duo_project = false
-  for name, uri in pairs(remotes) do
-    local parsed = require('gitlab.lib.gitlab_project_url').parse(uri)
-    local response, err = graphql.project_settings(parsed.full_path)
-    err = err or pick(response, { 'errors', 1, 'message' })
-    if err then
-      vim.health.error(
-        string.format('GitLab Duo status for this project is unknown %s (remote %s)', uri, name),
-        { err }
-      )
-    else
-      local project = pick(response, { 'data', 'project' })
-      if pick(project, { 'duoFeaturesEnabled' }) then
-        at_least_one_duo_project = true
-        vim.health.ok(
-          string.format('GitLab Duo is enabled for this project %s (remote %s)', uri, name)
-        )
-      else
-        vim.health.warn(
-          string.format('GitLab Duo is disabled for this project %s (remote %s)', uri, name)
-        )
-      end
-    end
-  end
-
-  if not at_least_one_duo_project then
-    vim.health.warn(
-      'GitLab Duo Code Suggestions is disabled for this project. Please contact your administrator.',
-      {
-        'No remotes ('
-          .. vim.fn.join(vim.fn.keys(remotes), ', ')
-          .. ') appear to be GitLab projects with Duo enabled.',
-      }
-    )
-    return
-  end
-end
-
 M.check = function()
   local auth, err = require('gitlab.authentication').default_resolver():resolve()
   local auth_ok = check_auth_status(auth, err)
@@ -131,9 +50,6 @@ M.check = function()
   end
 
   check_gitlab_metadata()
-  if check_duo_status() then
-    check_project_duo_status()
-  end
 end
 
 return M
