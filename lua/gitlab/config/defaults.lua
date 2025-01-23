@@ -6,7 +6,7 @@ return {
   resource_editing = {
     enabled = false,
   },
-  minimal_message_level = 0,
+  minimal_message_level = vim.lsp.log_levels.INFO,
   code_suggestions = {
     auto_filetypes = {
       'c', -- C

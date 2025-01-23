@@ -12,7 +12,7 @@ return {
       message = 'gitlab.vim: Unexpected error from LSP server: ' .. vim.inspect(result)
     end
 
-    notifier.notify(message, vim.log.levels.ERROR, {
+    notifier.notify_once(message, vim.log.levels.ERROR, {
       title = 'LSP method: $/gitlab/token/check',
     })
     statusline.update_status_line(globals.GCS_UNAVAILABLE)
