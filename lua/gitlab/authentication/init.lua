@@ -34,14 +34,20 @@ local function new_auth_resolver(options)
       )
       if env_auth:resolve() then
         resolved = env_auth
-        notifier.notify_once('gitlab.vim: Resolved authentication details from environment.')
+        notifier.notify_once(
+          'gitlab.vim: Resolved authentication details from environment.',
+          vim.lsp.log_levels.DEBUG
+        )
         return env_auth, nil
       end
 
       local prompt_auth = provider.prompt()
       if prompt_auth:resolve(opts) then
         resolved = prompt_auth
-        notifier.notify_once('gitlab.vim: Resolved authentication details from user input.')
+        notifier.notify_once(
+          'gitlab.vim: Resolved authentication details from user input.',
+          vim.lsp.log_levels.DEBUG
+        )
         return prompt_auth, nil
       end
 
