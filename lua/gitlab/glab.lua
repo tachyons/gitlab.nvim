@@ -79,7 +79,7 @@ function M.version()
   return job.stdout
 end
 
-function M.warning_enabled()
+function M.enabled()
   return not vim.g.gitlab_api_provider_glab_disabled
 end
 
