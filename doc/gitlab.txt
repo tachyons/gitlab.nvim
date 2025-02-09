@@ -99,6 +99,12 @@ gitlab.setup({options})                                       *gitlab.setup()*
     require('gitlab').setup({
       code_suggestions = {
         auto_filetypes = {'ruby'},
+        ghost_text = {
+          enabled = false,
+          toggle_enabled = '<C-h>',
+          accept_suggestion = '<C-l>',
+          clear_suggestions = '<C-k>',
+        },
       },
       resource_editing = {
         enabled = true,
@@ -113,6 +119,15 @@ gitlab.setup({options})                                       *gitlab.setup()*
       • {options} (table) Optional keyword arguments:
                   • code_suggestions (table)    *gitlab.config.code_suggestions*
                     Suggestions.
+                    • ghost_text (table) *gitlab.config.code_suggestions.ghost_text*
+                      • enabled (boolean) Whether to enable code suggestions
+                        ghost text (experimental). Defaults to false.
+                      • toggle_enabled (string) binding to toggle this on or
+                        off.
+                      • accept_suggestion (string) binding to accept a
+                        suggestion.
+                      • clear_suggestions (string) binding to clear
+                        suggestions.
                   • gitlab_url (string) the GitLab instance url to use
                     if not `https://gitlab.com`.
                   • resource_editing (table)          *gitlab.config.resource_editing*

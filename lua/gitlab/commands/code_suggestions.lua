@@ -130,6 +130,15 @@ function CodeSuggestionsCommands:start(options)
 
   if self.lsp_client then
     statusline.update_status_line(globals.GCS_AVAILABLE_AND_ENABLED)
+
+    local config = require('gitlab.config').current()
+    local ghost_text_enabled = config.code_suggestions
+      and config.code_suggestions.ghost_text
+      and config.code_suggestions.ghost_text.enabled
+    if ghost_text_enabled then
+      require('gitlab.ghost_text').setup(self.lsp_client, config.code_suggestions.ghost_text)
+    end
+
     notifier.notify_once(
       'gitlab.vim: Started Code Suggestions LSP integration.',
       vim.lsp.log_levels.DEBUG
