@@ -123,5 +123,58 @@ describe('gitlab.ghost_text', function()
       ghost_text.update_ghost_text(ghost_text.edit_counter)
       assert.spy(display_suggestion).was_called_with({ { insertText = 'the suggestion' } })
     end)
+
+    it('should cancel_streaming if is_streaming', function()
+      local cancel_streaming = spy.on(ghost_text, 'cancel_streaming')
+      ghost_text.is_streaming = true
+      ghost_text.update_ghost_text(ghost_text.edit_counter)
+      assert.spy(cancel_streaming).was_called()
+    end)
+
+    it('starts a new stream if the command is gitlab.ls.startStreaming', function()
+      local start_new_stream = spy.on(ghost_text, 'start_new_stream')
+
+      lsp_client.request = spy.new(function(_, _, fn)
+        fn(nil, {
+          items = {
+            {
+              insertText = 'the suggestion',
+              command = { command = 'gitlab.ls.startStreaming', arguments = { 'stream_id' } },
+            },
+          },
+        })
+      end)
+
+      ghost_text.update_ghost_text(ghost_text.edit_counter)
+      assert.spy(start_new_stream).was_called_with('stream_id')
+    end)
+  end)
+
+  describe('handle_streaming_response', function()
+    before_each(function()
+      ghost_text.setup(lsp_client, { enabled = true })
+      ghost_text.start_new_stream('stream_id')
+    end)
+
+    it('should finish_streaming if there is an err', function()
+      local finish_streaming = spy.on(ghost_text, 'finish_streaming')
+      ghost_text.handle_streaming_response('some error', nil, nil)
+      assert.spy(finish_streaming).was_called()
+    end)
+
+    it('should display the buffer if completion', function()
+      local display_streaming_suggestion = spy.on(ghost_text, 'display_streaming_suggestion')
+      ghost_text.handle_streaming_response(nil, {
+        id = 'stream_id',
+        completion = 'some text',
+      }, {})
+      assert.spy(display_streaming_suggestion).was_called_with('some text')
+    end)
+
+    it('should finish_streaming if done', function()
+      local finish_streaming = spy.on(ghost_text, 'finish_streaming')
+      ghost_text.handle_streaming_response(nil, { id = 'stream_id', done = true }, {})
+      assert.spy(finish_streaming).was_called()
+    end)
   end)
 end)

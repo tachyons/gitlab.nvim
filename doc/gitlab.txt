@@ -104,6 +104,7 @@ gitlab.setup({options})                                       *gitlab.setup()*
           toggle_enabled = '<C-h>',
           accept_suggestion = '<C-l>',
           clear_suggestions = '<C-k>',
+          stream = true,
         },
       },
       resource_editing = {
@@ -128,6 +129,8 @@ gitlab.setup({options})                                       *gitlab.setup()*
                         suggestion.
                       • clear_suggestions (string) binding to clear
                         suggestions.
+                      • stream (boolean) whether to stream larger code
+                        generation requests as ghost text. Defaults to false.
                   • gitlab_url (string) the GitLab instance url to use
                     if not `https://gitlab.com`.
                   • resource_editing (table)          *gitlab.config.resource_editing*
