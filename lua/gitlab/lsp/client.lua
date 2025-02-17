@@ -14,12 +14,18 @@ function M.start(options)
   })
 
   local config = require('gitlab.config').current()
+  local ghost_text_stream = config.code_suggestions
+    and config.code_suggestions.ghost_text
+    and config.code_suggestions.ghost_text.stream
   local settings = vim.tbl_extend(
     'keep',
     options.workspace.configuration,
     config.language_server.workspace_settings
   )
   settings = vim.tbl_extend('force', settings, {
+    featureFlags = {
+      streamCodeGenerations = ghost_text_stream,
+    },
     baseUrl = options.auth.url(),
     token = options.auth.token(),
   })

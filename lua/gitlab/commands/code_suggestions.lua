@@ -137,6 +137,13 @@ function CodeSuggestionsCommands:start(options)
       and config.code_suggestions.ghost_text.enabled
     if ghost_text_enabled then
       require('gitlab.ghost_text').setup(self.lsp_client, config.code_suggestions.ghost_text)
+      if config.code_suggestions.ghost_text.stream then
+        local client = vim.lsp.get_client_by_id(self.lsp_client.client_id)
+        if client then
+          client.handlers['streamingCompletionResponse'] =
+            require('gitlab.ghost_text').handle_streaming_response
+        end
+      end
     end
 
     notifier.notify_once(
