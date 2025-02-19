@@ -24,7 +24,7 @@ To learn more, see:
 
 This extension requires:
 
-- GitLab version 16.1 or later for both SaaS and self-managed.
+- GitLab version 16.1 or later for both GitLab SaaS and GitLab Self-Managed.
   While many extension features might work with earlier versions, they are unsupported.
   - The GitLab Duo Code Suggestions feature requires GitLab version 16.8 or later.
 - [Neovim](https://neovim.io/) version 0.9 or later.
