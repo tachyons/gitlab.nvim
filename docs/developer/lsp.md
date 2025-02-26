@@ -23,7 +23,10 @@ by installing the `@gitlab-org/gitlab-lsp` package and using the `node` interpre
    }
    ```
 
-   :warning: Avoid using [open version constraints](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/56#note_1591643547) such as `^3.10`.
+   > [!warning]
+   > Avoid using [open version constraints](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues/56#note_1591643547)
+   > such as `^3.10`.
+
 1. Run `make package-lock.json` to install the updated dependencies.
 1. Commit changes:
 
