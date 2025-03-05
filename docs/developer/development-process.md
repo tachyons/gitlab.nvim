@@ -28,7 +28,7 @@
      :PlenaryBustedFile spec/gitlab/code_suggestions_spec.lua
      ```
 
-If you encounter issues running inside of your Neovim install, use the make test targets which start a clean session with minimal plugins on the runtimepath.
+If you encounter issues running inside of your Neovim install, use the make test targets which start a clean session with minimal plugins on the `runtimepath`.
 
 ## Documentation
 

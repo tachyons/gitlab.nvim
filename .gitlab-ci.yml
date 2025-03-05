@@ -18,7 +18,7 @@ default:
 
 check_docs_markdown:
   stage: lint
-  image: registry.gitlab.com/gitlab-org/gitlab-docs/lint-markdown:alpine-3.20-vale-3.9.3-markdownlint2-0.17.1-lychee-0.18.0
+  image: registry.gitlab.com/gitlab-org/technical-writing/docs-gitlab-com/lint-markdown:alpine-3.21-vale-3.9.3-markdownlint2-0.17.1-lychee-0.18.0
   script:
     # Lint prose
     - vale --minAlertLevel error docs README.md CHANGELOG.md
