@@ -1,5 +1,5 @@
 local globals = {
-  PLUGIN_VERSION = '1.0.0-beta',
+  PLUGIN_VERSION = '1.1.0',
 
   -- Code Suggestions
   GCS_UNKNOWN = -1,

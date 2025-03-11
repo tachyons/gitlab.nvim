@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.1.0
+
+- Upgrade GitLab language server for Code Suggestions to `v7.17.1` (!216)
+- Add experimental ghost text (!211)
+- Add LSP client settings health check (!202)
+- Improve startup time by relying on language server notifications (!196)
+
 ## v1.0.0
 
 - Upgrade GitLab language server for Code Suggestions to `v2.1.0` (!44)
