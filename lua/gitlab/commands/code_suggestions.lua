@@ -71,7 +71,7 @@ function CodeSuggestionsCommands:install_language_server()
       statusline.update_status_line(globals.GCS_UPDATED)
       notifier.notify(
         'gitlab.vim: Successfully installed @gitlab-org/gitlab-lsp',
-        vim.lsp.log_levels.DEBUG
+        vim.lsp.log_levels.INFO
       )
       return
     end
