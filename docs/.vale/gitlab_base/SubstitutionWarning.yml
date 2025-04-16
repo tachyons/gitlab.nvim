@@ -1,10 +1,7 @@
 ---
-# Warning: gitlab_base.SubstitutionWarning
-#
-# Checks for misused terms or common shorthand that should not be used at GitLab, but can't be flagged as errors.
-# Substitutions.yml also exists.
-#
-# For a list of all options, see https://vale.sh/docs/topics/styles/
+name: gitlab_base.SubstitutionWarning
+description: |
+  Checks for misused terms or common shorthand that should not be used at GitLab, but can't be flagged as errors. Substitutions.yml also exists.
 extends: substitution
 message: "Use '%s' instead of '%s' when possible."
 link: https://docs.gitlab.com/development/documentation/styleguide/word_list/
@@ -69,6 +66,7 @@ swap:
   pop-up window: "dialog"
   pop-up: "dialog"
   popup: "dialog"
+  re-index: "reindex"
   repo: "repository"
   root group: "top-level group"
   signed in user: "authenticated user"
