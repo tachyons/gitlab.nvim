@@ -18,11 +18,13 @@ function M.extend_jobstart_options(opts, handle_exit)
       })
     end,
     on_stdout = function(_job_id, data, _event)
-      stdout = vim.tbl_flatten({ stdout, data })
+      stdout = data
     end,
     on_stderr = function(_job_id, data, _event)
-      stderr = vim.tbl_flatten({ stderr, data })
+      stderr = data
     end,
+    stdout_buffered = true,
+    stderr_buffered = true,
   })
 end
 
