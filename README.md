@@ -4,7 +4,7 @@ This extension integrates GitLab Duo with Neovim. It's built with Lua.
 This extension provides:
 
 - GitLab Duo Code Suggestions.
-- [Omni Completion key mapping](https://docs.gitlab.com/ee/editor_extensions/neovim/#configure-omni-completion).
+- [Omni Completion key mapping](https://docs.gitlab.com/editor_extensions/neovim/setup/#configure-omni-completion).
 - Vim auto-commands.
 - Local editing of GitLab issues, epics, and merge requests.
 
@@ -17,8 +17,8 @@ With Duo Code Suggestions, you get:
 
 To learn more, see:
 
-- [Code Suggestions documentation](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html)
-- [Supported languages](https://docs.gitlab.com/ee/user/project/repository/code_suggestions.html#supported-languages)
+- [Code Suggestions documentation](https://docs.gitlab.com/user/project/repository/code_suggestions/)
+- [Supported languages](https://docs.gitlab.com/user/project/repository/code_suggestions/supported_extensions/#supported-languages-by-ide)
 
 ## Extension requirements
 
@@ -32,7 +32,7 @@ This extension requires:
 ## Install the extension
 
 For installation and configuration instructions, see
-[Install the extension](https://docs.gitlab.com/ee/editor_extensions/neovim/#install-the-extension)
+[Install the extension](https://docs.gitlab.com/editor_extensions/neovim/setup/)
 in the GitLab documentation.
 
 ## Uninstall the extension
@@ -60,7 +60,7 @@ in the GitLab documentation.
 
 ## Troubleshooting
 
-See [troubleshooting information](https://docs.gitlab.com/ee/editor_extensions/neovim/neovim_troubleshooting.html)
+See [troubleshooting information](https://docs.gitlab.com/editor_extensions/neovim/neovim_troubleshooting/)
 in the GitLab documentation. If the problem persists,
 [report it in an issue](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues) in this project.
 

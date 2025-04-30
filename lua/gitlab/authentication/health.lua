@@ -34,8 +34,8 @@ local function check_gitlab_metadata()
     end
   else
     vim.health.error(err, {
-      'This healthcheck uses the Metadata API: https://docs.gitlab.com/ee/api/metadata.html',
-      'Configure a Personal Access Token with the `read_api` scope to enable automatic version detection.',
+      'This healthcheck uses the Metadata API: https://docs.gitlab.com/api/metadata/',
+      'Configure a personal access token with the `read_api` scope to enable automatic version detection.',
     })
     return
   end
