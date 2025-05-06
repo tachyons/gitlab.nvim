@@ -1,5 +1,5 @@
 lua 5.4.6
-nodejs 18.17.0
+nodejs 20.18.1
 stylua 0.18.0
 
 # For linting documentation
