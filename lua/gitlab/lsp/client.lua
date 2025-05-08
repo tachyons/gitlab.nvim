@@ -27,7 +27,6 @@ function M.start(options)
       streamCodeGenerations = ghost_text_stream,
     },
     baseUrl = options.auth.url(),
-    token = options.auth.token(),
   })
   local client_id = lspconfig.setup({
     cmd = options.cmd,
@@ -39,7 +38,12 @@ function M.start(options)
       client.offset_encoding = config.code_suggestions.offset_encoding
 
       options.workspace.subscribe_client(client.id)
-      options.workspace:change_configuration(settings)
+
+      -- We set the token in on_init so that it does not appear in
+      -- :checkhealth vim.lsp
+      local new_settings = vim.deepcopy(settings)
+      new_settings.token = options.auth.token()
+      options.workspace:change_configuration(new_settings)
     end,
   })
 
