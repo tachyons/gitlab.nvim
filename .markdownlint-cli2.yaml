@@ -23,7 +23,7 @@ config:
   no-emphasis-as-heading: false     # MD036
   no-inline-html: false             # MD033
   no-trailing-punctuation:          # MD026
-    punctuation: ".,;:!。，；：！？"
+    punctuation: ".,;:!。，；：！"
   no-trailing-spaces: false         # MD009
   ol-prefix:                        # MD029
     style: "one"
@@ -67,6 +67,7 @@ config:
       "Gitaly",
       "GitHub",
       "gitlab.vim",
+      "GitLab chart",
       "GitLab Geo",
       "GitLab Monitor",
       "GitLab Operator",
