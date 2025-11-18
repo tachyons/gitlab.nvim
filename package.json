@@ -2,7 +2,7 @@
   "name": "gitlab.vim",
   "description": "Bring your favourite DevSecOps platform to your fingertips through a Vim plugin.",
   "dependencies": {
-    "@gitlab-org/gitlab-lsp": "^8.1.0",
+    "@gitlab-org/gitlab-lsp": "^8.41.0",
     "dayjs": "^1.11.14"
   },
   "private": true
