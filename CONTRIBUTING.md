@@ -39,8 +39,8 @@ Create a [new issue from the "Feature Proposal" template](https://gitlab.com/git
 
 ### Your First Code Contribution?
 
-For newcomers to the project, you can take a look at issues labeled as `Accepting merge requests`
-as available [here](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues?label_name[]=Accepting%20merge%20requests).
+For newcomers to the project, you can take a look at
+[issues labeled as `Accepting merge requests`](https://gitlab.com/gitlab-org/editor-extensions/gitlab.vim/-/issues?label_name[]=Accepting%20merge%20requests).
 
 ### Configuring Development Environment
 
